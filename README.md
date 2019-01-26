@@ -19,6 +19,7 @@ If logged in, users can add comments to podcasts and episodes, which will be sto
 ### Models
 
 #### User 
+```
 username: {type: String, required: true, unique: true},
 password: {type: String, required: true}, 
 email: {type: String, required: true}, 
@@ -26,8 +27,9 @@ podcasts: [Podcast.schema],
 episodes: [Episode.schema],
 comments: [Comment.schema],
 playlists: [Playlist.schema]
-
+```
 #### Podcast
+```
 name: String,
 hosts: [String],
 imageURL: String,
@@ -38,8 +40,9 @@ lastUpdated: Date,
 genres: [String],
 episodes: [Episode.schema],
 comments: [Comment.schema]
-
+```
 #### Episode
+```
 name: String,
 number: Number,
 podcastId: String,
@@ -50,16 +53,19 @@ description: String,
 topics: [String],
 datePosted: Date,
 comments: [Comment.schema]
-
+```
 #### Comment
+```
 ownerId: String,
 name: String,
 body: String,
 datePosted: Date
-
+```
 #### Playlist
+```
 name: String, 
 ownerId: String,
 datePosted: Date,
 lastEdited: Date,
 episodes: [Episode.schema]
+```
