@@ -46,7 +46,7 @@ comments: [Comment.schema]
 name: String,
 number: Number,
 podcastId: String,
-audio: Buffer,
+audioURL: String,
 guests: [String],
 imageURL: String,
 description: String,
