@@ -1,0 +1,30 @@
+{
+  "name": "earfull",
+  "version": "1.0.0",
+  "description": "Playlist manager for podcasts",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathanlamontsmith12/earfull-app.git"
+  },
+  "author": "Nathan Smith and Sam Brown",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathanlamontsmith12/earfull-app/issues"
+  },
+  "homepage": "https://github.com/nathanlamontsmith12/earfull-app#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-sessions": "^1.0.6",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.4.7",
+    "superagent": "^4.1.0"
+  }
+}
