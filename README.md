@@ -22,12 +22,28 @@ If logged in, users can add comments to podcasts and episodes, which will be sto
 ```
 username: {type: String, required: true, unique: true},
 password: {type: String, required: true}, 
-email: {type: String, required: true}, 
+email: {type: String, required: true},
+profile: Profile.schema,
+friends: [User.schema],
+recommendations: [Podcast.schema],
 podcasts: [Podcast.schema],
 episodes: [Episode.schema],
 comments: [Comment.schema],
 playlists: [Playlist.schema]
 ```
+
+#### Profile
+```
+name: String,
+userID: String,
+city: String, 
+state: String,
+age: Number, 
+interests: [String],
+info: String,
+public: Boolean
+```
+
 #### Podcast
 ```
 name: String,
@@ -38,6 +54,7 @@ networkId: String,
 link: String,
 lastUpdated: Date,
 genres: [String],
+followers: [User.schema],
 episodes: [Episode.schema],
 comments: [Comment.schema]
 ```
