@@ -44,24 +44,14 @@ router.post("/register", async (req, res, next)=>{
 					req.session.username = req.body.username;
 					req.session.loggedIn = true;
 					req.session.message = `Logged In As ${req.body.username}`;
-					res.render("home/home.ejs", {
-						message: req.session.message,
-						loggedIn: req.session.loggedIn,
-						title: "EarFull Home",
-						header: "EarFull"
-					})
+					res.redirect("/earfull")
 				}	
 			}
 		}
 	} catch (err) {
 		console.log(err);
 		req.session.message = "Failed to register account. Please try again.";
-		res.render("home/register.ejs", {
-			loggedIn: req.session.loggedIn,
-			message: req.session.message,
-			title: "EarFull Registration",
-			header: "Sign Up"
-		})
+		res.redirect("/earfull");
 	}
 });
 
@@ -90,12 +80,7 @@ router.post("/login", async (req, res, next)=>{
 						req.session.username = req.body.username;
 						req.session.loggedIn = true;
 						req.session.message = `Logged in as ${req.body.username}`;
-						res.render("home/home.ejs", {
-							message: req.session.message,
-							loggedIn: req.session.loggedIn,
-							title: "EarFull Home",
-							header: "EarFull"
-						})
+						res.redirect("/earfull")
 					} else {
 						console.log("Incorrect Username or password");
 						req.session.message = "Incorrect or Invalid Username and/or Password";
@@ -106,12 +91,7 @@ router.post("/login", async (req, res, next)=>{
 	} catch (err) {
 		req.session.message = "Incorrect or Invalid Username and/or Password";
 		console.log(err);
-		res.render("home/login.ejs", {
-			loggedIn: req.session.loggedIn,
-			message: req.session.message,
-			title: "EarFull Log In",
-			header: "Log In"
-		});
+		res.redirect("/earfull/auth/login");
 	}
 });
 
@@ -128,18 +108,43 @@ router.post("/logout", async (req, res, next)=>{
 
 // ========== GET ROUTES FOR REG / LOGIN ==========
 router.get("/login", (req, res)=>{
+
+	// capture message, then clear it 
+	const message = req.session.message; 
+
+	// ... unless the message is "Logged in"
+	if (req.session.message) {
+		if (req.session.message[0] !== "L") {
+				req.session.message = "";
+		}
+	}
+
+	// render appropriate page 
 	res.render("home/login.ejs", {
 		loggedIn: req.session.loggedIn,
-		message: req.session.message,
+		message: message,
 		title: "EarFull Log In",
 		header: "Log In"
 	})
 })
 
+
 router.get("/register", (req, res)=>{
+
+	// capture message, then clear it 
+	const message = req.session.message; 
+
+	// ... unless the message is "Logged in"
+	if (req.session.message) {	
+		if (req.session.message[0] !== "L") {
+				req.session.message = "";
+		}
+	}
+
+	// render appropriate page
 	res.render("home/register.ejs", {
 		loggedIn: req.session.loggedIn,
-		message: req.session.message,
+		message: message,
 		title: "EarFull Registration",
 		header: "Sign Up"
 	})

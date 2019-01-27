@@ -32,15 +32,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // ========== CONTROLLERS ========== 
 const usersController = require("./controllers/usersController")
+
 app.use("/earfull/auth", usersController);
-
-
-// ========== OTHER MIDDLEWARE ========== 
-app.use(express.static("public"));
 
 // on any server action, clears out req.session.message if it is 
 // anything other than "Logged in as ${username}"
-app.use(function (req, res, next){
+app.use(function (req, res, next) {
 	if (req.session.message) {
 		if (req.session.message[0] !== "L") {
 			req.session.message = "";
@@ -51,20 +48,20 @@ app.use(function (req, res, next){
 	}
 })
 
+// ========== OTHER MIDDLEWARE ========== 
+app.use(express.static("public"));
+
+
 
 // ========== ROUTES ==========
 // Home route  
-app.get("/earfull", async (req, res, next)=>{
-	try {
-		res.render("home/home.ejs", {
-			message: req.session.message,
-			loggedIn: req.session.loggedIn,
-			title: "EarFull Home",
-			header: "EarFull"
-		});
-	} catch (err) {
-		next(err)
-	}
+app.get("/earfull", (req, res)=>{
+	res.render("home/home.ejs", {
+		message: req.session.message,
+		loggedIn: req.session.loggedIn,
+		title: "EarFull Home",
+		header: "EarFull"
+	});
 })
 
 
