@@ -7,9 +7,16 @@
 	<%- include("../partials/head", {title: title}) %>
 </head>
 <body>
-<!-- Partial for header, requires variable "header" -->
+<!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
 
+<form action="/earfull/auth/register" method="POST">
+	Username: <input type="text" name="username"> <br />
+	Email: <input type="email" name="email"> <br />
+	Password: <input type="password" name="password"> <br />
+	Confirm Password: <input type="password" name="confirm"> <br />
+	<button>Create Account</button>
+</form>
 
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>

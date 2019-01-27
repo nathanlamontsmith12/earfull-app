@@ -5,11 +5,16 @@
 				<a href="/earfull">Home</a> 
 			</div>
 			<div class="authNav">
-				<a href="/earfull/auth/login">Login</a> || 
-				<a href="/earfull/auth/register">Sign Up</a> || 
-				<form action="/earfull/auth/logout" method="POST">
-					<button>Logout</button>
-				</form>
+				<a href="/earfull/auth/register">Create New Account</a>  
+				<% if (loggedIn) { -%>
+					<form action="/earfull/auth/logout" method="POST">
+						<button>Logout</button>
+					</form>
+				<% } else { -%>
+						<br />
+						<a href="/earfull/auth/login">Log In</a>
+				<% } -%>
 			</div>
+			<p><%=message%> &nbsp;</p>
 		</nav>
 	</header>
