@@ -29,27 +29,48 @@ app.use(session({
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({extended: false}));
 
+// NOTE: This middleware can be moved depending on what static files we end up using 
+// in our public folder
+app.use(express.static("public")); 
 
-// ========== CONTROLLERS ========== 
+
+
+// ========== USERS CONTROLLER + MIDDLEWARE ========== 
 const usersController = require("./controllers/usersController")
 
 app.use("/earfull/auth", usersController);
 
-// on any server action, clears out req.session.message if it is 
-// anything other than "Logged in as ${username}"
-app.use(function (req, res, next) {
-	if (req.session.message) {
-		if (req.session.message[0] !== "L") {
-			req.session.message = "";
-			next();
-		}
+
+// Bc of its placement here, the custom middleware code below should run 
+// for any route that "makes it out" of the usersController.  
+// So error messages ("incorrect log in" etc.) from the usersCont code should 
+// be displayed exactly once before being wiped out on the next command — so... 
+
+// !!! We want the users controller to be our first controller to run, 
+// and we want this middleware IMMEDIATELY after — then other controllers, 
+// other middleware, etc. 
+
+app.use((req, res, next) => {
+
+	// set message to "logged in as USERNAME" if user is logged in, 
+	// else reset the message to blank 
+	// bc there's no "awaiting" here, we RETURN next() in order to immediately 
+	// move on to the next middleware in line  
+
+	if (req.session.loggedIn) {
+		req.session.message = `Logged in as ${req.session.username}`;
 	} else {
-		next();
+		req.session.message = "";
 	}
+	return next();
 })
 
+
+// ========== OTHER CONTROLLERS ========== 
+
+
+
 // ========== OTHER MIDDLEWARE ========== 
-app.use(express.static("public"));
 
 
 

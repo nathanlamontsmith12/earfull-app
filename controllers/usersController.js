@@ -41,9 +41,9 @@ router.post("/register", async (req, res, next)=>{
 
 					// create User in database 
 					const createdUser = await User.create(newUser);
-					req.session.username = req.body.username;
+					req.session.username = req.session.username;
 					req.session.loggedIn = true;
-					req.session.message = `Logged In As ${req.body.username}`;
+					req.session.message = `Logged in as ${req.session.username}`;
 					res.redirect("/earfull")
 				}	
 			}
@@ -51,7 +51,10 @@ router.post("/register", async (req, res, next)=>{
 	} catch (err) {
 		console.log(err);
 		req.session.message = "Failed to register account. Please try again.";
-		res.redirect("/earfull");
+		res.redirect("/earfull/auth/register");
+		// next(400, err);
+			// --> 400 (Bad Request) Error; for later, when we implement more robust 
+			// error handling — for now, the redirect + message should suffice 
 	}
 });
 
@@ -92,6 +95,9 @@ router.post("/login", async (req, res, next)=>{
 		req.session.message = "Incorrect or Invalid Username and/or Password";
 		console.log(err);
 		res.redirect("/earfull/auth/login");
+		// next(400, err); 
+			// --> 400 (Bad Request) Error; for later, when we implement more robust 
+			// error handling — for now, the redirect + message should suffice 
 	}
 });
 
@@ -109,20 +115,22 @@ router.post("/logout", async (req, res, next)=>{
 // ========== GET ROUTES FOR REG / LOGIN ==========
 router.get("/login", (req, res)=>{
 
-	// capture message, then clear it 
-	const message = req.session.message; 
+	// // capture message, then clear it 
+	// const message = req.session.message; 
 
-	// ... unless the message is "Logged in"
-	if (req.session.message) {
-		if (req.session.message[0] !== "L") {
-				req.session.message = "";
-		}
-	}
+	// // ... unless the message is "Logged in"
+	// if (req.session.message) {
+	// 	if (req.session.message[0] !== "L") {
+	// 			req.session.message = "";
+	// 	}
+	// }
+
+	// ABOVE CODE UNNECESSARY THANKS TO MIDDLEWARE IN SERVER.JS
 
 	// render appropriate page 
 	res.render("home/login.ejs", {
 		loggedIn: req.session.loggedIn,
-		message: message,
+		message: req.session.message,
 		title: "EarFull Log In",
 		header: "Log In"
 	})
@@ -131,24 +139,28 @@ router.get("/login", (req, res)=>{
 
 router.get("/register", (req, res)=>{
 
-	// capture message, then clear it 
-	const message = req.session.message; 
+	// // capture message, then clear it 
+	// const message = req.session.message; 
 
-	// ... unless the message is "Logged in"
-	if (req.session.message) {	
-		if (req.session.message[0] !== "L") {
-				req.session.message = "";
-		}
-	}
+	// // ... unless the message is "Logged in"
+	// if (req.session.message) {	
+	// 	if (req.session.message[0] !== "L") {
+	// 			req.session.message = "";
+	// 	}
+	// }
+
+	// ABOVE CODE UNNECESSARY THANKS TO MIDDLEWARE IN SERVER.JS
 
 	// render appropriate page
 	res.render("home/register.ejs", {
 		loggedIn: req.session.loggedIn,
-		message: message,
+		message: req.session.message,
 		title: "EarFull Registration",
 		header: "Sign Up"
 	})
 })
 
+
 //  ========== EXPORT ROUTER  ==========
 module.exports = router;
+
