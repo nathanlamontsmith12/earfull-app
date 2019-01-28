@@ -32,8 +32,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // ========== CONTROLLERS ========== 
 const usersController = require("./controllers/usersController")
-
 app.use("/earfull/auth", usersController);
+const episodesController = require("./controllers/episodesController")
+app.use("/earfull/episodes", episodesController);
 
 // on any server action, clears out req.session.message if it is 
 // anything other than "Logged in as ${username}"
