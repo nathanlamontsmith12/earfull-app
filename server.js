@@ -38,7 +38,7 @@ app.use(express.static("public"));
 
 // ========== USERS CONTROLLER + MIDDLEWARE ========== 
 const usersController = require("./controllers/usersController")
-app.use("/earfull", usersController);
+app.use("/earfull/user", usersController);
 
 // Bc of its placement here, the custom middleware code below should run 
 // for any route that "makes it out" of the usersController.  
@@ -51,16 +51,14 @@ app.use("/earfull", usersController);
 
 app.use((req, res, next) => {
 
-	// set message to "logged in as USERNAME" if user is logged in, 
-	// else reset the message to blank 
+	// set message to "logged in as USERNAME" if user is logged in... 
 	// bc there's no "awaiting" here, we RETURN next() in order to immediately 
 	// move on to the next middleware in line  
 
 	if (req.session.loggedIn) {
 		req.session.message = `Logged in as ${req.session.username}`;
-	} else {
-		req.session.message = "";
-	}
+	} 
+
 	return next();
 })
 

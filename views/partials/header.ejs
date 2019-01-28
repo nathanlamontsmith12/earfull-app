@@ -5,9 +5,9 @@
 				<a href="/earfull">Home</a> 
 			</div>
 			<div class="authNav">
-				<a href="/earfull/auth/register">Create New Account</a>  
+				<a href="/earfull/user/auth/register">Create New Account</a>  
 				<% if (loggedIn) { -%>
-					<form action="/earfull/auth/logout" method="POST">
+					<form action="/earfull/user/auth/logout" method="POST">
 						<button>Logout</button>
 					</form>
 					<form action="/earfull/user/find" method="GET">
@@ -15,7 +15,7 @@
 					</form>
 				<% } else { -%>
 						<br />
-						<a href="/earfull/auth/login">Log In</a>
+						<a href="/earfull/user/auth/login">Log In</a>
 				<% } -%>
 			</div>
 			<p><%=message%> &nbsp;</p>
