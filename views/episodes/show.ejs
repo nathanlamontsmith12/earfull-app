@@ -4,12 +4,16 @@
 	<title></title>
 </head>
 <body>
-	<h1>Search Episodes</h1>
+	<h1>Display Episode</h1>
 
-	<form method="POST" action="/">
-		<input type="text" name="query">
-		<button>search</button>
-	</form>
+	<h2><%=title%></h2>
+
+	<img src="<%=img%>">
+
+	<figure>
+		<figcaption>Listen</figcaption>
+		<audio controls src="<%=audio%>">Your browser does not support the <code>audio</code> element</audio>
+	</figure>
 
 
 </body>

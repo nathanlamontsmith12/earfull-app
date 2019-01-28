@@ -24,6 +24,6 @@ const searchSchema = mongoose.Schema({
 
 })
 
-const Search = mognoose.model("searches", searchSchema);
+const Search = mongoose.model("searches", searchSchema);
 
 module.exports = Search;
