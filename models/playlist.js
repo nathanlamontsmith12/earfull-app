@@ -10,7 +10,7 @@ const playlistSchema = mongoose.Schema({
 	ownerId: String,
 	datePosted: {type: Date, default: Date.now()},
 	lastEdited: {type: Date, default: Date.now()},
-	episodes: [Episode.schema]
+	episodes: [String] // array of strings of episode IDs!!
 });
 
 const Playlist = mongoose.model("Playlist", playlistSchema);
