@@ -1,3 +1,18 @@
 body {
 	background: lightyellow;
 }
+
+header {
+	background-color: lightblue;
+	display: flex;
+	flex-direction: column;
+}
+
+nav {
+	background-color: gray;
+}
+
+.main-nav {
+	display-flex;
+	flex-direction: column;
+}
