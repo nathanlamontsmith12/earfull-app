@@ -8,11 +8,6 @@ let query = "";
 let type = "";
 let offset;
 
-
-
-
-
-
 // WORKING QUERY
 
 // unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=10&q=serial&type=episode")
@@ -22,89 +17,64 @@ let offset;
 //   console.log(result.status, result.headers, result.body);
 // });
 
-
-
 const genres = unirest.get("https://listennotes.p.mashape.com/api/v1/genres")
 	.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 	.header("Accept", "application/json")
 
-// https://listennotes.p.mashape.com/api/v1/search
-// /api/v1/genres
+// Print All Genres
+router.get("/genres", (req, res) => {
+	genres.end((err, result) => {
+		if (err) {
+			res.send(err)
+		} else {
+			res.send(result.body)
+		}
+	})
+})
 
 
 router.get("/", (req, res) => {
-	res.render("episodes/episodeSearch.ejs")
-	// genres.end((result) => {
-	// 	console.log(result.status, result.headers, result.body);
-	// 	res.send(result.body)
-	// })
+	res.render("episodes/episodeSearch.ejs", {
+
+	})
 })
 
 router.post("/", async (req, res) => {
-		try {
-			let display;
-			query = req.body.query
-			type = req.body.type
-			offset = 10
-			const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
-			.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
-			.header("Accept", "application/json")
-			.end ((data) => {
-				const queryIdArray = data.body.results.map(episode => episode.id)
-				Episode.find({id: {$in: queryIdArray}}, (err, extantEpisodeArray) => {
-					if (err) {
-						res.send(err)
-					} else {
-						const extantIdArray = extantEpisodeArray.map(episode => episode.id)
-						const epsToAdd = data.body.results.filter(result => !extantIdArray.includes(result.id))
-						Episode.create(epsToAdd, (err, createdEpisodes) => {
-							if (err) {
-								res.send(err)
-							} else {
-								res.render("episodes/episodeSearchResults.ejs", {
-									results: data.body.results
-								})
-							}
-						})
-					}
-				})
+	try {
+		let display;
+		query = req.body.query
+		type = req.body.type
+		offset = 10
+		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
+		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+		.header("Accept", "application/json")
+		.end ((data) => {
+			const queryIdArray = data.body.results.map(episode => episode.id)
+			Episode.find({id: {$in: queryIdArray}}, (err, extantEpisodeArray) => {
+				if (err) {
+					res.send(err)
+				} else {
+					const extantIdArray = extantEpisodeArray.map(episode => episode.id)
+					const epsToAdd = data.body.results.filter(result => !extantIdArray.includes(result.id))
+					Episode.create(epsToAdd, (err, createdEpisodes) => {
+						if (err) {
+							res.send(err)
+						} else {
+							res.render("episodes/episodeSearchResults.ejs", {
+								results: data.body.results
 
 
-				// data.body.results.forEach((result)=>{
-				// 	Episode.findOne({id: result.id}, (err, foundEpisode) => {
-				// 		if (err) {
-				// 			res.send(err)
-				// 		} else {
-				// 			if (foundEpisode) {
-				// 				return
-				// 			} else {
-				// 				Episode.create(data.body.results, (err, createdEpisode) => {
-				// 					if (err) {
-				// 						res.send(err)
-				// 					} else {
-				// 						console.log(createdEpisode)	
-				// 					}
-				// 				});
-				// 			}
-				// 		}
-				// 	});
-				// });
-				// display = data; 
-				// console.log("================= REQUEST ===================\n");
-				// console.log(request);
-				// console.log("================= DISPLAY ===================\n");
-				// console.log(display);
+
+							})
+						}
+					})
+				}
 			})
-			// res.render("episodes/episodeSearchResults.ejs", {
-
-			// 	results: display.body.results
-			// })
-
-		} catch (err) {
-			console.log(err);
-			res.send(err)
-		}
-
+		})
+	} catch (err) {
+		console.log(err);
+		res.send(err)
+	}
 })
 
 
@@ -114,6 +84,9 @@ router.get("/:id", async (req, res) => {
 	const foundEpisode = await Episode.findOne({id: req.params.id})
 	res.render("episodes/show.ejs", {
 		episode: foundEpisode
+
+
+
 	})
 })
 
@@ -149,14 +122,6 @@ router.get("/:id", async (req, res) => {
 //       "title_original": "Star Wars Video Games Coming To Star Wars Celebration",
 //       "publisher_highlighted": "DisKingdom.com"
 //     },
-
-
-
-
-
-
-
-
 
 
 
