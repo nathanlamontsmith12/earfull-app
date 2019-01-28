@@ -4,16 +4,16 @@
 	<title></title>
 </head>
 <body>
-	<h1><%=results.podcast_title_original%></h1>
-	<h2><%=results.title_original%></h2>
+	<h1><%=episode.podcast_title_original%></h1>
+	<h2><%=episode.title_original%></h2>
 
-	<img src="<%=results.image%>">
+	<img src="<%=episode.image%>">
 
-	<p><%=results.description_original%></p>
+	<p><%=episode.description_original%></p>
 
 	<figure>
 		<figcaption>Listen</figcaption>
-		<audio controls src="<%=audio%>">Your browser does not support the <code>audio</code> element</audio>
+		<audio controls src="<%=episode.audio%>">Your browser does not support the <code>audio</code> element</audio>
 	</figure>
 
 </body>

@@ -4,6 +4,19 @@
 	<title></title>
 </head>
 <body>
+
+	<h1>Search Episodes</h1>
+
+	<form method="POST" action="/earfull/episodes">
+		<input type="text" name="query">
+<!-- 		<select name="type">
+			<option value="episode">Episode</option>
+			<option value="podcast">Podcast</option>
+		</select> -->
+		<button>search</button>
+	</form>
+
+
 	<h1>Episode Search Results</h1>
 
 	<div class="results-box">
@@ -25,7 +38,7 @@
 				<% shortDescription = "" %>
 
 
-				<a href="/earfull/episodes/<%=results[i].title_original%>">Listen to episode</a>
+				<a href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
 
 				<hr>
 

@@ -47,26 +47,50 @@ router.post("/", (req, res) => {
 	const request = unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
 	.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 	.header("Accept", "application/json")
-	.end((data) => {
-		res.render("episodes/episodeSearchResults.ejs", {
-			results: data.body.results
+	.end ((data) => {
+		Episode.create(data.body.results, (err, createdEpisode) => {
+			if (err) {
+				res.send(err)
+			} else {
+				console.log(createdEpisode)	
+				res.render("episodes/episodeSearchResults.ejs", {
+					results: data.body.results
+				})
+			}
 		})
+		// res.render("episodes/episodeSearchResults.ejs", {
+		// 	results: data.body.results
+		// })
 	})
 })
 
-router.get("/:id", (req, res) => {
-	query = '\"' + req.params.id  + '\"'
-	type = "episode"
-	offset = 1
-	// another query of just episode id
-	const request = unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
-	.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
-	.header("Accept", "application/json")
-	.end((data) => {
-		res.render("episodes/show.ejs", {
-			results: data.body.results[0]
-		})
+// router.post('/', async (req, res) => {
+//   try {
+//     const createdAuthor = await Author.create(req.body);
+//     res.redirect('/authors')  
+//   } catch (err) {
+//     res.send(err)
+//   }
+// });
+
+
+router.get("/:id", async (req, res) => {
+	const foundEpisode = await Episode.findOne({id: req.params.id})
+	res.render("episodes/show.ejs", {
+		episode: foundEpisode
 	})
+	// query = req.params.id 
+	// type = "episode"
+	// offset = 1
+	// // another query of just episode id
+	// const request = unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
+	// .header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+	// .header("Accept", "application/json")
+	// .end((data) => {
+	// 	res.render("episodes/show.ejs", {
+	// 		results: data.body.results[0]
+	// 	})
+	// })
 })
 
 // Example of results from Star Wars query
