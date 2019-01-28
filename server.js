@@ -37,8 +37,9 @@ app.use(express.static("public"));
 
 // ========== USERS CONTROLLER + MIDDLEWARE ========== 
 const usersController = require("./controllers/usersController")
-
 app.use("/earfull/auth", usersController);
+const episodesController = require("./controllers/episodesController")
+app.use("/earfull/episodes", episodesController);
 
 
 // Bc of its placement here, the custom middleware code below should run 
