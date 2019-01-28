@@ -39,9 +39,10 @@ router.post("/auth/register", async (req, res, next)=>{
 					newUser.email = req.body.email;
 					newUser.password = hashedPW;
 
-					// create User in database 
+					// create User in database & set session info: 
 					const createdUser = await User.create(newUser);
-					req.session.username = req.session.username;
+					req.session.username = createdUser.username;
+					req.session.userId = createdUser._id;
 					req.session.loggedIn = true;
 					req.session.message = `Logged in as ${req.session.username}`;
 					res.redirect("/earfull")
@@ -80,7 +81,8 @@ router.post("/auth/login", async (req, res, next)=>{
 					
 					// check that password is correct 
 					if (bcrypt.compareSync(req.body.password, foundUser.password)) {
-						req.session.username = req.body.username;
+						req.session.username = foundUser.username;
+						req.session.userId = foundUser._id;
 						req.session.loggedIn = true;
 						req.session.message = `Logged in as ${req.body.username}`;
 						res.redirect("/earfull")
@@ -167,7 +169,7 @@ router.get("/auth/register", (req, res)=>{
 // User Redirect 
 router.get("/user/find", (req, res)=>{
 	if (req.session.loggedIn) {
-		res.redirect(`/earfull/user/${req.session.username}`)
+		res.redirect(`/earfull/user/${req.session.userId}`)
 	} else {
 		res.send("ERROR"); // will need to implement better error handling later!
 	}
@@ -180,7 +182,9 @@ router.get("/user/:id", async (req, res, next) => {
 			req.session.message = "You must be logged in to view your page";
 			res.redirect("/earfull/auth/login");
 		} else {
-			const currentUser = await User.findOne({username: req.params.id});
+			console.log(req.params.id);
+			console.log();
+			const currentUser = await User.findOne({_id: req.params.id});
 			res.render("user/show.ejs", {
 				user: currentUser,
 				loggedIn: req.session.loggedIn,
