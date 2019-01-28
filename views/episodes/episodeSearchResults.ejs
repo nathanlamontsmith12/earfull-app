@@ -4,25 +4,53 @@
 	<title></title>
 </head>
 <body>
-	<h1><%=episode.podcast_title_original%></h1>
-	<h2><%=episode.title_original%></h2>
 
-	<img src="<%=episode.image%>">
+	<h1>Search Episodes</h1>
 
-	<p><%=episode.description_original%></p>
+	<form method="POST" action="/earfull/episodes">
+		<input type="text" name="query">
+<!-- 		<select name="type">
+			<option value="episode">Episode</option>
+			<option value="podcast">Podcast</option>
+		</select> -->
+		<button>search</button>
+	</form>
 
-	<figure>
-		<figcaption>Listen</figcaption>
-		<audio controls src="<%=episode.audio%>">Your browser does not support the <code>audio</code> element</audio>
-	</figure>
 
-	<div class="comment-box">
-		<% for (var i = 0; i < episode.comments.length; i++) { -%>
-			<h2><%=episode.comments[i].name%></h2>
-			<p><%=episode.comments[i].body%></p>
-			<hr>		
+	<h1>Episode Search Results</h1>
+
+	<div class="results-box">
+		<% for (var i = 0; i < results.length; i++) { -%>
+			<div class="single-result">
+				<h2><%=results[i].podcast_title_original%></h2>
+				<h3><%=results[i].title_original%></h3>
+				<img src="<%=results[i].thumbnail%>">
+				<% let shortDescription = ""%>
+				<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
+					<% if (results[i].description_original[j] === ".") { -%>
+						<% shortDescription += "."%>
+						<% break %>
+					<% } else { -%>
+						<%  shortDescription += results[i].description_original[j]%>
+					<% } -%>		
+				<% } -%>
+				<p><%=results[i].description_highlighted%></p>
+				<% shortDescription = "" %>
+
+
+				<a href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
+
+				<hr>
+
+			</div
 		<% } -%>
 	</div>
+
+<!-- 	<figure>
+		<figcaption>Listen</figcaption>
+		<audio controls src="<%=//audio%>">Your browser does not support the <code>audio</code> element</audio>
+	</figure> -->
+
 
 </body>
 </html>
