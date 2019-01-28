@@ -5,6 +5,6 @@ const searchSchema = mongoose.Schema({
 	// Need to figure out what we need here 
 })
 
-const Search = mognoose.model("searches", searchSchema);
+const Search = mongoose.model("searches", searchSchema);
 
 module.exports = Search;
