@@ -4,17 +4,19 @@
 	<title></title>
 </head>
 <body>
-	<h1><%=results.podcast_title_original%></h1>
-	<h2><%=results.title_original%></h2>
 
-	<img src="<%=results.image%>">
+	<h1>Search Episodes</h1>
 
-	<p><%=results.description_original%></p>
+	<form method="POST" action="/earfull/episodes">
+		<input type="text" name="query">
+<!-- 		<select name="type">
+			<option value="episode">Episode</option>
+			<option value="podcast">Podcast</option>
+		</select> -->
+		<button>search</button>
+	</form>
 
-	<figure>
-		<figcaption>Listen</figcaption>
-		<audio controls src="<%=audio%>">Your browser does not support the <code>audio</code> element</audio>
-	</figure>
+
 
 </body>
 </html>

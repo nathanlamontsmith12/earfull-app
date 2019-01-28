@@ -4,17 +4,40 @@
 	<title></title>
 </head>
 <body>
-	<h1><%=results.podcast_title_original%></h1>
-	<h2><%=results.title_original%></h2>
+	<h1>Episode Search Results</h1>
 
-	<img src="<%=results.image%>">
+	<div class="results-box">
+		<% for (var i = 0; i < results.length; i++) { -%>
+			<div class="single-result">
+				<h2><%=results[i].podcast_title_original%></h2>
+				<h3><%=results[i].title_original%></h3>
+				<img src="<%=results[i].thumbnail%>">
+				<% let shortDescription = ""%>
+				<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
+					<% if (results[i].description_original[j] === ".") { -%>
+						<% shortDescription += "."%>
+						<% break %>
+					<% } else { -%>
+						<%  shortDescription += results[i].description_original[j]%>
+					<% } -%>		
+				<% } -%>
+				<p><%=results[i].description_highlighted%></p>
+				<% shortDescription = "" %>
 
-	<p><%=results.description_original%></p>
 
-	<figure>
+				<a href="/earfull/episodes/<%=results[i].title_original%>">Listen to episode</a>
+
+				<hr>
+
+			</div
+		<% } -%>
+	</div>
+
+<!-- 	<figure>
 		<figcaption>Listen</figcaption>
-		<audio controls src="<%=audio%>">Your browser does not support the <code>audio</code> element</audio>
-	</figure>
+		<audio controls src="<%=//audio%>">Your browser does not support the <code>audio</code> element</audio>
+	</figure> -->
+
 
 </body>
 </html>

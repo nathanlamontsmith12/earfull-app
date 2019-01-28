@@ -33,7 +33,7 @@ const genres = unirest.get("https://listennotes.p.mashape.com/api/v1/genres")
 
 
 router.get("/", (req, res) => {
-	res.render("episodes/index.ejs")
+	res.render("episodes/episodeSearch.ejs")
 	// genres.end((result) => {
 	// 	console.log(result.status, result.headers, result.body);
 	// 	res.send(result.body)
@@ -48,10 +48,23 @@ router.post("/", (req, res) => {
 	.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 	.header("Accept", "application/json")
 	.end((data) => {
+		res.render("episodes/episodeSearchResults.ejs", {
+			results: data.body.results
+		})
+	})
+})
+
+router.get("/:id", (req, res) => {
+	query = '\"' + req.params.id  + '\"'
+	type = "episode"
+	offset = 1
+	// another query of just episode id
+	const request = unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
+	.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+	.header("Accept", "application/json")
+	.end((data) => {
 		res.render("episodes/show.ejs", {
-			title: data.body.results[0].title_original,
-			img: data.body.results[0].image,
-			audio: data.body.results[0].audio
+			results: data.body.results[0]
 		})
 	})
 })
