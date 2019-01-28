@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<%- include("../partials/head", {title: title}) %>
 </head>
 <body>
 
+	<%- include("../partials/header", {header: header}) %>
 	<h1>Search Episodes</h1>
 
 	<form method="POST" action="/earfull/episodes">
@@ -42,16 +43,12 @@
 
 				<hr>
 
-			</div
+			</div>
 		<% } -%>
 	</div>
 
-<!-- 	<figure>
-		<figcaption>Listen</figcaption>
-		<audio controls src="<%=//audio%>">Your browser does not support the <code>audio</code> element</audio>
-	</figure> -->
 
-
+	<%- include("../partials/footer") %>
 </body>
 </html>
 

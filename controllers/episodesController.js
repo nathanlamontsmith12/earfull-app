@@ -32,39 +32,49 @@ router.get("/genres", (req, res) => {
 	})
 })
 
-
+// Get To Episode Search page
 router.get("/", (req, res) => {
 	res.render("episodes/episodeSearch.ejs", {
-
+		loggedIn: req.session.loggedIn,
+		message: req.session.message,
+		title: "Episode Search",
+		header: "Episode Search"
 	})
 })
 
+// Search results diplay under search bar
 router.post("/", async (req, res) => {
 	try {
-		let display;
 		query = req.body.query
 		type = req.body.type
 		offset = 10
+		// Query the API
 		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
 		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 		.header("Accept", "application/json")
 		.end ((data) => {
+			// Add ids from Api query to array
 			const queryIdArray = data.body.results.map(episode => episode.id)
+			// Find Episodes that have the same Id as query id Array
 			Episode.find({id: {$in: queryIdArray}}, (err, extantEpisodeArray) => {
 				if (err) {
 					res.send(err)
 				} else {
+					//Find Ids of episodes not to create
 					const extantIdArray = extantEpisodeArray.map(episode => episode.id)
+					// Filter out episodes not to create
 					const epsToAdd = data.body.results.filter(result => !extantIdArray.includes(result.id))
+					// Create remaining episodes in query
 					Episode.create(epsToAdd, (err, createdEpisodes) => {
 						if (err) {
 							res.send(err)
 						} else {
 							res.render("episodes/episodeSearchResults.ejs", {
-								results: data.body.results
-
-
-
+								loggedIn: req.session.loggedIn,
+								results: data.body.results,
+								message: req.session.message,
+								title: "Episode Search Results",
+								header: "Episode Search Results"
 							})
 						}
 					})
@@ -77,16 +87,15 @@ router.post("/", async (req, res) => {
 	}
 })
 
-
-
-
+// Show page for episodes in Database
 router.get("/:id", async (req, res) => {
 	const foundEpisode = await Episode.findOne({id: req.params.id})
 	res.render("episodes/show.ejs", {
-		episode: foundEpisode
-
-
-
+		loggedIn: req.session.loggedIn,
+		episode: foundEpisode,
+		message: req.session.message,
+		title: foundEpisode.title_original,
+		header: foundEpisode.title_original
 	})
 })
 
@@ -122,8 +131,5 @@ router.get("/:id", async (req, res) => {
 //       "title_original": "Star Wars Video Games Coming To Star Wars Celebration",
 //       "publisher_highlighted": "DisKingdom.com"
 //     },
-
-
-
 
 module.exports = router

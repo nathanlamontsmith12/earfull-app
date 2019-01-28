@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<%- include("../partials/head", {title: title}) %>
 </head>
 <body>
+	<%- include("../partials/header", {header: header}) %>
 	<h1><%=episode.podcast_title_original%></h1>
 	<h2><%=episode.title_original%></h2>
 
@@ -24,6 +25,7 @@
 		<% } -%>
 	</div>
 
+	<%- include("../partials/footer") %>
 </body>
 </html>
 
