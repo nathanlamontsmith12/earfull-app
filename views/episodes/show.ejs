@@ -16,6 +16,14 @@
 		<audio controls src="<%=episode.audio%>">Your browser does not support the <code>audio</code> element</audio>
 	</figure>
 
+	<div class="comment-box">
+		<% for (var i = 0; i < episode.comments.length; i++) { -%>
+			<h2><%=episode.comments[i].name%></h2>
+			<p><%=episode.comments[i].body%></p>
+			<hr>		
+		<% } -%>
+	</div>
+
 </body>
 </html>
 
