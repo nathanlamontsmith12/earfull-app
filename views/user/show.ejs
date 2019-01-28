@@ -1,0 +1,26 @@
+<!-- views/user/show.ejs -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Partial for head, requires variable "title" -->
+	<%- include("../partials/head", {title: title}) %>
+</head>
+<body>
+<!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
+	<%- include("../partials/header", {header: header}) %>
+
+	<nav class="userNav">
+		<a href="">Profile</a>
+		<a href="">Playlists</a>
+		<a href="">Friends</a>
+		<a href="">Search History</a>
+		<a href="">Comments</a>
+	</nav>
+
+	<h3>Hello, <%=user.username%></h3>
+
+<!-- Partial for footer -->
+	<%- include("../partials/footer") %>
+</body>
+</html>

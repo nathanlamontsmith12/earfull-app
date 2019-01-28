@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs")
 
 
 // ========== AUTHENTICATION ROUTES ==========
-router.post("/register", async (req, res, next)=>{
+router.post("/auth/register", async (req, res, next)=>{
 
 	try {
 	// check to make sure that user is not already signed in 
@@ -58,7 +58,7 @@ router.post("/register", async (req, res, next)=>{
 	}
 });
 
-router.post("/login", async (req, res, next)=>{
+router.post("/auth/login", async (req, res, next)=>{
 	
 	try {
 
@@ -101,7 +101,7 @@ router.post("/login", async (req, res, next)=>{
 	}
 });
 
-router.post("/logout", async (req, res, next)=>{
+router.post("/auth/logout", async (req, res, next)=>{
 	// destroy session 
 	try {
 		const endSession = await req.session.destroy();
@@ -113,7 +113,7 @@ router.post("/logout", async (req, res, next)=>{
 
 
 // ========== GET ROUTES FOR REG / LOGIN ==========
-router.get("/login", (req, res)=>{
+router.get("/auth/login", (req, res)=>{
 
 	// // capture message, then clear it 
 	// const message = req.session.message; 
@@ -137,7 +137,7 @@ router.get("/login", (req, res)=>{
 })
 
 
-router.get("/register", (req, res)=>{
+router.get("/auth/register", (req, res)=>{
 
 	// // capture message, then clear it 
 	// const message = req.session.message; 
@@ -159,6 +159,41 @@ router.get("/register", (req, res)=>{
 		header: "Sign Up"
 	})
 })
+
+
+
+// ========== GET ROUTES FOR USER'S PAGES ==========
+
+// User Redirect 
+router.get("/user/find", (req, res)=>{
+	if (req.session.loggedIn) {
+		res.redirect(`/earfull/user/${req.session.username}`)
+	} else {
+		res.send("ERROR"); // will need to implement better error handling later!
+	}
+})
+ 
+// User Show Page 
+router.get("/user/:id", async (req, res, next) => {
+	try {
+		if (!req.session.loggedIn) {
+			req.session.message = "You must be logged in to view your page";
+			res.redirect("/earfull/auth/login");
+		} else {
+			const currentUser = await User.findOne({username: req.params.id});
+			res.render("user/show.ejs", {
+				user: currentUser,
+				loggedIn: req.session.loggedIn,
+				title: "Your EarFull Page", 
+				header: `${currentUser.username}'s EarFull Page`,
+				message: req.session.message
+			})
+		}
+	} catch (err) {
+		res.send("ERROR") // will need to implement better error handling later!
+	}
+})
+
 
 
 //  ========== EXPORT ROUTER  ==========

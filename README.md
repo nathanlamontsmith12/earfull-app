@@ -64,7 +64,20 @@ comments: [Comment.schema]
 #### Search
 ```
 userId: String,
-..........
+genre_ids: [String],
+language: String,
+len_max: Number, 
+len_min: Number,
+excludeId: String,
+includeId: String,
+offset: Number,
+only_in: String, 
+published_after: Number, 
+published_before: Number,
+q: {type: String, required: true},
+safe_mode: Number, 
+sort_by_date: Number, 
+type: String  
 ```
 #### Comment
 ```

@@ -16,12 +16,6 @@ const searchSchema = mongoose.Schema({
 	safe_mode: Number, // Boolean 0 or 1, 1 for true
 	sort_by_date: Number, // Boolean 0 or 1, 1 for true otherwise relevance
 	type: String // episode or podcast = drop down menu episode is default
-
-
-	// Need to figure out what we need here 
-
-
-
 })
 
 const Search = mongoose.model("searches", searchSchema);
