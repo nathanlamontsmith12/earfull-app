@@ -24,7 +24,8 @@ username: {type: String, required: true, unique: true},
 password: {type: String, required: true}, 
 email: {type: String, required: true},
 topics: [String],
-profile: Profile.schema,
+profile: Object,
+search: [Search.schema],
 friends: [User.schema],
 recommendations: [Podcast.schema],
 podcasts: [Podcast.schema],
@@ -32,19 +33,6 @@ episodes: [Episode.schema],
 comments: [Comment.schema],
 playlists: [Playlist.schema]
 ```
-
-#### Profile
-```
-name: String,
-userID: String,
-city: String, 
-state: String,
-age: Number, 
-interests: [String],
-info: String,
-public: Boolean
-```
-
 #### Podcast
 ```
 name: String,
@@ -72,6 +60,11 @@ description: String,
 topics: [String],
 datePosted: Date,
 comments: [Comment.schema]
+```
+#### Search
+```
+userId: String,
+..........
 ```
 #### Comment
 ```

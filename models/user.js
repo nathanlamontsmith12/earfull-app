@@ -6,7 +6,7 @@ const Podcast = require("./podcast");
 const Episode = require("./episode")
 const Comment = require("./comment")
 const Playlist = require("./playlist")
-
+const Search = require("./search");
 
 // Make & Export User model
 const userSchema = mongoose.Schema({
@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
 	email: {type: String, required: true},
 	topics: [String],
 	profile: Object,
-//	profile: Profile.schema,
+	search: [Search.schema],
 	recommendations: [Podcast.schema],
 	podcasts: [Podcast.schema],
 	episodes: [Episode.schema],
@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
 	playlists: [Playlist.schema]
 });
 
-userSchema.add({friends: userSchema});
+userSchema.add({friends: [userSchema]});
 
 const User = mongoose.model("User", userSchema);
 
