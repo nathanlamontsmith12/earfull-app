@@ -27,13 +27,20 @@ render: {
 -->
 <!DOCTYPE html>
 <html>
-<head>
+
 <!-- Partial for head, requires variable "title" -->
 	<%- include("../partials/head", {title: title}) %>
-</head>
+
 <body>
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
+
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
 
 	<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a>
 

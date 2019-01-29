@@ -1,39 +1,20 @@
-<!-- New Route -- GET
-earfull/playlists/:userId/new
-
-Create Route -- POST 
-earfull/playlists/:userId
-
-Edit Route -- GET 
-earfull/playlists/:userId/:playlistId/edit 
-
-Update Route -- PUT 
-earfull/playlists/:userId/:playlistId
-
-Destroy Route -- DELETE 
-earfull/playlists/:userId/:playlistId
-
-Show Route -- GET 
-earfull/playlists/:userId 
-
-render: {
-	user: foundUser,
-	header: `${foundUser.username}'s Playlists`,
-	title: "EarFull Playlists",
-	message: req.session.message,
-	loggedIn: req.session.loggedIn,
-	playlist: playlistToShow
-}
--->
 <!DOCTYPE html>
 <html>
 <head>
-<!-- Partial for head, requires variable "title" -->
-	<%- include("../partials/head", {title: title}) %>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" integrity="sha256-p6xU9YulB7E2Ic62/PX+h59ayb3PBJ0WFTEQxq0EjHw=" crossorigin="anonymous" />
+	<link rel="stylesheet" type="text/css" href="/static/style.css">
+	<title><%=title%></title>
 </head>
 <body>
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
-	<%- include("../partials/header", {header: header}) %>
+	<%- include("../partials/header", {header: header, loggedIn: loggedIn}) %>
+
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
 
 	<a href="/earfull/playlists/<%=user._id%>">Your Playlists</a>
 	<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a> <br />
@@ -48,5 +29,27 @@ render: {
 
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>
+
+
+<!-- JavaScript for Playlist Display  -->
+
+<!-- Trying to "import" playlist data into all following javascript -->
+	<script> 
+		const pagePlaylist = {
+			datePosted: <%=playlist.datePosted.toString()%>,
+			lastEdited: <%=playlist.lastEdited.toString()%>,
+			episodes: [],
+			_id: <%=playlist._id.toString()%>,
+			name: <%=playlist._id.toString()%>,
+			ownderId: <%=playlist._id.toString()%>
+		}
+		<%=playlist.episodes.forEach((episodeId)=>{pagePlaylist.episodes.push(episodeId.toString())})%>
+	</script>
+<!-- jquery and jqueryUI -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+<!-- Our script, stored in public/static  -->
+	<script type="text/javascript" src="/static/playlistDisplay.js"></script>
 </body>
+
 </html>

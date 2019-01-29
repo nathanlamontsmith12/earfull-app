@@ -34,14 +34,21 @@ const playlistSchema = mongoose.Schema({
 -->
 <!DOCTYPE html>
 <html>
-<head>
+
 <!-- Partial for head, requires variable "title" -->
 	<%- include("../partials/head", {title: title}) %>
-</head>
+
 <body>
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
 
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	
 	<h3>New Playlist:</h3>
 	<form action="/earfull/playlists/<%=user._id%>" method="POST">
 		<input type="text" name="name""><br />
