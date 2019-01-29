@@ -1,23 +1,21 @@
-	<header>
-		<h1><%=header%></h1>
-		<nav>
-			<div class="mainNav">
-				<a href="/earfull">Home</a> 
-			</div>
-			<div class="authNav">
-				<a href="/earfull/user/auth/register">Create New Account</a>  
-				<% if (loggedIn) { -%>
-					<form action="/earfull/user/auth/logout" method="POST">
-						<button>Logout</button>
-					</form>
-					<form action="/earfull/user/find" method="GET">
-						<button>Your Page</button>
-					</form>
-				<% } else { -%>
-						<br />
-						<a href="/earfull/user/auth/login">Log In</a>
-				<% } -%>
-			</div>
+<header>
+	<!-- <h1 class="page-title"><%=//header%></h1> -->
+	<nav class="nav-bar">
+		<div class="nav-left">
+			<a href="/earfull">Home</a> 
+		</div>
+		<div class="nav-right">
+			<a href="/earfull/auth/register">Create New Account</a>  
+			<% if (loggedIn) { -%>
+				<form action="/earfull/auth/logout" method="POST">
+					<button>Logout</button>
+				</form>
+			<% } else { -%>
+					<!-- <br /> -->
+					<a href="/earfull/auth/login">Log In</a>
+			<% } -%>
+
 			<p><%=message%> &nbsp;</p>
-		</nav>
-	</header>
+		</div>
+	</nav>
+</header>

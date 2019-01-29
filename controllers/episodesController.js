@@ -8,11 +8,6 @@ let query = "";
 let type = "";
 let offset;
 
-
-
-
-
-
 // WORKING QUERY
 
 // unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=10&q=serial&type=episode")
@@ -22,98 +17,85 @@ let offset;
 //   console.log(result.status, result.headers, result.body);
 // });
 
-
-
 const genres = unirest.get("https://listennotes.p.mashape.com/api/v1/genres")
 	.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 	.header("Accept", "application/json")
 
-// https://listennotes.p.mashape.com/api/v1/search
-// /api/v1/genres
-
-
-router.get("/", (req, res) => {
-	res.render("episodes/episodeSearch.ejs")
-	// genres.end((result) => {
-	// 	console.log(result.status, result.headers, result.body);
-	// 	res.send(result.body)
-	// })
-})
-
-router.post("/", async (req, res) => {
-		try {
-			let display;
-			query = req.body.query
-			type = req.body.type
-			offset = 10
-			const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
-			.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
-			.header("Accept", "application/json")
-			.end ((data) => {
-				const queryIdArray = data.body.results.map(episode => episode.id)
-				Episode.find({id: {$in: queryIdArray}}, (err, extantEpisodeArray) => {
-					if (err) {
-						res.send(err)
-					} else {
-						const extantIdArray = extantEpisodeArray.map(episode => episode.id)
-						const epsToAdd = data.body.results.filter(result => !extantIdArray.includes(result.id))
-						Episode.create(epsToAdd, (err, createdEpisodes) => {
-							if (err) {
-								res.send(err)
-							} else {
-								res.render("episodes/episodeSearchResults.ejs", {
-									results: data.body.results
-								})
-							}
-						})
-					}
-				})
-
-
-				// data.body.results.forEach((result)=>{
-				// 	Episode.findOne({id: result.id}, (err, foundEpisode) => {
-				// 		if (err) {
-				// 			res.send(err)
-				// 		} else {
-				// 			if (foundEpisode) {
-				// 				return
-				// 			} else {
-				// 				Episode.create(data.body.results, (err, createdEpisode) => {
-				// 					if (err) {
-				// 						res.send(err)
-				// 					} else {
-				// 						console.log(createdEpisode)	
-				// 					}
-				// 				});
-				// 			}
-				// 		}
-				// 	});
-				// });
-				// display = data; 
-				// console.log("================= REQUEST ===================\n");
-				// console.log(request);
-				// console.log("================= DISPLAY ===================\n");
-				// console.log(display);
-			})
-			// res.render("episodes/episodeSearchResults.ejs", {
-
-			// 	results: display.body.results
-			// })
-
-		} catch (err) {
-			console.log(err);
+// Print All Genres
+router.get("/genres", (req, res) => {
+	genres.end((err, result) => {
+		if (err) {
 			res.send(err)
+		} else {
+			res.send(result.body)
 		}
-
+	})
 })
 
+// Get To Episode Search page
+router.get("/", (req, res) => {
+	res.render("episodes/episodeSearch.ejs", {
+		loggedIn: req.session.loggedIn,
+		message: req.session.message,
+		title: "Episode Search",
+		header: "Episode Search"
+	})
+})
 
+// Search results diplay under search bar
+router.post("/", async (req, res) => {
+	try {
+		query = req.body.query
+		type = req.body.type
+		offset = 10
+		// Query the API
+		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
+		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+		.header("Accept", "application/json")
+		.end ((data) => {
+			// Add ids from Api query to array
+			const queryIdArray = data.body.results.map(episode => episode.id)
+			// Find Episodes that have the same Id as query id Array
+			Episode.find({id: {$in: queryIdArray}}, (err, extantEpisodeArray) => {
+				if (err) {
+					res.send(err)
+				} else {
+					//Find Ids of episodes not to create
+					const extantIdArray = extantEpisodeArray.map(episode => episode.id)
+					// Filter out episodes not to create
+					const epsToAdd = data.body.results.filter(result => !extantIdArray.includes(result.id))
+					// Create remaining episodes in query
+					Episode.create(epsToAdd, (err, createdEpisodes) => {
+						if (err) {
+							res.send(err)
+						} else {
+							res.render("episodes/episodeSearchResults.ejs", {
+								loggedIn: req.session.loggedIn,
+								results: data.body.results,
+								message: req.session.message,
+								title: "Episode Search Results",
+								header: "Episode Search Results"
+							})
+						}
+					})
+				}
+			})
+		})
+	} catch (err) {
+		console.log(err);
+		res.send(err)
+	}
+})
 
-
+// Show page for episodes in Database
 router.get("/:id", async (req, res) => {
 	const foundEpisode = await Episode.findOne({id: req.params.id})
 	res.render("episodes/show.ejs", {
-		episode: foundEpisode
+		loggedIn: req.session.loggedIn,
+		episode: foundEpisode,
+		message: req.session.message,
+		title: foundEpisode.title_original,
+		header: foundEpisode.title_original
 	})
 })
 
@@ -149,16 +131,5 @@ router.get("/:id", async (req, res) => {
 //       "title_original": "Star Wars Video Games Coming To Star Wars Celebration",
 //       "publisher_highlighted": "DisKingdom.com"
 //     },
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router
