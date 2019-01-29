@@ -32,9 +32,10 @@
 						<% let stopCounter = 0 %>
 						<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
 							<% if (results[i].description_original[j] === ".") { -%>
-								<% stopCounter ++%>
+								<% stopCounter++ %>
 								<% if (stopCounter === 3) { -%>
 									<% shortDescription += "."%>
+									<% stopCounter = 0 %>
 									<% break %>								
 								<% } %>
 							<% } else { -%>
@@ -49,7 +50,7 @@
 							</div>
 						</div>
 						<% shortDescription = "" %>
-						<% stopCounter = 0 %>
+						
 						<% if (i < results.length - 1) { %>
 							<hr>
 							
