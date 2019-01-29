@@ -20,7 +20,8 @@ render: {
 	user: foundUser,
 	header: `${foundUser.username}'s Playlists`,
 	title: "EarFull Playlists",
-	message: req.session.message
+	message: req.session.message,
+	loggedIn: req.session.loggedIn
 }
 -->
 <!DOCTYPE html>
@@ -32,6 +33,28 @@ render: {
 <body>
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
+
+	<form action="earfull/playlists/<%=user._id%>/new" method="GET">
+		<button>New Playlist</button>
+	</form>
+
+	<ul>
+	<% for (let m = 0; m < user.playlists.length; m++) { -%>
+		<li>
+			<div>
+				<div>
+				<h3><%=user.playlists[m].name%> &nbsp;</h3>
+				<a href="earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Edit</a>
+					<ol>
+						<% for (let i = 0; i < user.playlists[m].episodes.length; i++) { -%>
+							<li>playlist.episodes[i].title</li>
+						<% } -%>
+					</ol>
+				</div>
+			</div>
+		</li>
+	<% } -%>
+	</ul>
 
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>

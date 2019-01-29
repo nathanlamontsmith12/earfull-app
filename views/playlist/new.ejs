@@ -20,7 +20,8 @@ render: {
 	user: foundUser,
 	message: req.session.message,
 	title: "Create Playlist",
-	header: `Make New Playlist`
+	header: `Make New Playlist`,
+	loggedIn: req.session.loggedIn
 }
 
 const playlistSchema = mongoose.Schema({
@@ -40,6 +41,12 @@ const playlistSchema = mongoose.Schema({
 <body>
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
+
+	<h3>New Playlist:</h3>
+	<form action="earfull/playlists/<%=user._id%>" method="POST">
+		<input type="text" name="name""><br />
+		<button>Make Playlist</button>
+	</form>
 
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>
