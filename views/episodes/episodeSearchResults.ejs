@@ -1,57 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<%- include("../partials/head", {title: title}) %>
 </head>
 <body>
+	<%- include("../partials/header", {header: header}) %>
+	<main>
+		<div class="main-container">
+			<h1>Search Episodes</h1>
 
-	<h1>Search Episodes</h1>
-
-	<form method="POST" action="/earfull/episodes">
-		<input type="text" name="query">
-<!-- 		<select name="type">
-			<option value="episode">Episode</option>
-			<option value="podcast">Podcast</option>
-		</select> -->
-		<button>search</button>
-	</form>
+			<form method="POST" action="/earfull/episodes">
+				<input type="text" name="query">
+		<!-- 		<select name="type">
+					<option value="episode">Episode</option>
+					<option value="podcast">Podcast</option>
+				</select> -->
+				<button>search</button>
+			</form>
 
 
-	<h1>Episode Search Results</h1>
+			<h1>Episode Search Results</h1>
 
-	<div class="results-box">
-		<% for (var i = 0; i < results.length; i++) { -%>
-			<div class="single-result">
-				<h2><%=results[i].podcast_title_original%></h2>
-				<h3><%=results[i].title_original%></h3>
-				<img src="<%=results[i].thumbnail%>">
-				<% let shortDescription = ""%>
-				<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
-					<% if (results[i].description_original[j] === ".") { -%>
-						<% shortDescription += "."%>
-						<% break %>
-					<% } else { -%>
-						<%  shortDescription += results[i].description_original[j]%>
-					<% } -%>		
+			<div class="results-box">
+				<% for (var i = 0; i < results.length; i++) { -%>
+					<div class="single-result">
+						<h2><%=results[i].podcast_title_original%></h2>
+						<h3><%=results[i].title_original%></h3>
+						<% let shortDescription = ""%>
+						<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
+							<% if (results[i].description_original[j] === ".") { -%>
+								<% shortDescription += "."%>
+								<% break %>
+							<% } else { -%>
+								<%  shortDescription += results[i].description_original[j]%>
+							<% } -%>		
+						<% } -%>
+						<!-- <p><%=//results[i].description_highlighted%></p> -->
+						<div class="desc-pic-container">
+
+							<img class="search-pic" src="<%=results[i].thumbnail%>">
+							<p class="search-desc"><%=shortDescription%></p>
+						</div>
+
+						<% shortDescription = "" %>
+
+
+						<a href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
+
+						<hr>
+
+					</div>
 				<% } -%>
-				<p><%=results[i].description_highlighted%></p>
-				<% shortDescription = "" %>
+			</div>
+		</div>
+	</main>
 
-
-				<a href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
-
-				<hr>
-
-			</div
-		<% } -%>
-	</div>
-
-<!-- 	<figure>
-		<figcaption>Listen</figcaption>
-		<audio controls src="<%=//audio%>">Your browser does not support the <code>audio</code> element</audio>
-	</figure> -->
-
-
+	<%- include("../partials/footer") %>
 </body>
 </html>
 

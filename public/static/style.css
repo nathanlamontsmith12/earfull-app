@@ -1,3 +1,96 @@
 body {
 	background: lightyellow;
+	margin: 0;
+	padding: 0;
+	border: 0;
 }
+
+header {
+	background-color: lightblue;
+	display: flex;
+	flex-direction: column;
+}
+
+.page-title {
+	text-align: center;
+}
+
+.nav-bar {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	background-color: olive;
+	align-items: center;
+	height: 4vh;
+	margin: 0;
+}
+
+.main-container {
+	width: 80vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.nav-left .nav-right {
+	display: flex;
+}
+
+.nav-right {
+	height: 4vh;
+	display: flex;
+	align-items: center;
+}
+
+
+a {
+	margin: 0 .5vw;
+}
+
+.show-pic {
+	float: right;
+	margin-left: .5vw;
+}
+
+.show-desc {
+	vertical-align: top;
+	text-align: left;
+	margin: 0;
+}
+
+/*.search-pic {
+	float: left;
+	margin-right: .5vw;
+	overflow: auto;
+
+}
+
+.search-desc {
+	vertical-align: top;
+	text-align: left;
+	height: 100%;
+}	*/
+
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+footer {
+	position: absolute;
+	bottom:0;
+	right: 0;
+	left: 0;
+	/*padding: 1rem;*/
+	height:4vh;
+	background-color: olive;
+	display: flex;
+	align-items: center;
+	justify-content: center
+}
+
+
+
+
