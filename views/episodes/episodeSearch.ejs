@@ -7,14 +7,14 @@
 	<%- include("../partials/header", {header: header}) %>
 	<main>
 		
-		<h1>Search Episodes</h1>
+		<h1>Search Episodes or Podcasts</h1>
 
 		<form class="search-form" method="POST" action="/earfull/episodes">
 			<input type="text" name="query" class="search-bar" placeholder="Search for an episode">
-	<!-- 		<select name="type">
+			<select name="type">
 				<option value="episode">Episode</option>
 				<option value="podcast">Podcast</option>
-			</select> -->
+			</select>
 			<button class="search-button">Search</button>
 		</form>
 
