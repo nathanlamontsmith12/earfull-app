@@ -71,6 +71,9 @@ app.use("/earfull/episodes", episodesController);
 const playlistsController = require("./controllers/playlistsController");
 app.use("/earfull/playlists", playlistsController);
 
+const podcastsController = require("./controllers/podcastsController");
+app.use("/earfull/podcasts", podcastsController);
+
 
 
 

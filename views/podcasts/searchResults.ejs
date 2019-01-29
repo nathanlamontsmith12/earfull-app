@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include("../partials/head", {title: title}) %>
+</head>
+<body>
+	<%- include("../partials/header", {header: header}) %>
+	<main>
+		<div class="main-container">
+			
+
+
+			<h1>Podcasts</h1>
+			<form class="search-form" method="POST" action="/earfull/podcasts">
+				<input class="search-bar" type="text" placeholder="Search for an podcast" name="query">
+		<!-- 		<select name="type">
+					<option value="episode">Episode</option>
+					<option value="podcast">Podcast</option>
+				</select> -->
+				<button class="search-button">Search</button>
+			</form>
+
+
+			<!-- <h1>Episode Search Results</h1> -->
+
+			<div class="results-box">
+				<% for (var i = 0; i < results.length; i++) { -%>
+					<div class="single-result">
+						<h2 class="search-pod-title"><%=results[i].title_original%></h2>
+						<!-- <h3 class="search-title"><%=//results[i].title_original%></h3> -->
+						<% let shortDescription = ""%>
+						<% let stopCounter = 0 %>
+						<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
+							<% if (results[i].description_original[j] === ".") { -%>
+								<% stopCounter++ %>
+								<% if (stopCounter === 3) { -%>
+									<% shortDescription += "."%>
+									<% stopCounter = 0 %>
+									<% break %>								
+								<% } %>
+							<% } else { -%>
+								<%  shortDescription += results[i].description_original[j]%>
+							<% } -%>		
+						<% } -%>
+						<div class="desc-pic-container clearfix">
+							<img class="search-pic" src="<%=results[i].thumbnail%>">
+							<p class="search-desc"><%=shortDescription%></p>
+							<div class="listen-link-container">
+								<a class="listen-link" href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
+							</div>
+						</div>
+						<% shortDescription = "" %>
+						
+						<% if (i < results.length - 1) { %>
+							<hr>
+							
+						<% } %>
+					</div>
+				<% } -%>
+			</div>
+		</div>
+	</main>
+	<%- include("../partials/footer") %>
+</body>
+</html>
+
+<!-- const podcastSchema = mongoose.Schema({
+	title_original: String,
+	image: String,
+	thumbnail: String,
+	description_original: String,
+	publisher_original: String,
+	listennotes_url: String,
+	lastest_pub_date_ms: Number,
+	genres: [Number],
+	followers: [],
+	id: String,
+	episodes: [Episode.schema],
+	comments: [Comment.schema]
+}); -->
