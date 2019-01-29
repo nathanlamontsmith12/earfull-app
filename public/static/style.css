@@ -58,6 +58,19 @@ a {
 	margin: 0;
 }
 
+/*.search-pic {
+	float: left;
+	margin-right: .5vw;
+	overflow: auto;
+
+}
+
+.search-desc {
+	vertical-align: top;
+	text-align: left;
+	height: 100%;
+}	*/
+
 main {
 	display: flex;
 	flex-direction: column;

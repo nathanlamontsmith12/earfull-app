@@ -26,7 +26,6 @@
 					<div class="single-result">
 						<h2><%=results[i].podcast_title_original%></h2>
 						<h3><%=results[i].title_original%></h3>
-						<img src="<%=results[i].thumbnail%>">
 						<% let shortDescription = ""%>
 						<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
 							<% if (results[i].description_original[j] === ".") { -%>
@@ -36,7 +35,13 @@
 								<%  shortDescription += results[i].description_original[j]%>
 							<% } -%>		
 						<% } -%>
-						<p><%=results[i].description_highlighted%></p>
+						<!-- <p><%=//results[i].description_highlighted%></p> -->
+						<div class="desc-pic-container">
+
+							<img class="search-pic" src="<%=results[i].thumbnail%>">
+							<p class="search-desc"><%=shortDescription%></p>
+						</div>
+
 						<% shortDescription = "" %>
 
 
