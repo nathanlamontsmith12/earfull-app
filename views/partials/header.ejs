@@ -5,14 +5,14 @@
 			<a href="/earfull">Home</a> 
 		</div>
 		<div class="nav-right">
-			<a href="/earfull/auth/register">Create New Account</a>  
+			<a href="/earfull/user/auth/register">Create New Account</a>  
 			<% if (loggedIn) { -%>
-				<form action="/earfull/auth/logout" method="POST">
+				<form action="/earfull/user/auth/logout" method="POST">
 					<button>Logout</button>
 				</form>
 			<% } else { -%>
 					<!-- <br /> -->
-					<a href="/earfull/auth/login">Log In</a>
+					<a href="/earfull/user/auth/login">Log In</a>
 			<% } -%>
 
 			<p><%=message%> &nbsp;</p>
