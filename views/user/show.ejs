@@ -1,5 +1,11 @@
 <!-- views/user/show.ejs -->
-
+<!-- rendered w/: {
+	user: currentUser,
+	loggedIn: req.session.loggedIn,
+	title: "Your EarFull Page", 
+	header: `${currentUser.username}'s EarFull Page`,
+	message: req.session.message
+} -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +18,7 @@
 
 	<nav class="userNav">
 		<a href="">Profile</a>
-		<a href="">Playlists</a>
+		<a href="/earfull/playlists/<%=user._id%>">Playlists</a>
 		<a href="">Friends</a>
 		<a href="">Search History</a>
 		<a href="">Comments</a>

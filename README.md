@@ -31,7 +31,7 @@ recommendations: [Podcast.schema],
 podcasts: [Podcast.schema],
 episodes: [Episode.schema],
 comments: [Comment.schema],
-playlists: [Playlist.schema]
+playlists: [String]
 ```
 #### Podcast
 ```

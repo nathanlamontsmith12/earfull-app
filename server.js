@@ -68,7 +68,8 @@ app.use((req, res, next) => {
 const episodesController = require("./controllers/episodesController")
 app.use("/earfull/episodes", episodesController);
 
-
+const playlistsController = require("./controllers/playlistsController");
+app.use("/earfull/playlists", playlistsController);
 
 
 

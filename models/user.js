@@ -15,10 +15,10 @@ const userSchema = mongoose.Schema({
 	email: {type: String, required: true},
 	topics: [String],
 	profile: Object,
+	recommendations: [String], // array of strings of all recommended podcasts' IDs
+	episodes: [String], // array of strings of all favorite episodes' IDs
+	podcasts: [String], // array of strings of all favorite podcasts' IDs
 	search: [Search.schema],
-	recommendations: [Podcast.schema],
-	podcasts: [Podcast.schema],
-	episodes: [Episode.schema],
 	comments: [Comment.schema],
 	playlists: [Playlist.schema]
 });

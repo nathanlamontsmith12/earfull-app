@@ -1,0 +1,61 @@
+<!-- New Route -- GET
+earfull/playlists/:userId/new
+
+Create Route -- POST 
+earfull/playlists/:userId
+
+Edit Route -- GET 
+earfull/playlists/:userId/:playlistId/edit 
+
+Update Route -- PUT 
+earfull/playlists/:userId/:playlistId
+
+Destroy Route -- DELETE 
+earfull/playlists/:userId/:playlistId
+
+Show Route -- GET 
+earfull/playlists/:userId 
+
+render: {
+	user: foundUser,
+	header: `${foundUser.username}'s Playlists`,
+	title: "EarFull Playlists",
+	message: req.session.message,
+	loggedIn: req.session.loggedIn,
+	playlists: foundUser.playlists
+}
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Partial for head, requires variable "title" -->
+	<%- include("../partials/head", {title: title}) %>
+</head>
+<body>
+<!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
+	<%- include("../partials/header", {header: header}) %>
+
+	<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a>
+
+	<ul>
+	<% for (let m = 0; m < playlists.length; m++) { -%>
+		<li>
+			<div>
+				<div>
+				<h3><%=playlists[m].name%> &nbsp;</h3>
+				<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Edit</a>
+					<ol>
+						<% for (let i = 0; i < playlists[m].episodes.length; i++) { -%>
+							<li>playlists[m].episodes[i].title</li>
+						<% } -%>
+					</ol>
+				</div>
+			</div>
+		</li>
+	<% } -%>
+	</ul>
+
+<!-- Partial for footer -->
+	<%- include("../partials/footer") %>
+</body>
+</html>

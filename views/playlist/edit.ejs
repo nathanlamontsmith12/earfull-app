@@ -1,0 +1,64 @@
+<!-- New Route -- GET
+earfull/playlists/:userId/new
+
+Create Route -- POST 
+earfull/playlists/:userId
+
+Edit Route -- GET 
+earfull/playlists/:userId/:playlistId/edit 
+
+Update Route -- PUT 
+earfull/playlists/:userId/:playlistId
+
+Destroy Route -- DELETE 
+earfull/playlists/:userId/:playlistId
+
+Show Route -- GET 
+earfull/playlists/:userId 
+
+render: {
+	user: foundUser,
+	playlist: foundPlaylist,
+	message: req.session.message,
+	title: "Edit Playlist",
+	header: `Edit Playlist ${foundPlaylist.name}`,
+	loggedIn: req.session.loggedIn
+}
+
+const playlistSchema = mongoose.Schema({
+	name: {type: String, require: true, unique: true}
+	ownerId: String,
+	datePosted: {type: Date, default: Date.now()},
+	lastEdited: {type: Date, default: Date.now()},
+	episodes: [String] // array of strings of episode IDs!!
+});
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Partial for head, requires variable "title" -->
+	<%- include("../partials/head", {title: title}) %>
+</head>
+<body>
+<!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
+	<%- include("../partials/header", {header: header}) %>
+
+	<h3><%=playlist.name%></h3>
+	<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=PUT" method="POST">
+		<input type="text" name="name" value="<%=playlist.name%>"><br />
+		<input type="text" name="episode" placeholder="Episode"><br />
+		<button>Update Playlist</button>
+	</form>
+	<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
+		<button>Delete Playlist</button>
+	</form>
+	<ol class="playlist episodeDisplay">
+		<% for (let i = 0; i < playlist.episodes.length; i++) { -%>
+			<li>playlist.episodes[i].title</li>
+		<% } -%>
+	</ol>
+<!-- Partial for footer -->
+	<%- include("../partials/footer") %>
+</body>
+</html>
