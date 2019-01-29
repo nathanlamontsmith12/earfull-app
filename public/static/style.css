@@ -23,6 +23,8 @@ header {
 	align-items: center;
 	height: 4vh;
 	margin: 0;
+	position: fixed;
+	width: 100%;
 }
 
 .main-container {
@@ -30,6 +32,10 @@ header {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+.results-box {
+	background-color: lightgray;
 }
 
 .nav-left .nav-right {
@@ -58,8 +64,9 @@ a {
 	margin: 0;
 }
 
-/*.search-pic {
+.search-pic {
 	float: left;
+	clear: left;
 	margin-right: .5vw;
 	overflow: auto;
 
@@ -69,22 +76,46 @@ a {
 	vertical-align: top;
 	text-align: left;
 	height: 100%;
-}	*/
+}	
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.search-title {
+	margin-top: 0;
+}
+
+.search-pod-title {
+	margin-bottom: 0;
+}
+
+.listen-link-container {
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+}
 
 main {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	padding-top: 4vh;
+	padding-bottom: 4vh;
 }
 
 footer {
-	position: absolute;
-	bottom:0;
+	position: relative;
+	/*bottom:0;
 	right: 0;
-	left: 0;
+	left: 0;*/
 	/*padding: 1rem;*/
-	height:4vh;
+	height: 4vh;
+	margin-top: -4vh;
+	clear: both;
 	background-color: olive;
 	display: flex;
 	align-items: center;

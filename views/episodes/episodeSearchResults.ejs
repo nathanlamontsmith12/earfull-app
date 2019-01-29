@@ -24,37 +24,37 @@
 			<div class="results-box">
 				<% for (var i = 0; i < results.length; i++) { -%>
 					<div class="single-result">
-						<h2><%=results[i].podcast_title_original%></h2>
-						<h3><%=results[i].title_original%></h3>
+						<h2 class="search-pod-title"><%=results[i].podcast_title_original%></h2>
+						<h3 class="search-title"><%=results[i].title_original%></h3>
 						<% let shortDescription = ""%>
+						<% let stopCounter = 0 %>
 						<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
 							<% if (results[i].description_original[j] === ".") { -%>
-								<% shortDescription += "."%>
-								<% break %>
+								<% stopCounter ++%>
+								<% if (stopCounter === 3) { -%>
+									<% shortDescription += "."%>
+									<% break %>								
+								<% } %>
 							<% } else { -%>
 								<%  shortDescription += results[i].description_original[j]%>
 							<% } -%>		
 						<% } -%>
 						<!-- <p><%=//results[i].description_highlighted%></p> -->
-						<div class="desc-pic-container">
-
+						<div class="desc-pic-container clearfix">
 							<img class="search-pic" src="<%=results[i].thumbnail%>">
 							<p class="search-desc"><%=shortDescription%></p>
+							<div class="listen-link-container">
+								<a href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
+							</div>
 						</div>
-
 						<% shortDescription = "" %>
-
-
-						<a href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
-
+						<% stopCounter = 0 %>
 						<hr>
-
 					</div>
 				<% } -%>
 			</div>
 		</div>
 	</main>
-
 	<%- include("../partials/footer") %>
 </body>
 </html>
