@@ -6,7 +6,7 @@ const Episode = require("./episode")
 
 // Make & Export Playlist model
 const playlistSchema = mongoose.Schema({
-	name: String, 
+	name: {type: String, require: true, unique: true}
 	ownerId: String,
 	datePosted: {type: Date, default: Date.now()},
 	lastEdited: {type: Date, default: Date.now()},
