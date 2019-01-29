@@ -12,11 +12,20 @@ const Playlist = require("../models/playlist");
 // session info userId and/or 
 // if session is logged out 
 
-function checkLogin (status, sessionId, userId, response) {
-	if (status && sessionId === userId) {
+function checkLogin (reqSession, userId, response) {
+	if (reqSession.loggedIn && reqSession.userId === userId) {
 		return;
 	} else {
-		response.redirect("/earfull/user/auth/login");
+		if (session) {
+			session.destroy((err)=>{
+				if (err) {
+					return next(err)
+				} else {
+					req.session.message = "You must log in again ";
+					response.redirect("/earfull/user/auth/login");				
+				}
+			});		
+		}
 	}
 }
 
@@ -47,7 +56,8 @@ router.get("/:userId/new", (req, res)=>{
 				user: foundUser,
 				message: req.session.message,
 				title: "Create Playlist",
-				header: `Make New Playlist`
+				header: `Make New Playlist`,
+				loggedIn: req.session.loggedIn
 			})
 		}
 	})
@@ -61,12 +71,24 @@ router.post("/:userId", (req, res)=>{
 			res.send(err);
 		} else {
 			const newPlaylist = req.body;
+
+			// create a new instance of the playlist model 
 			Playlist.create(newPlaylist, (err, createdPlaylist)=>{
 				if (err) {
 					res.send(err)
 				} else {
+					
+					// make timestamp for playlist and add 
+					// it to the playlist 
+					const dateNow = new Date();
+					createdPlaylist.datePosted = dateNow; 
+					createdPlaylist.lastEdited = dateNow;
+
+					// add the created playlist to the user's playlist array
 					foundUser.playlists.push(createdPlaylist);
 					const playlistId = createdPlaylist._id;
+
+					// save these changes to the user 
 					foundUser.save((err, data)=>{
 						if (err) {
 							console.log(err);
@@ -103,7 +125,8 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 				playlist: foundPlaylist,
 				message: req.session.message,
 				title: "Edit Playlist",
-				header: `Edit Playlist ${foundPlaylist.name}`
+				header: `Edit Playlist ${foundPlaylist.name}`,
+				loggedIn: req.session.loggedIn
 			})
 		}
 	})
@@ -119,13 +142,27 @@ router.put("/:userId/:playlistId", (req, res)=>{
 		if (err) {
 			res.send(err);
 		} else {
+
+			// find index of the playlist in the user's playlist array
 			const playlistIndex = foundUser.playlists.findIndex((playlist)=>{
 				if (playlist._id === reqData.playlistId) {
 					return true;
 				}
 			});
+
+			// capture original datePosted value in order to retain it
+			const dateCreated = foundUser.playlists[playlistIndex].datePosted;
 			const editedPlaylist = req.body;
+
+			// reassign edited playlist datePosted to the original creation date
+			editedPlaylist.datePosted = dateCreated;
+			
+			// replace edited list in the user's playlist array with the 
+			// edited list, via .splice()
 			foundUser.playlists.splice(playlistIndex, 1, editedPlaylist);
+			
+			// save found user w/ these changes, and redirect to the edited 
+			// playlist's show page 
 			foundUser.save((err, data) => {
 				if (err) {
 					res.send(err);
@@ -174,7 +211,8 @@ router.get("/:userId", (req, res)=>{
 				user: foundUser,
 				header: `${foundUser.username}'s Playlists`,
 				title: "EarFull Playlists",
-				message: req.session.message
+				message: req.session.message,
+				loggedIn: req.session.loggedIn
 			})
 		}
 	})
