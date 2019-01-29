@@ -59,6 +59,11 @@ app.use((req, res, next) => {
 		req.session.message = `Logged in as ${req.session.username}`;
 	} 
 
+	if (!req.session.loggedIn) {
+		req.session.loggedIn = false;
+		req.session.userId = false;
+	}
+
 	return next();
 })
 
@@ -87,6 +92,7 @@ app.get("/earfull", (req, res)=>{
 	res.render("home/home.ejs", {
 		message: req.session.message,
 		loggedIn: req.session.loggedIn,
+		userId: req.session.userId,
 		title: "EarFull Home",
 		header: "EarFull"
 	});

@@ -35,6 +35,7 @@ render: {
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
 
+	<a href="/earfull/playlists/<%=user._id%>">Your Playlists</a>
 	<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a> <br />
 	<a href="/earfull/playlists/<%=user._id%>/<%=playlist._id%>/edit">Edit</a>
 	<h3><%=playlist.name%> &nbsp;</h3>
