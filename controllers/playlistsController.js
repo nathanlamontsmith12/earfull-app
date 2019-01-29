@@ -5,7 +5,7 @@ const User = require("../models/user");
 const Playlist = require("../models/playlist");
 
 
-
+ 
 // ========== FUNCTIONS ==========
 // Authentication check -- kick user back to 
 // login if the current user's ID does not match 
@@ -175,90 +175,111 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 	})
 });
 
+
 // Update Route 
 router.put("/:userId/:playlistId", (req, res)=>{
+
+	// params data from request 
 	const reqData = {
 		userId: req.params.userId,
 		playlistId: req.params.playlistId
 	}
-	User.findOne({_id: reqData.userId}, (err, foundUser)=>{
+
+	// timestamp for the edits 
+	const dateEdited = new Date();
+
+	const update = {
+		name: req.body.name,
+		lastEdited: dateEdited,
+		episodes: [],
+	}
+
+	// find the playlist in its database, update it   
+	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist)=> {
+		console.log(updatedPlaylist);
 		if (err) {
+			console.log(err.message);
 			res.send(err);
 		} else {
+			User.findOne( {_id: reqData.userId}, (err, foundUser)=> {
+				if (err) {
+					console.log(err.message);
+					res.send(err);
+				} 
+				else {
+					console.log(foundUser);
 
-			// find index of the playlist in the user's playlist array
-			const playlistIndex = foundUser.playlists.findIndex((playlist)=>{
-				if (playlist._id === reqData.playlistId) {
-					return true;
+					const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
+						if(playlist._id.toString() === reqData.playlistId) {
+							return true;
+						}
+					});
+
+					console.log(playlistIndex);
+
+					const deletedItem = foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist);
+					console.log(deletedItem);
+
+					foundUser.save( (err, data)=>{
+						if (err) {
+							console.log(err.message);
+							res.send(err);
+						} else {
+							console.log(data);
+							res.redirect(`/earfull/playlists/${reqData.userId}/`);
+						}
+					})
 				}
 			});
-
-
-			// find playlist in order to edit it: 
-			const editedPlaylist = foundUser.playlists[playlistIndex];
-
-
-			// SCHEMA for reference: 
-			// name: {type: String, require: true, unique: true}
-			// ownerId: String,
-			// datePosted: {type: Date, default: Date.now()},
-			// lastEdited: {type: Date, default: Date.now()},
-			// episodes: [String] // array of strings of episode IDs!!
-
-			editedPlaylist.name = req.body.name;
-
-
-			// make timestamp for playlist and add 
-			// it to the playlist 
-			const dateNow = new Date();
-			newPlaylist.lastEdited = dateNow;
-			
-			// replace edited list in the user's playlist array with the 
-			// edited list, via .splice()
-			foundUser.playlists.splice(playlistIndex, 1, editedPlaylist);
-			
-			// save found user w/ these changes, and redirect to the edited 
-			// playlist's show page 
-			foundUser.save((err, data) => {
-				if (err) {
-					res.send(err);
-				} else {
-					res.redirect(`earfull/playlists/${reqData.req.params.userId}/`)
-				}
-			})
 		}
 	})
 });
  
+
 // Destroy Route 
-router.delete("/:userId/:playlistId", (req, res)=>{
+router.delete("/:userId/:playlistId", async (req, res)=>{
+
 	const reqData = {
 		userId: req.params.userId,
 		playlistId: req.params.playlistId
 	} 
-	User.findOne({_id: reqData.userId}, (err, foundUser)=>{
-		if (err) {
-			res.rend(err)
-		} else {
-			const playlistIndex = foundUser.playlists.findIndex((playlist)=>{
-				if (playlist._id.toString() === reqData.playlistId) {
-					return true;
-				}
-			})
-			foundUser.playlists.splice(playlistIndex, 1);
-			foundUser.save((err, data) => {
-				if (err) {
-					res.send(err);
-				} else {
-					res.redirect(`/earfull/playlists/${reqData.userId}`)
-				}
-			})
-		}
-	})
+
+	try {
+
+
+	 	// find user, and delete playlist -- might take a moment...
+		const foundUser = await User.findOne({_id: reqData.userId});
+		const deletedPlaylist = await Playlist.deleteOne({_id: reqData.playlistId});
+
+		await Promise.all([foundUser, deletedPlaylist]);
+
+		const playlistIndex = foundUser.playlists.findIndex( (playlist)=>{
+			if (playlist._id.toString() === reqData.playlistId) {
+				return true;
+			}
+		})
+
+		foundUser.playlists.splice(playlistIndex, 1);
+
+		foundUser.save((err, data)=>{
+			if (err) {
+				console.log(err.message);
+				res.send(err);
+			} else {
+				res.redirect(`/earfull/playlists/${reqData.userId}`);
+			}
+		})
+	} catch (err) {
+		console.log(err.message);
+		res.send(err);
+	}
+
 });
+
 
 // Show Route  
 router.get("/:userId/:playlistId", (req, res)=>{
+	console.log("Show Route Fired");
 	const reqData = {
 		userId: req.params.userId,
 		playlistId: req.params.playlistId
@@ -267,19 +288,15 @@ router.get("/:userId/:playlistId", (req, res)=>{
 		if (err) {
 			res.send(err);
 		} else {
-			const playlistToShow = foundUser.playlists.find((playlist)=>{
-				if (playlist._id.toString() === reqData.playlistId) {
-					return true;
-				}
-			})
-			console.log(playlistToShow);
-			res.render("playlist/show.ejs", {
-				user: foundUser,
-				header: `${foundUser.username}'s Playlists`,
-				title: "EarFull Playlists",
-				message: req.session.message,
-				loggedIn: req.session.loggedIn,
-				playlist: playlistToShow
+			Playlist.findOne({_id: reqData.playlistId}, (err, foundPlaylist)=>{
+				res.render("playlist/show.ejs", {
+					user: foundUser,
+					header: `${foundUser.username}'s Playlists`,
+					title: "EarFull Playlists",
+					message: req.session.message,
+					loggedIn: req.session.loggedIn,
+					playlist: foundPlaylist
+				})
 			})
 		}
 	})

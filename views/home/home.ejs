@@ -10,7 +10,9 @@
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
 
-
+	<% if (loggedIn) { -%>
+		<a href="/earfull/user/<%=userId%>">Your Page</a>
+	<% } -%>	
 
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>
