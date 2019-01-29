@@ -8,11 +8,36 @@ header {
 	flex-direction: column;
 }
 
-nav {
-	background-color: gray;
+.page-title {
+	text-align: center;
 }
 
-.main-nav {
-	display-flex;
+.nav-bar {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	background-color: olive;
+	align-items: center;
+	height: 4vh;
+}
+
+.nav-left .nav-right {
+	display: flex;
+}
+
+.nav-right {
+	height: 4vh;
+	display: flex;
+	align-items: center;
+}
+
+a {
+	margin: 0 .5vw;
+}
+
+main {
+	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }

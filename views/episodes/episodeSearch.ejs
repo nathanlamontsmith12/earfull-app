@@ -5,18 +5,19 @@
 </head>
 <body>
 	<%- include("../partials/header", {header: header}) %>
-	<h1>Search Episodes</h1>
+	<main>
+		<h1>Search Episodes</h1>
 
-	<form method="POST" action="/earfull/episodes">
-		<input type="text" name="query">
-<!-- 		<select name="type">
-			<option value="episode">Episode</option>
-			<option value="podcast">Podcast</option>
-		</select> -->
-		<button>search</button>
-	</form>
+		<form method="POST" action="/earfull/episodes">
+			<input type="text" name="query">
+	<!-- 		<select name="type">
+				<option value="episode">Episode</option>
+				<option value="podcast">Podcast</option>
+			</select> -->
+			<button>search</button>
+		</form>
 
-
+	</main>
 	<%- include("../partials/footer") %>
 </body>
 </html>

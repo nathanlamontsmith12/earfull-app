@@ -5,25 +5,27 @@
 </head>
 <body>
 	<%- include("../partials/header", {header: header}) %>
-	<h1><%=episode.podcast_title_original%></h1>
-	<h2><%=episode.title_original%></h2>
+ 	<main>
+		<h1><%=episode.podcast_title_original%></h1>
+		<h2><%=episode.title_original%></h2>
 
-	<img src="<%=episode.image%>">
+		<img src="<%=episode.image%>">
 
-	<p><%=episode.description_original%></p>
+		<p><%=episode.description_original%></p>
 
-	<figure>
-		<figcaption>Listen</figcaption>
-		<audio controls src="<%=episode.audio%>">Your browser does not support the <code>audio</code> element</audio>
-	</figure>
+		<figure>
+			<!-- <figcaption>Listen</figcaption> -->
+			<audio controls src="<%=episode.audio%>">Your browser does not support the <code>audio</code> element</audio>
+		</figure>
 
-	<div class="comment-box">
-		<% for (var i = 0; i < episode.comments.length; i++) { -%>
-			<h2><%=episode.comments[i].name%></h2>
-			<p><%=episode.comments[i].body%></p>
-			<hr>		
-		<% } -%>
-	</div>
+		<div class="comment-box">
+			<% for (var i = 0; i < episode.comments.length; i++) { -%>
+				<h2><%=episode.comments[i].name%></h2>
+				<p><%=episode.comments[i].body%></p>
+				<hr>		
+			<% } -%>
+		</div>
+	</main>
 
 	<%- include("../partials/footer") %>
 </body>

@@ -1,20 +1,20 @@
 <header>
-	<h1><%=header%></h1>
-	<nav class="main-nav">
-		<div class="mainNav">
+	<h1 class="page-title"><%=header%></h1>
+	<nav class="nav-bar">
+		<div class="nav-left">
 			<a href="/earfull">Home</a> 
 		</div>
-		<div class="authNav">
+		<div class="nav-right">
 			<a href="/earfull/auth/register">Create New Account</a>  
 			<% if (loggedIn) { -%>
 				<form action="/earfull/auth/logout" method="POST">
 					<button>Logout</button>
 				</form>
 			<% } else { -%>
-					<br />
+					<!-- <br /> -->
 					<a href="/earfull/auth/login">Log In</a>
 			<% } -%>
+			<p><%=message%> &nbsp;</p>
 		</div>
-		<p><%=message%> &nbsp;</p>
 	</nav>
 </header>
