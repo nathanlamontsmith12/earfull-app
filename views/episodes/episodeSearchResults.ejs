@@ -7,19 +7,21 @@
 	<%- include("../partials/header", {header: header}) %>
 	<main>
 		<div class="main-container">
-			<h1>Search Episodes</h1>
+			
 
-			<form method="POST" action="/earfull/episodes">
-				<input type="text" name="query">
+
+			<h1>Episodes</h1>
+			<form class="search-form" method="POST" action="/earfull/episodes">
+				<input class="search-bar" type="text" placeholder="Search for an episode" name="query">
 		<!-- 		<select name="type">
 					<option value="episode">Episode</option>
 					<option value="podcast">Podcast</option>
 				</select> -->
-				<button>search</button>
+				<button class="search-button">Search</button>
 			</form>
 
 
-			<h1>Episode Search Results</h1>
+			<!-- <h1>Episode Search Results</h1> -->
 
 			<div class="results-box">
 				<% for (var i = 0; i < results.length; i++) { -%>
@@ -39,17 +41,19 @@
 								<%  shortDescription += results[i].description_original[j]%>
 							<% } -%>		
 						<% } -%>
-						<!-- <p><%=//results[i].description_highlighted%></p> -->
 						<div class="desc-pic-container clearfix">
 							<img class="search-pic" src="<%=results[i].thumbnail%>">
 							<p class="search-desc"><%=shortDescription%></p>
 							<div class="listen-link-container">
-								<a href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
+								<a class="listen-link" href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
 							</div>
 						</div>
 						<% shortDescription = "" %>
 						<% stopCounter = 0 %>
-						<hr>
+						<% if (i < results.length - 1) { %>
+							<hr>
+							
+						<% } %>
 					</div>
 				<% } -%>
 			</div>
