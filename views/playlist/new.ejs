@@ -43,7 +43,7 @@ const playlistSchema = mongoose.Schema({
 	<%- include("../partials/header", {header: header}) %>
 
 	<h3>New Playlist:</h3>
-	<form action="earfull/playlists/<%=user._id%>" method="POST">
+	<form action="/earfull/playlists/<%=user._id%>" method="POST">
 		<input type="text" name="name""><br />
 		<button>Make Playlist</button>
 	</form>

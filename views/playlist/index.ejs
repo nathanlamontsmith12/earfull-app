@@ -22,7 +22,7 @@ render: {
 	title: "EarFull Playlists",
 	message: req.session.message,
 	loggedIn: req.session.loggedIn,
-	playlist: playlistToShow
+	playlists: foundUser.playlists
 }
 -->
 <!DOCTYPE html>
@@ -35,15 +35,25 @@ render: {
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
 
-	<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a> <br />
-	<a href="/earfull/playlists/<%=user._id%>/<%=playlist._id%>/edit">Edit</a>
-	<h3><%=playlist.name%> &nbsp;</h3>
-	<h4>Episodes: </h4>
-	<ol>
-	<% for (let m = 0; m < playlist.episodes.length; m++) { -%>
-		<li>playlist.episodes[m].title</li>
+	<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a>
+
+	<ul>
+	<% for (let m = 0; m < playlists.length; m++) { -%>
+		<li>
+			<div>
+				<div>
+				<h3><%=playlists[m].name%> &nbsp;</h3>
+				<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Edit</a>
+					<ol>
+						<% for (let i = 0; i < playlists[m].episodes.length; i++) { -%>
+							<li>playlists[m].episodes[i].title</li>
+						<% } -%>
+					</ol>
+				</div>
+			</div>
+		</li>
 	<% } -%>
-	</ol>
+	</ul>
 
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>
