@@ -66,14 +66,18 @@ main {
 }
 
 footer {
-	position:absolute;
+	position: absolute;
 	bottom:0;
-	width:100%;
+	right: 0;
+	left: 0;
+	/*padding: 1rem;*/
 	height:4vh;
 	background-color: olive;
 	display: flex;
 	align-items: center;
 	justify-content: center
 }
+
+
 
 
