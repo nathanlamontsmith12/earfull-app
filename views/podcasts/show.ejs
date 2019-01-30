@@ -14,6 +14,12 @@
 				<p class="show-desc">&nbsp;&nbsp;&nbsp;&nbsp;<%=podcast.description_original%></p>
 			</div>
 
+			<ul>
+				<% for (var i = 0; i < episodes.length; i++) { -%>
+					<li><%=episodes[i].title_original%></li>
+				<% } -%>
+			</ul>
+
 			<div class="comment-box">
 				<% for (var i = 0; i < podcast.comments.length; i++) { -%>
 					<h2><%=podcast.comments[i].name%></h2>
@@ -27,6 +33,21 @@
 	<%- include("../partials/footer") %>
 </body>
 </html>
+
+<!-- const episodeSchema = mongoose.Schema({
+	podcast_title_original: String,
+	title_original: String,
+	podcast_id: String,
+	id: {type: String, unique: true, required: true},
+	audio: String,
+	image: String,
+	thumbnail: String,
+	description_original: String,
+	genres: [Number],
+	pub_date_ms: Number,
+	number: Number,
+	comments: [Comment.schema]
+}); -->
 
 <!-- const podcastSchema = mongoose.Schema({
 	title_original: String,
