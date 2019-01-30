@@ -87,23 +87,25 @@ router.get("/:id", async (req, res) => {
 			.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 			.header("Accept", "application/json")
 			.end ((data) => {
-				// need to find episodes with podcast_id matching podcast.id
+				// ===== filter episodes queries by podcast id ======= WORKING	
 				const foundEpisodes = data.body.results
 				console.log('foundPodcast.id\n', foundPodcast.id);
 				console.log('foundEpisodes[3].podcast_id\n', foundEpisodes[3].podcast_id);
 				const episodesOfFoundPodcast = foundEpisodes.filter(episode => episode.podcast_id === foundPodcast.id)
-				episodesOfFoundPodcast.forEach((e) => console.log('episodesOfFoundPodcast.podcast_id\n', e.podcast_id));
-
-
-
+				// episodesOfFoundPodcast.forEach((e) => console.log('episodesOfFoundPodcast.podcast_id\n', e.podcast_id));
 
 				// ====== filters out duplicate episode Ids. =========
-				// const epQueryIdArray = foundEpisodes.map(episodes => episodes.id)
-				// const filteredQueryIds = epQueryIdArray
-				// 	.filter(ids => !epDbIdArray.includes(ids))
-				// console.log(epDbIdArray, "epDbIdArray\n");
-				// console.log(epQueryIdArray, "epQueryIdArray\n");
-				// console.log(filteredQueryIds, "filteredQueryIds\n");
+
+				const filteredQueryEps = episodesOfFoundPodcast
+					.filter(eps => !epDbIdArray.includes(eps.id))
+				console.log(epDbIdArray, "epDbIdArray\n");
+				filteredQueryEps.forEach((e) => console.log(e.id, "filteredQueryIds\n"));
+
+
+
+				// Do this step once query Eps are created, and store these ids in Podcast's Ep array
+				const epQueryIdArray = episodesOfFoundPodcast.map(episodes => episodes.id)
+
 				// just a response that works.
 				res.render("podcasts/show.ejs", {
 					loggedIn: req.session.loggedIn,
