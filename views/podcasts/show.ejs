@@ -14,46 +14,50 @@
 				<p class="show-desc">&nbsp;&nbsp;&nbsp;&nbsp;<%=podcast.description_original%></p>
 			</div>
 
-			<div class="results-box">
-				<% for (var i = 0; i < episodes.length; i++) { -%>
-					<div class="single-result">
-						<div class="episode-title-row">
-							<h3 class="search-title"><%=episodes[i].podcast_title_original%></h3>
-							<h4 class="search-title"><%=episodes[i].title_original%></h4>
-							<%let d = new Date(episodes[i].pub_date_ms)%>
-							<%let dateEnglish = d.toLocaleDateString()%>
-							<h4 class="search-title"><%=dateEnglish%></h4>
-						</div>
-						<% let shortDescription = ""%>
-						<% let stopCounter = 0 %>
-						<% for (var j = 0; j < episodes[i].description_original.length; j++) { -%>
-							<% if (episodes[i].description_original[j] === ".") { -%>
-								<% stopCounter++ %>
-								<% if (stopCounter === 3) { -%>
-									<% shortDescription += "."%>
-									<% stopCounter = 0 %>
-									<% break %>								
-								<% } %>
-							<% } else { -%>
-								<%  shortDescription += episodes[i].description_original[j]%>
-							<% } -%>		
-						<% } -%>
-						<div class="desc-pic-container clearfix">
-							<img class="search-pic" src="<%=episodes[i].thumbnail%>">
-							<p class="search-desc"><%=shortDescription%></p>
-							<div class="listen-link-container">
-								<a class="listen-link" href="/earfull/episodes/<%=episodes[i].id%>">Listen to episode</a>
+			<% if (episodes.length > 0) { -%>
+			
+				<div class="results-box">
+					<% for (var i = 0; i < episodes.length; i++) { -%>
+						<div class="single-result">
+							<div class="episode-title-row">
+								<h3 class="search-title"><%=episodes[i].podcast_title_original%></h3>
+								<h4 class="search-title"><%=episodes[i].title_original%></h4>
+								<%let d = new Date(episodes[i].pub_date_ms)%>
+								<%let dateEnglish = d.toLocaleDateString()%>
+								<h4 class="search-title"><%=dateEnglish%></h4>
 							</div>
-						</div>
-						<% shortDescription = "" %>
-						
-						<% if (i < episodes.length - 1) { %>
-							<hr>
+							<% let shortDescription = ""%>
+							<% let stopCounter = 0 %>
+							<% for (var j = 0; j < episodes[i].description_original.length; j++) { -%>
+								<% if (episodes[i].description_original[j] === ".") { -%>
+									<% stopCounter++ %>
+									<% if (stopCounter === 3) { -%>
+										<% shortDescription += "."%>
+										<% stopCounter = 0 %>
+										<% break %>								
+									<% } %>
+								<% } else { -%>
+									<%  shortDescription += episodes[i].description_original[j]%>
+								<% } -%>		
+							<% } -%>
+							<div class="desc-pic-container clearfix">
+								<img class="search-pic" src="<%=episodes[i].thumbnail%>">
+								<p class="search-desc"><%=shortDescription%></p>
+								<div class="listen-link-container">
+									<a class="listen-link" href="/earfull/episodes/<%=episodes[i].id%>">Listen to episode</a>
+								</div>
+							</div>
+							<% shortDescription = "" %>
 							
-						<% } %>
-					</div>
-				<% } -%>
-			</div>
+							<% if (i < episodes.length - 1) { %>
+								<hr>
+								
+							<% } %>
+						</div>
+					<% } -%>
+				</div>
+
+			<% } -%>
 
 			<div class="comment-box">
 				<% for (var i = 0; i < podcast.comments.length; i++) { -%>

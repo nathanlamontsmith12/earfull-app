@@ -101,7 +101,6 @@ router.get("/:id", async (req, res) => {
 					})
 
 				} else {
-					console.log(data.body);
 					// ===== filter queried episodes by foundpodcast id ======= WORKING	
 
 					const foundEpisodes = data.body.results
