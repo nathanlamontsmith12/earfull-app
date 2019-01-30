@@ -65,15 +65,25 @@ const playlistSchema = mongoose.Schema({
 	</form>
 	<ol id="sortable" class="playlist episodeDisplay">
 		<% for (let i = 0; i < playlist.episodes.length; i++) { -%>
-			<div id="<%=i%>" class="originalIndex">
-				<li class="default" id="episode-<%=i%>"><button class="remove" id="remove-<%=i%>">X</button><span id="episode-name-<%=i%>">
+			<div id="<%=i%>">
+				<li class="default"><button class="remove" id="<%=i%>-remove">X</button><span id="episode-name-<%=i%>">
 				<%=playlist.episodes[i]%></span>
 				</li>
 			</div>
 		<% } -%>
 	</ol>
 	<br />
+	
 	<button id="save-btn">Save Changes</button>	
+	
+	<!-- add hidden attribute to form or ol when done -->
+	<form>
+		<ol id="hidden-episode-list"> 
+			<% for (var i = 0; i < playlist.episodes.length; i++) { -%>
+				<li><input name="<%=i%>" value="<%=playlist.episodes[i]%>"></li>	
+			<% } -%>
+		</ol>
+	</form>
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>
 

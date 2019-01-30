@@ -2,11 +2,11 @@
 
 console.log("Connected!");
 
-// ========== CACHED ELEMENTS ==========
 
+// ========== CACHED ELEMENTS ==========
 let $episodes = $("#sortable div");
 const $save = $("#save-btn");
-
+const $deleteBtns = $("#sortable div li button");
 
 // ========== INITIAL EPISODE ORDER ==========
 const initialEpisodeArray = [];
@@ -17,55 +17,76 @@ for (let i = 0; i < $episodes.length; i++) {
 	initialEpisodeArray.push( $(`#episode-name-${i}`)[0].innerText );
 }
 
-console.log(initialEpisodeArray);
+// console.log(initialEpisodeArray);
 // works!
 
 
-// ========== ADD EVENT LISTENERS ========== 
-for (let i = 0; i < $episodes.length; i++) {
-	$(`#${i}`).on("mousedown", (evt)=>{
-		console.log(evt.currentTarget.id); 
-	})
-}
+// ========== SORT-OF EVENT LISTENER USING JQUERY UI ========== 
 
 $("#sortable").sortable({
 	stop: function(evt, ui){
-		console.log(ui.item.index());
+		// update hidden inputs in form
+		updateEpisodeArray();
 	}
 });
 
-$save.on("click", (evt)=>{
-	makeFinalEpisodeArray();
-})
 
 
-// ========== MAKE FINAL ARRAY ==========
 
-function makeFinalEpisodeArray () {
+// ========== FUNCTIONS ==========
+
+// update hidden form that contains data for what the updated episode array 
+// will be 
+
+function updateEpisodeArray () {
 
 	$episodes = $("#sortable div");
 
-	const finalEpisodeArrayIndices = [];
+	const currentEpisodeArrayIndices = [];
 
 	for (let i = 0; i < $episodes.length; i++) {	
-		finalEpisodeArrayIndices.push($episodes[i].id);
+		currentEpisodeArrayIndices.push($episodes[i].id);
 	}
 
-	console.log(finalEpisodeArrayIndices);
-
-
-	const finalEpisodeArray = finalEpisodeArrayIndices.map( (newOrderIndex)=>{
+	const currentEpisodeArray = currentEpisodeArrayIndices.map( (newOrderIndex)=>{
 		const newIndex = parseInt(newOrderIndex);
 		return initialEpisodeArray[newIndex];
 	})
 
-	console.log(finalEpisodeArray);
+	const $formList = $("#hidden-episode-list li input");
 
+	for (let m = 0; m < $formList.length; m++) {
+		const $input = $(`#hidden-episode-list li:nth-child(${m + 1}) input`);
+		$input.val(currentEpisodeArray[m]);
+	}
+
+	console.log($("#hidden-episode-list li input"));
 }
 
 
-// export default finalEpisodeArray;
+function deleteEntry (id) {
+	console.log(id);
+}
 
+
+// ========== ADD EVENT LISTENERS ========== 
+
+for (let i = 0; i < $deleteBtns.length; i++) {
+	$(`#${i}-remove`).on("click", (evt)=>{
+		const idNum = evt.currentTarget.id;
+		deleteEntry(idNum);
+	})
+}
+
+
+// for (let i = 0; i < $episodes.length; i++) {
+// 	$(`#${i}`).on("mousedown", (evt)=>{
+// 	})
+// }
+
+
+// $save.on("click", (evt)=>{
+// })
 
 
 
