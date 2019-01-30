@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
 		type = req.body.type
 		offset = 10
 		// Query the API
-		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=podcast&only_in=author" )
+		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=podcast") //&only_in=author" )
 		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 		.header("Accept", "application/json")
 		.end ((data) => {
