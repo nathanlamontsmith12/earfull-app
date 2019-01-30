@@ -65,16 +65,6 @@ router.get("/:id", async (req, res) => {
 		// find the podcast from its id in href
 		const foundPodcast = await Podcast.findOne({id: req.params.id})
 
-		// ======= WORKING RENDER WITHOUT EPISODES =============
-		// res.render("podcasts/show.ejs", {
-		// 	loggedIn: req.session.loggedIn,
-		// 	podcast: foundPodcast,
-		// 	message: req.session.message,
-		// 	title: foundPodcast.title_original,
-		// 	header: foundPodcast.title_original
-		// })
-		// =====================================================
-
 		const epsOfPodDb = await Episode.find({podcast_id: req.params.id})
 		const epDbIdArray = epsOfPodDb.map(Episode => Episode.id)
 
@@ -88,9 +78,8 @@ router.get("/:id", async (req, res) => {
 			.header("Accept", "application/json")
 			.end ((data) => {
 				// ===== filter queried episodes by foundpodcast id ======= WORKING	
+
 				const foundEpisodes = data.body.results
-				// console.log('foundPodcast.id\n', foundPodcast.id);
-				// console.log('foundEpisodes[3].podcast_id\n', foundEpisodes[3].podcast_id);
 				const episodesOfFoundPodcast = foundEpisodes.filter(episode => episode.podcast_id === foundPodcast.id)
 				// episodesOfFoundPodcast.forEach((e) => console.log('episodesOfFoundPodcast.podcast_id\n', e.podcast_id));
 
@@ -103,7 +92,8 @@ router.get("/:id", async (req, res) => {
 				filteredQueryEps.forEach((e) => console.log(e.id));
 				console.log('');
 
-				// ====== Add IDs from episodes in DB to Podcast.Episodes ======
+				// ====== Add IDs from episodes in DB to Podcast.Episodes ====== WORKING
+
 				epsOfPodDb.forEach((episode) => {
 					// console.log('');
 					// console.log(episode.id);
@@ -111,13 +101,10 @@ router.get("/:id", async (req, res) => {
 				})
 				console.log('\nfoundPodcast.episodes after adding eps in DB:\n\n', foundPodcast.episodes);
 
-				// PUSHING THE SAME THING TWICE OOPS
-				// ====== Add IDs from episodes in Query to Podcast.Episodes =====
+				// ====== Add IDs from episodes in Query to Podcast.Episodes ===== WORKING
 				
 				filteredQueryEps.forEach((episode) => foundPodcast.episodes.push(episode.id))
 				console.log('\nfoundPodcast.episodes after adding eps from Query:\n\n', foundPodcast.episodes);
-
-
 
 				// ====== Make a variable for all episodes belonging to podcast to pass in ===== WORKING
 				const allEpsOfPodcast = []
@@ -126,10 +113,6 @@ router.get("/:id", async (req, res) => {
 				const allEpsOfPodcastFlat = allEpsOfPodcast.reduce((acc, episode) => acc.concat(episode), [])
 
 				// console.log('allEpsOfPodcastFlat\n', allEpsOfPodcastFlat);
-
-				// ==== Remove Duplicates from allEpsOfPodcastFlat ====
-
-
 
 				// ======= Create Queried Episodes =============== // Working
 				// if filtered Query Eps is empty, should not create
