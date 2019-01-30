@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include("../partials/head", {title: title}) %>
+</head>
+<body>
+	<%- include("../partials/header", {header: header}) %>
+ 	<main>
+ 		<div class="main-container">
+			<h1><%=podcast.title_original%></h1>
+
+			<div class="desc-pic-container">
+				<img class="show-pic" src="<%=podcast.image%>">
+				<p class="show-desc">&nbsp;&nbsp;&nbsp;&nbsp;<%=podcast.description_original%></p>
+			</div>
+
+			<div class="comment-box">
+				<% for (var i = 0; i < podcast.comments.length; i++) { -%>
+					<h2><%=podcast.comments[i].name%></h2>
+					<p><%=podcast.comments[i].body%></p>
+					<hr>		
+				<% } -%>
+			</div>
+		</div>
+	</main>
+
+	<%- include("../partials/footer") %>
+</body>
+</html>
+
+const podcastSchema = mongoose.Schema({
+	title_original: String,
+	image: String,
+	thumbnail: String,
+	description_original: String,
+	publisher_original: String,
+	listennotes_url: String,
+	lastest_pub_date_ms: Number,
+	genres: [Number],
+	followers: [],
+	id: String,
+	episodes: [Episode.schema],
+	comments: [Comment.schema]
+});

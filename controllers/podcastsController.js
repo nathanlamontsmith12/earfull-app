@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const unirest = require('unirest');
 const Podcast = require('../models/podcast')
+const Episode = require('../models/episode')
 
 // Get To Episode Search page
 router.get("/", (req, res) => {
@@ -20,7 +21,7 @@ router.post("/", async (req, res) => {
 		type = req.body.type
 		offset = 10
 		// Query the API
-		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=podcast&only_in=title" )
+		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=podcast&only_in=author" )
 		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 		.header("Accept", "application/json")
 		.end ((data) => {
@@ -59,16 +60,55 @@ router.post("/", async (req, res) => {
 })
 
 // SHOULD LIVE ON PODCAST SHOW
-// Add Episodes to podcast if 
-			// get an array of the id's of podcasts found by query
-			// Add ids from Api query to array
-			// const queryIdArray = data.body.results.map(podcast => podcast.id)
-			// find episodes matching podcast id to podcast
-				// if episode id is already in podcast id array, don't add
-				// otherwise add
+router.get("/:id", async (req, res) => {
+	try {
+		// find the podcast from its id in href
+		const foundPodcast = await Podcast.findOne({id: req.params.id})
+		console.log(foundPodcast);
+		console.log(foundPodcast.id);
 
-			// Populate the podcast show page with 10 most recent podcast episodes, whether they were searched for
-			// before or not
+		// const epsOfPodDb = await Episode.find({podcast_id: req.params.id})
+		// const epDbIdArray = epsOfPod.map(Episode => Episode.id)
+		res.render("podcasts/show.ejs", {
+			loggedIn: req.session.loggedIn,
+			podcast: foundPodcast,
+			message: req.session.message,
+			title: foundPodcast.title_original,
+			header: foundPodcast.title_original
+		})
+		// query the database for episodes of podcast name
+
+		// // ======= BLOCK ON QUERYING PODCAST
+		// query = foundPodcast.title_original
+		// console.log(query, "query\n");
+		// const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=episode&only_in=author" )
+		// 	.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+		// 	.header("Accept", "application/json")
+		// 	.end ((data) => {
+		// 		const epQueryIdArray = data.body.results.map(episodes => episodes.id)
+		// 		const filteredQueryIds = epQueryIdArray
+		// 			.filter(ids => !epDbIdArray.includes(ids))
+		// 		console.log(epDbIdArray, "epDbIdArray\n");
+		// 		console.log(epQueryIdArray, "epQueryIdArray\n");
+		// 		console.log(filteredQueryIds, "filteredQueryIds\n");
+		// 		res.send(foundPodcast)
+		// 	})
+
+		// Add Episodes to podcast if 
+				// get an array of the id's of podcasts found by query
+				// Add ids from Api query to array
+				// const queryIdArray = data.body.results.map(podcast => podcast.id)
+				// find episodes matching podcast id to podcast
+					// if episode id is already in podcast id array, don't add
+					// otherwise add
+
+				// Populate the podcast show page with 10 most recent podcast episodes, whether they were searched for
+				// before or not
+		
+	} catch (err) {
+		res.send(err)
+	}	
+})
 
 // Example Podcast result
 
