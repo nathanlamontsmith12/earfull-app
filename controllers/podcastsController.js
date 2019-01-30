@@ -64,35 +64,55 @@ router.get("/:id", async (req, res) => {
 	try {
 		// find the podcast from its id in href
 		const foundPodcast = await Podcast.findOne({id: req.params.id})
-		console.log(foundPodcast);
-		console.log(foundPodcast.id);
 
-		// const epsOfPodDb = await Episode.find({podcast_id: req.params.id})
-		// const epDbIdArray = epsOfPod.map(Episode => Episode.id)
-		res.render("podcasts/show.ejs", {
-			loggedIn: req.session.loggedIn,
-			podcast: foundPodcast,
-			message: req.session.message,
-			title: foundPodcast.title_original,
-			header: foundPodcast.title_original
-		})
-		// query the database for episodes of podcast name
+		// ======= WORKING RENDER WITHOUT EPISODES =============
+		// res.render("podcasts/show.ejs", {
+		// 	loggedIn: req.session.loggedIn,
+		// 	podcast: foundPodcast,
+		// 	message: req.session.message,
+		// 	title: foundPodcast.title_original,
+		// 	header: foundPodcast.title_original
+		// })
+		// =====================================================
+
+		const epsOfPodDb = await Episode.find({podcast_id: req.params.id})
+		const epDbIdArray = epsOfPodDb.map(Episode => Episode.id)
 
 		// // ======= BLOCK ON QUERYING PODCAST
-		// query = foundPodcast.title_original
-		// console.log(query, "query\n");
-		// const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=episode&only_in=author" )
-		// 	.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
-		// 	.header("Accept", "application/json")
-		// 	.end ((data) => {
-		// 		const epQueryIdArray = data.body.results.map(episodes => episodes.id)
-		// 		const filteredQueryIds = epQueryIdArray
-		// 			.filter(ids => !epDbIdArray.includes(ids))
-		// 		console.log(epDbIdArray, "epDbIdArray\n");
-		// 		console.log(epQueryIdArray, "epQueryIdArray\n");
-		// 		console.log(filteredQueryIds, "filteredQueryIds\n");
-		// 		res.send(foundPodcast)
-		// 	})
+		// query the database for episodes of podcast name
+		query = foundPodcast.title_original
+		offset = 10
+		console.log(query, "query\n");
+		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=episode" )
+			.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+			.header("Accept", "application/json")
+			.end ((data) => {
+				// need to find episodes with podcast_id matching podcast.id
+				const foundEpisodes = data.body.results
+				console.log('foundPodcast.id\n', foundPodcast.id);
+				console.log('foundEpisodes[3].podcast_id\n', foundEpisodes[3].podcast_id);
+				const episodesOfFoundPodcast = foundEpisodes.filter(episode => episode.podcast_id === foundPodcast.id)
+				episodesOfFoundPodcast.forEach((e) => console.log('episodesOfFoundPodcast.podcast_id\n', e.podcast_id));
+
+
+
+
+				// ====== filters out duplicate episode Ids. =========
+				// const epQueryIdArray = foundEpisodes.map(episodes => episodes.id)
+				// const filteredQueryIds = epQueryIdArray
+				// 	.filter(ids => !epDbIdArray.includes(ids))
+				// console.log(epDbIdArray, "epDbIdArray\n");
+				// console.log(epQueryIdArray, "epQueryIdArray\n");
+				// console.log(filteredQueryIds, "filteredQueryIds\n");
+				// just a response that works.
+				res.render("podcasts/show.ejs", {
+					loggedIn: req.session.loggedIn,
+					podcast: foundPodcast,
+					message: req.session.message,
+					title: foundPodcast.title_original,
+					header: foundPodcast.title_original
+				})
+			})
 
 		// Add Episodes to podcast if 
 				// get an array of the id's of podcasts found by query
@@ -106,6 +126,7 @@ router.get("/:id", async (req, res) => {
 				// before or not
 		
 	} catch (err) {
+		console.log(err);
 		res.send(err)
 	}	
 })
