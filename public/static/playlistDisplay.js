@@ -4,13 +4,12 @@ console.log("Connected!");
 
 // ========== CACHED ELEMENTS ==========
 
-const $episodes = $("#sortable div");
+let $episodes = $("#sortable div");
 const $save = $("#save-btn");
 
 
-// ========== INITIAL AND FINAL EPISODE ORDER ==========
+// ========== INITIAL EPISODE ORDER ==========
 const initialEpisodeArray = [];
-const finalEpisodeArray = [];
 
 
 // make initial arrangedEpisodes array 
@@ -36,21 +35,31 @@ $("#sortable").sortable({
 });
 
 $save.on("click", (evt)=>{
-	makeChangedArray();
+	makeFinalEpisodeArray();
 })
 
 
 // ========== MAKE FINAL ARRAY ==========
 
-function makeChangedArray () {
-	
+function makeFinalEpisodeArray () {
+
+	$episodes = $("#sortable div");
+
 	const finalEpisodeArrayIndices = [];
 
-	for (let i = 0; i < $episodes.length; i++) {
+	for (let i = 0; i < $episodes.length; i++) {	
 		finalEpisodeArrayIndices.push($episodes[i].id);
 	}
 
 	console.log(finalEpisodeArrayIndices);
+
+
+	const finalEpisodeArray = finalEpisodeArrayIndices.map( (newOrderIndex)=>{
+		const newIndex = parseInt(newOrderIndex);
+		return initialEpisodeArray[newIndex];
+	})
+
+	console.log(finalEpisodeArray);
 
 }
 
