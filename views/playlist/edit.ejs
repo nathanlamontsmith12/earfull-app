@@ -63,7 +63,7 @@ const playlistSchema = mongoose.Schema({
 	<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
 		<button>Delete Playlist</button>
 	</form>
-	<ol id="sortable" class="playlist episodeDisplay">
+	<ul id="sortable" class="playlist episodeDisplay">
 		<% for (let i = 0; i < playlist.episodes.length; i++) { -%>
 			<div id="<%=i%>">
 				<li class="default"><button class="remove" id="<%=i%>-remove">X</button><span id="episode-name-<%=i%>">
@@ -71,13 +71,14 @@ const playlistSchema = mongoose.Schema({
 				</li>
 			</div>
 		<% } -%>
-	</ol>
+	</ul>
 	<br />
 	
 	<button id="save-btn">Save Changes</button>	
 	
 	<!-- add hidden attribute to form or ol when done -->
 	<form>
+		<input id="deleteList" name="deleteList" value=""> 
 		<ol id="hidden-episode-list"> 
 			<% for (var i = 0; i < playlist.episodes.length; i++) { -%>
 				<li><input name="<%=i%>" value="<%=playlist.episodes[i]%>"></li>	

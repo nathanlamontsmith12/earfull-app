@@ -6,11 +6,14 @@ console.log("Connected!");
 // ========== CACHED ELEMENTS ==========
 let $episodes = $("#sortable div");
 const $save = $("#save-btn");
+
 const $deleteBtns = $("#sortable div li button");
+const $deleteList = $("#deleteList");
+
 
 // ========== INITIAL EPISODE ORDER ==========
 const initialEpisodeArray = [];
-
+const deleteEpisodeArray = [];
 
 // make initial arrangedEpisodes array 
 for (let i = 0; i < $episodes.length; i++) {
@@ -64,17 +67,63 @@ function updateEpisodeArray () {
 }
 
 
-function deleteEntry (id) {
-	console.log(id);
+function deleteEntry () {
+
+}
+
+
+function undeleteEntry () {
+
+}
+
+
+function updateDeleteForm () {
+
+	let newDeleteFormValue = "";
+
+	deleteEpisodeArray.forEach((episode)=>{
+
+	})
+
+//	$deleteList.val(newDeleteFormValue);
+}
+
+
+function toggleDeleteEntry (fullId) {
+
+	let idNum = "";
+
+	for (let m = 0; m < fullId.length; m++) {
+		if (fullId[m] === "-") {
+			break;
+		} else {
+			idNum += fullId[m]
+		}
+	}
+
+	const episode = initialEpisodeArray[parseInt(idNum)];
+
+	// figure out if episode is already in the deleteEpisodeArray 
+	// if not, add it to deleteEpisodeArray, and do the "delete" display change 
+	// if already there, remove it from that array, and do the "undelete" display change 
+	// then, regardless, update the deleteForm ! 
+
+	console.log(episode);
+
+
+// 	console.log(idNum); // --> WORKS
+
 }
 
 
 // ========== ADD EVENT LISTENERS ========== 
+// add delete function to every "delete" button, keyed 
+// to the correct ORIGINAL episode index!
 
 for (let i = 0; i < $deleteBtns.length; i++) {
 	$(`#${i}-remove`).on("click", (evt)=>{
-		const idNum = evt.currentTarget.id;
-		deleteEntry(idNum);
+
+		toggleDeleteEntry(evt.currentTarget.id.toString());
 	})
 }
 
