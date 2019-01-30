@@ -191,11 +191,10 @@ router.put("/:userId/:playlistId", (req, res)=>{
 	const update = {
 		name: req.body.name,
 		lastEdited: dateEdited,
-		episodes: [],
 	}
 
 	// find the playlist in its database, update it   
-	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist)=> {
+	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, {name: req.body.name, lastEdited: dateEdited, $push: {episodes: req.body.episode}}, {new: true}, (err, updatedPlaylist)=> {
 		console.log(updatedPlaylist);
 		if (err) {
 			console.log(err.message);
