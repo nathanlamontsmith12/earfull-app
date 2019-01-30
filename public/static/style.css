@@ -118,8 +118,14 @@ a {
   display: table;
 }
 
+.episode-title-row {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 1vh;
+}
+
 .search-title {
-	margin-top: 0;
+	margin: 0;
 }
 
 .search-pod-title {

@@ -77,79 +77,111 @@ router.get("/:id", async (req, res) => {
 			.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 			.header("Accept", "application/json")
 			.end ((data) => {
-				// ===== filter queried episodes by foundpodcast id ======= WORKING	
+				console.log(data.body);
+				// check if data.body.results exists
+				if (!data.body) {
+					// ====== Add IDs from episodes in DB to Podcast.Episodes ====== WORKING
 
-				const foundEpisodes = data.body.results
-				const episodesOfFoundPodcast = foundEpisodes.filter(episode => episode.podcast_id === foundPodcast.id)
-				// episodesOfFoundPodcast.forEach((e) => console.log('episodesOfFoundPodcast.podcast_id\n', e.podcast_id));
-
-				// ====== Filter out Queried Episodes already in DB  ======  WORKING
-
-				const filteredQueryEps = episodesOfFoundPodcast
-					.filter(eps => !epDbIdArray.includes(eps.id))
-				// console.log(epDbIdArray, "epDbIdArray\n");
-				console.log('\nfilteredQueryEps Ids:\n');
-				filteredQueryEps.forEach((e) => console.log(e.id));
-				console.log('');
-
-				// ====== Add IDs from episodes in DB to Podcast.Episodes ====== WORKING
-
-				epsOfPodDb.forEach((episode) => {
-					// console.log('');
-					// console.log(episode.id);
-					foundPodcast.episodes.push(episode.id)
-				})
-				console.log('\nfoundPodcast.episodes after adding eps in DB:\n\n', foundPodcast.episodes);
-
-				// ====== Add IDs from episodes in Query to Podcast.Episodes ===== WORKING
-				
-				filteredQueryEps.forEach((episode) => foundPodcast.episodes.push(episode.id))
-				console.log('\nfoundPodcast.episodes after adding eps from Query:\n\n', foundPodcast.episodes);
-
-				// ====== Make a variable for all episodes belonging to podcast to pass in ===== WORKING
-				const allEpsOfPodcast = []
-				allEpsOfPodcast.push(epsOfPodDb);
-				allEpsOfPodcast.push(filteredQueryEps);
-				const allEpsOfPodcastFlat = allEpsOfPodcast.reduce((acc, episode) => acc.concat(episode), [])
-
-				// console.log('allEpsOfPodcastFlat\n', allEpsOfPodcastFlat);
-
-				// ======= Create Queried Episodes =============== // Working
-				// if filtered Query Eps is empty, should not create
-
-				if (filteredQueryEps !== []) {
-					Episode.create(filteredQueryEps, (err, createdEpsfromQuery) => {
-						if (err) {
-							res.send(err)
-						} else {
-							res.render("podcasts/show.ejs", {
-								episodes: allEpsOfPodcastFlat,
-								loggedIn: req.session.loggedIn,
-								podcast: foundPodcast,
-								message: req.session.message,
-								title: foundPodcast.title_original,
-								header: foundPodcast.title_original
-							})
-						}
+					epsOfPodDb.forEach((episode) => {
+						// console.log('');
+						// console.log(episode.id);
+						foundPodcast.episodes.push(episode.id)
 					})
-				} else {
+					console.log('\nfoundPodcast.episodes after adding eps in DB:\n\n', foundPodcast.episodes);
+
+					// ======= Render Page ========
+
 					res.render("podcasts/show.ejs", {
-						episodes: allEpsOfPodcastFlat,
+						episodes: epsOfPodDb,
 						loggedIn: req.session.loggedIn,
 						podcast: foundPodcast,
 						message: req.session.message,
 						title: foundPodcast.title_original,
 						header: foundPodcast.title_original
 					})
-				}
-				// A response that works so my browser don't get confused -- just incase
-				// res.render("podcasts/show.ejs", {
-				// 	loggedIn: req.session.loggedIn,
-				// 	podcast: foundPodcast,
-				// 	message: req.session.message,
-				// 	title: foundPodcast.title_original,
-				// 	header: foundPodcast.title_original
-				// })
+
+				} else {
+					console.log(data.body);
+					// ===== filter queried episodes by foundpodcast id ======= WORKING	
+
+					const foundEpisodes = data.body.results
+					const episodesOfFoundPodcast = foundEpisodes.filter(episode => episode.podcast_id === foundPodcast.id)
+					// episodesOfFoundPodcast.forEach((e) => console.log('episodesOfFoundPodcast.podcast_id\n', e.podcast_id));
+
+					// ====== Filter out Queried Episodes already in DB  ======  WORKING
+
+					const filteredQueryEps = episodesOfFoundPodcast
+						.filter(eps => !epDbIdArray.includes(eps.id))
+					// console.log(epDbIdArray, "epDbIdArray\n");
+					console.log('\nfilteredQueryEps Ids:\n');
+					filteredQueryEps.forEach((e) => console.log(e.id));
+					console.log('');
+
+					// ====== Add IDs from episodes in DB to Podcast.Episodes ====== WORKING
+
+					epsOfPodDb.forEach((episode) => {
+						// console.log('');
+						// console.log(episode.id);
+						foundPodcast.episodes.push(episode.id)
+					})
+					console.log('\nfoundPodcast.episodes after adding eps in DB:\n\n', foundPodcast.episodes);
+
+					// ====== Add IDs from episodes in Query to Podcast.Episodes ===== WORKING
+					
+					filteredQueryEps.forEach((episode) => foundPodcast.episodes.push(episode.id))
+					console.log('\nfoundPodcast.episodes after adding eps from Query:\n\n', foundPodcast.episodes);
+
+					// ====== Make a variable for all episodes belonging to podcast to pass in ===== WORKING
+					const allEpsOfPodcast = []
+					allEpsOfPodcast.push(epsOfPodDb);
+					allEpsOfPodcast.push(filteredQueryEps);
+					const allEpsOfPodcastFlat = allEpsOfPodcast.reduce((acc, episode) => acc.concat(episode), [])
+
+					// console.log('allEpsOfPodcastFlat\n', allEpsOfPodcastFlat);
+
+					// ======= Create Queried Episodes =============== // Working
+					// if filtered Query Eps is empty, should not create
+
+					if (filteredQueryEps !== []) {
+						Episode.create(filteredQueryEps, (err, createdEpsfromQuery) => {
+							if (err) {
+								res.send(err)
+							} else {
+								res.render("podcasts/show.ejs", {
+									episodes: allEpsOfPodcastFlat,
+									loggedIn: req.session.loggedIn,
+									podcast: foundPodcast,
+									message: req.session.message,
+									title: foundPodcast.title_original,
+									header: foundPodcast.title_original
+								})
+							}
+						})
+					} else {
+						res.render("podcasts/show.ejs", {
+							episodes: allEpsOfPodcastFlat,
+							loggedIn: req.session.loggedIn,
+							podcast: foundPodcast,
+							message: req.session.message,
+							title: foundPodcast.title_original,
+							header: foundPodcast.title_original
+						})
+					}
+					// A response that works so my browser don't get confused -- just incase
+					// res.render("podcasts/show.ejs", {
+					// 	loggedIn: req.session.loggedIn,
+					// 	podcast: foundPodcast,
+					// 	message: req.session.message,
+					// 	title: foundPodcast.title_original,
+					// 	header: foundPodcast.title_original
+					// })
+
+
+
+
+
+				}	
+
 			})		
 	} catch (err) {
 		console.log(err);
