@@ -14,11 +14,41 @@
 				<p class="show-desc">&nbsp;&nbsp;&nbsp;&nbsp;<%=podcast.description_original%></p>
 			</div>
 
-			<ul>
+			<div class="results-box">
 				<% for (var i = 0; i < episodes.length; i++) { -%>
-					<li><%=episodes[i].title_original%></li>
+					<div class="single-result">
+						<h2 class="search-pod-title"><%=episodes[i].podcast_title_original%></h2>
+						<h3 class="search-title"><%=episodes[i].title_original%></h3>
+						<% let shortDescription = ""%>
+						<% let stopCounter = 0 %>
+						<% for (var j = 0; j < episodes[i].description_original.length; j++) { -%>
+							<% if (episodes[i].description_original[j] === ".") { -%>
+								<% stopCounter++ %>
+								<% if (stopCounter === 3) { -%>
+									<% shortDescription += "."%>
+									<% stopCounter = 0 %>
+									<% break %>								
+								<% } %>
+							<% } else { -%>
+								<%  shortDescription += episodes[i].description_original[j]%>
+							<% } -%>		
+						<% } -%>
+						<div class="desc-pic-container clearfix">
+							<img class="search-pic" src="<%=episodes[i].thumbnail%>">
+							<p class="search-desc"><%=shortDescription%></p>
+							<div class="listen-link-container">
+								<a class="listen-link" href="/earfull/episodes/<%=episodes[i].id%>">Listen to episode</a>
+							</div>
+						</div>
+						<% shortDescription = "" %>
+						
+						<% if (i < episodes.length - 1) { %>
+							<hr>
+							
+						<% } %>
+					</div>
 				<% } -%>
-			</ul>
+			</div>
 
 			<div class="comment-box">
 				<% for (var i = 0; i < podcast.comments.length; i++) { -%>

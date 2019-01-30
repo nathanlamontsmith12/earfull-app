@@ -94,25 +94,26 @@ router.get("/:id", async (req, res) => {
 				const episodesOfFoundPodcast = foundEpisodes.filter(episode => episode.podcast_id === foundPodcast.id)
 				// episodesOfFoundPodcast.forEach((e) => console.log('episodesOfFoundPodcast.podcast_id\n', e.podcast_id));
 
-				// ====== Filter out Queried Episodes already in DB  ====== WORKING
+				// ====== Filter out Queried Episodes already in DB  ======  WORKING
 
 				const filteredQueryEps = episodesOfFoundPodcast
 					.filter(eps => !epDbIdArray.includes(eps.id))
 				// console.log(epDbIdArray, "epDbIdArray\n");
-				// filteredQueryEps.forEach((e) => console.log(e.id, "filteredQueryIds\n"));
-				console.log('');
-				console.log('');
-				console.log('');
+				console.log('\nfilteredQueryEps Ids:\n');
+				filteredQueryEps.forEach((e) => console.log(e.id));
 				console.log('');
 
 				// ====== Add IDs from episodes in DB to Podcast.Episodes ======
-				episodesOfFoundPodcast.forEach((episode) => {
+				epsOfPodDb.forEach((episode) => {
 					// console.log('');
 					// console.log(episode.id);
 					foundPodcast.episodes.push(episode.id)
 				})
 				console.log('\nfoundPodcast.episodes after adding eps in DB:\n\n', foundPodcast.episodes);
+
+				// PUSHING THE SAME THING TWICE OOPS
 				// ====== Add IDs from episodes in Query to Podcast.Episodes =====
+				
 				filteredQueryEps.forEach((episode) => foundPodcast.episodes.push(episode.id))
 				console.log('\nfoundPodcast.episodes after adding eps from Query:\n\n', foundPodcast.episodes);
 
@@ -120,31 +121,45 @@ router.get("/:id", async (req, res) => {
 
 				// ====== Make a variable for all episodes belonging to podcast to pass in ===== WORKING
 				const allEpsOfPodcast = []
-				allEpsOfPodcast.push(episodesOfFoundPodcast);
+				allEpsOfPodcast.push(epsOfPodDb);
 				allEpsOfPodcast.push(filteredQueryEps);
 				const allEpsOfPodcastFlat = allEpsOfPodcast.reduce((acc, episode) => acc.concat(episode), [])
+
 				// console.log('allEpsOfPodcastFlat\n', allEpsOfPodcastFlat);
 
-				// ======= Create Queried Episodes ===============
-
-				Episode.create(filteredQueryEps, (err, createdEpsfromQuery) => {
-					if (err) {
-						res.send(err)
-					} else {
-						res.render("podcasts/show.ejs", {
-							episodes: allEpsOfPodcastFlat,
-							loggedIn: req.session.loggedIn,
-							podcast: foundPodcast,
-							message: req.session.message,
-							title: foundPodcast.title_original,
-							header: foundPodcast.title_original
-						})
-						
-					}
-				})
+				// ==== Remove Duplicates from allEpsOfPodcastFlat ====
 
 
-				// A response that works so my browser don't get confused
+
+				// ======= Create Queried Episodes =============== // Working
+				// if filtered Query Eps is empty, should not create
+
+				if (filteredQueryEps !== []) {
+					Episode.create(filteredQueryEps, (err, createdEpsfromQuery) => {
+						if (err) {
+							res.send(err)
+						} else {
+							res.render("podcasts/show.ejs", {
+								episodes: allEpsOfPodcastFlat,
+								loggedIn: req.session.loggedIn,
+								podcast: foundPodcast,
+								message: req.session.message,
+								title: foundPodcast.title_original,
+								header: foundPodcast.title_original
+							})
+						}
+					})
+				} else {
+					res.render("podcasts/show.ejs", {
+						episodes: allEpsOfPodcastFlat,
+						loggedIn: req.session.loggedIn,
+						podcast: foundPodcast,
+						message: req.session.message,
+						title: foundPodcast.title_original,
+						header: foundPodcast.title_original
+					})
+				}
+				// A response that works so my browser don't get confused -- just incase
 				// res.render("podcasts/show.ejs", {
 				// 	loggedIn: req.session.loggedIn,
 				// 	podcast: foundPodcast,
@@ -152,24 +167,13 @@ router.get("/:id", async (req, res) => {
 				// 	title: foundPodcast.title_original,
 				// 	header: foundPodcast.title_original
 				// })
-			})
-
-		// Add Episodes to podcast if 
-				// get an array of the id's of podcasts found by query
-				// Add ids from Api query to array
-				// const queryIdArray = data.body.results.map(podcast => podcast.id)
-				// find episodes matching podcast id to podcast
-					// if episode id is already in podcast id array, don't add
-					// otherwise add
-
-				// Populate the podcast show page with 10 most recent podcast episodes, whether they were searched for
-				// before or not
-		
+			})		
 	} catch (err) {
 		console.log(err);
 		res.send(err)
 	}	
 })
+
 
 // Example Podcast result
 
