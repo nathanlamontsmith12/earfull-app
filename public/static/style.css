@@ -44,7 +44,9 @@ footer {
 a {
 	margin: 0 .5vw;
 	text-decoration: none;
+	color: linen;
 }
+
 
 button {
 	text-align: center;
@@ -138,7 +140,6 @@ p, a, div {
 
 .logout-button {
 	font-size: 1.5vh;
-	background-color: lightblue;
 }
 
 .nav-link {
