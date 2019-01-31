@@ -219,14 +219,16 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 			res.send(err);
 		} else {
 
-			const foundPlaylist = foundUser.playlists.find((playlist)=>{
+			const foundPlaylist = foundUser.playlists.find( (playlist)=>{
 				if (playlist._id.toString() === reqData.playlistId) {
 					return true;
 				}
 			})
 
+			console.log("Found playlist: ");
+			console.log(foundPlaylist);
 
-			Episode.find({ "id": { $in: foundPlaylist.episodes }}, (err, rawEpisodeArray) => {
+			Episode.find({ id: { $in: foundPlaylist.episodes }}, (err, rawEpisodeArray) => {
 				if (err) {
 					res.send(err)
 				} else {
@@ -252,6 +254,8 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 							}	
 						})					
 					}
+
+					console.log(episodeArray);
 
 					res.render("playlist/edit.ejs", {
 						user: foundUser,

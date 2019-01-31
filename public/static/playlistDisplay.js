@@ -4,7 +4,7 @@ console.log("Connected!");
 
 
 // ========== CACHED ELEMENTS ==========
-let $episodes = $("#sortable div");
+let $episodes = $("#hidden-episode-list input");
 const $save = $("#save-btn");
 const $addBtn = $(".addBtn");
 
@@ -21,12 +21,13 @@ const deleteEpisodeArray = [];
 const addedEpisodeArray = [];
 
 
-// make initial episode array 
+// make initial array of episode IDs
+
 for (let i = 0; i < $episodes.length; i++) {
-	initialEpisodeArray.push( $(`#episode-name-${i}`)[0].innerText );
+	initialEpisodeArray.push( $(`#${i}-hidden`).val() );
 }
 
-// console.log(initialEpisodeArray);
+console.log(initialEpisodeArray);
 // works!
 
 
