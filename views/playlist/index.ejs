@@ -45,13 +45,15 @@ render: {
 			<li>
 				<div>
 					<div>
-					<h3><%=playlists[m].name%> &nbsp;</h3>
+					<h3><%=playlists[m].name%> &nbsp;</h3> <br /> 
+					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>">View</a> 
+					<br />
 					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Edit</a>
-						<ol>
-							<% for (let i = 0; i < playlists[m].episodes.length; i++) { -%>
-								<li><%=playlists[m].episodes[i]%></li>
-							<% } -%>
-						</ol>
+<!-- 						<ol>
+							<% // for (let i = 0; i < playlists[m].episodes.length; i++) { -%>
+								<li><%=// playlists[m].episodes[i]%></li>
+							<%// } -%>
+						</ol> -->
 					</div>
 				</div>
 			</li>

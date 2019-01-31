@@ -225,16 +225,10 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 				}
 			})
 
-			console.log("Found playlist: ");
-			console.log(foundPlaylist);
-
 			Episode.find({ id: { $in: foundPlaylist.episodes }}, (err, rawEpisodeArray) => {
 				if (err) {
 					res.send(err)
 				} else {
-
-					console.log("Raw Episode Array: ");
-					console.log(rawEpisodeArray);
 
 					// need to put the episode array in the CORRECT order! 
 					// THEN pass it on to the web page with res.render 
@@ -247,15 +241,12 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 								if (rawEpisodeArray[t]["id"] === episodeId) {
 									return rawEpisodeArray[t];
 								} else {
-									console.log("ERROR -- episode not found in DB");
 									// res.send("ERROR -- episode in playlist not found in DB")
 	// =============== NEED WAAAAAAY BETTER ERROR HANDLING HERE!!! ===============
 								}
 							}	
 						})					
 					}
-
-					console.log(episodeArray);
 
 					res.render("playlist/edit.ejs", {
 						user: foundUser,
@@ -417,12 +408,6 @@ router.patch("/:userId/:playlistId", (req, res)=>{
 
 	const finalArray = filteredArray.concat(addArray);
 
-
-	console.log("Episode IDs in Order: ", cleanEpisodeOrder);
-	console.log("Episode IDs to Remove: ", removeArray);
-	console.log("Episode IDs to Add: ", addArray);
-	console.log("Final Episode IDs Array: ", finalArray);
-
 	const dateEdited = new Date();
 
 	const update = {
@@ -519,14 +504,43 @@ router.get("/:userId/:playlistId", (req, res)=>{
 			res.send(err);
 		} else {
 			Playlist.findOne({_id: reqData.playlistId}, (err, foundPlaylist)=>{
-				res.render("playlist/show.ejs", {
-					user: foundUser,
-					header: `${foundUser.username}'s Playlists`,
-					title: "EarFull Playlists",
-					message: req.session.message,
-					loggedIn: req.session.loggedIn,
-					playlist: foundPlaylist
-				})
+
+				if (err) {
+					res.send(err)
+				} else {
+
+					Episode.find({ id: { $in: foundPlaylist.episodes }}, (err, rawEpisodeArray) => {
+						if (err) {
+							res.send(err)
+						} else {
+							let episodeArray = [];
+
+							if (rawEpisodeArray.length > 0) {
+								episodeArray = foundPlaylist.episodes.map( (episodeId) => {
+									for (let t = 0; t < rawEpisodeArray.length; t++) {
+										if (rawEpisodeArray[t]["id"] === episodeId) {
+											return rawEpisodeArray[t];
+										} else {
+											// res.send("ERROR -- episode in playlist not found in DB")
+			// =============== NEED WAAAAAAY BETTER ERROR HANDLING HERE!!! ===============
+										}
+									}	
+								})					
+							}
+
+							res.render("playlist/show.ejs", {
+								user: foundUser,
+								header: `${foundUser.username}'s Playlists`,
+								title: "EarFull Playlists",
+								message: req.session.message,
+								loggedIn: req.session.loggedIn,
+								playlist: foundPlaylist,
+								episodes: episodeArray
+							})
+
+						}
+					})
+				}
 			})
 		}
 	})

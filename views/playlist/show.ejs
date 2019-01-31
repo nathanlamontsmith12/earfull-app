@@ -22,12 +22,12 @@
 		<h3><%=playlist.name%> &nbsp;</h3>
 		<h4>Episodes: </h4>
 		<ol>
-		<% for (let m = 0; m < playlist.episodes.length; m++) { -%>
-			<li id="<%=playlist.episodes[m]%>"><%=playlist.episodes[m]%></li>
+		<% for (let m = 0; m < episodes.length; m++) { -%>
+			<li> <%=episodes[m].podcast_title_original%><br />
+				<a href="/earfull/episodes/<%=episodes[m].id%>"><%=episodes[m].title_original%></a></li>
 		<% } -%>
 		</ol>
 	</main>
-
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>
 
@@ -36,10 +36,9 @@
 
 <!-- Trying to "import" playlist data into all following javascript -->
 <!-- jquery and jqueryUI -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-<!-- Our script, stored in public/static  -->
-	<script type="text/javascript" src="/static/playlistDisplay.js"></script>
+	<script type="text/javascript" src="/static/playlistDisplay.js"></script> -->
 </body>
 
 </html>
