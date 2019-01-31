@@ -73,13 +73,13 @@ const playlistSchema = mongoose.Schema({
 					<!-- <h1>Episode Search Results</h1> -->
 					<% if (results.length > 0) { -%>
 						<div class="results-box">
-							<% for (var i = 0; i < results.length; i++) { -%>
+							<% for (let i = 0; i < results.length; i++) { -%>
 								<div class="single-result">
 									<h2 class="search-pod-title"><%=results[i].podcast_title_original%></h2>
 									<h3 class="search-title"><%=results[i].title_original%></h3>
 									<% let shortDescription = ""%>
 									<% let stopCounter = 0 %>
-									<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
+									<% for (let j = 0; j < results[i].description_original.length; j++) { -%>
 										<% if (results[i].description_original[j] === ".") { -%>
 											<% stopCounter++ %>
 											<% if (stopCounter === 3) { -%>
@@ -146,11 +146,9 @@ const playlistSchema = mongoose.Schema({
 					<button id="save-btn">Save Changes</button> <br />	
 						<input id="deleteList" name="deleteList" value=""> 
 						<input id="addList" name="addList" value="">
-<!-- 						<input hidden name="userId" value="">
-						<input hidden name="playlistId" value=""> -->
 						<div id="hidden-episode-list"> 
-							<% for (var i = 0; i < episodes.length; i++) { -%>
-								<input name="<%=i%>" value="<%=episodes[i]._id%>">	
+							<% for (let i = 0; i < episodes.length; i++) { -%>
+								<input name="<%=i%>" value="<%=episodes[i].id%>">	
 							<% } -%>
 						</div>
 					</form>
