@@ -1,6 +1,7 @@
 // ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 const unirest = require("unirest")
 const User = require("../models/user");
 const Playlist = require("../models/playlist");
@@ -148,6 +149,7 @@ router.get("/:userId/new", (req, res)=>{
 	})
 });
   
+
 // Create Route 
 router.post("/:userId", (req, res)=>{
 
@@ -206,35 +208,74 @@ router.post("/:userId", (req, res)=>{
 
 // Edit Route 
 router.get("/:userId/:playlistId/edit", (req, res)=> {
+
 	const reqData = {
 		userId: req.params.userId,
 		playlistId: req.params.playlistId
 	}
-	console.log(reqData);
+
 	User.findOne({_id: reqData.userId}, (err, foundUser)=>{
 		if (err) {
 			res.send(err);
 		} else {
-			const foundPlaylist = foundUser.playlists.find((playlist)=>{
+
+			const foundPlaylist = foundUser.playlists.find( (playlist)=>{
 				if (playlist._id.toString() === reqData.playlistId) {
 					return true;
 				}
 			})
-			res.render("playlist/edit.ejs", {
-				user: foundUser,
-				playlist: foundPlaylist,
-				message: req.session.message,
-				title: "Edit Playlist",
-				header: `Edit Playlist`,
-				loggedIn: req.session.loggedIn,
-				results: search.results
+
+			console.log("Found playlist: ");
+			console.log(foundPlaylist);
+
+			Episode.find({ id: { $in: foundPlaylist.episodes }}, (err, rawEpisodeArray) => {
+				if (err) {
+					res.send(err)
+				} else {
+
+					console.log("Raw Episode Array: ");
+					console.log(rawEpisodeArray);
+
+					// need to put the episode array in the CORRECT order! 
+					// THEN pass it on to the web page with res.render 
+
+					let episodeArray = [];
+
+					if (rawEpisodeArray.length > 0) {
+						episodeArray = foundPlaylist.episodes.map( (episodeId) => {
+							for (let t = 0; t < rawEpisodeArray.length; t++) {
+								if (rawEpisodeArray[t]["id"] === episodeId) {
+									return rawEpisodeArray[t];
+								} else {
+									console.log("ERROR -- episode not found in DB");
+									// res.send("ERROR -- episode in playlist not found in DB")
+	// =============== NEED WAAAAAAY BETTER ERROR HANDLING HERE!!! ===============
+								}
+							}	
+						})					
+					}
+
+					console.log(episodeArray);
+
+					res.render("playlist/edit.ejs", {
+						user: foundUser,
+						playlist: foundPlaylist,
+						episodes: episodeArray,
+						message: req.session.message,
+						title: "Edit Playlist",
+						header: `Edit Playlist`,
+						loggedIn: req.session.loggedIn,
+						results: search.results
+					})
+				}
 			})
+
 		}
 	})
 });
 
 
-// Update Route 
+// Update Route PART 1
 router.put("/:userId/:playlistId", (req, res)=>{
 
 	// params data from request 
@@ -253,7 +294,6 @@ router.put("/:userId/:playlistId", (req, res)=>{
 
 	// find the playlist in its database, update it   
 	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, {name: req.body.name, lastEdited: dateEdited, $push: {episodes: req.body.episode}}, {new: true}, (err, updatedPlaylist)=> {
-		console.log(updatedPlaylist);
 		if (err) {
 			console.log(err.message);
 			res.send(err);
@@ -264,7 +304,6 @@ router.put("/:userId/:playlistId", (req, res)=>{
 					res.send(err);
 				} 
 				else {
-					console.log(foundUser);
 
 					const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
 						if(playlist._id.toString() === reqData.playlistId) {
@@ -272,10 +311,7 @@ router.put("/:userId/:playlistId", (req, res)=>{
 						}
 					});
 
-					console.log(playlistIndex);
-
 					const deletedItem = foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist);
-					console.log(deletedItem);
 
 					foundUser.save( (err, data)=>{
 						if (err) {
@@ -291,7 +327,144 @@ router.put("/:userId/:playlistId", (req, res)=>{
 		}
 	})
 });
+
  
+// Update Route PART 2 
+router.patch("/:userId/:playlistId", (req, res)=>{ 
+
+	const reqData = {
+		userId: req.params.userId,
+		playlistId: req.params.playlistId
+	}
+
+// FORM of req.body: 
+// 	{ '0': '1asdf',
+//   '1': '2ghjkl',
+//   '2': '3jklp',
+//   '3': '4rteryey',
+//   '4': '5ututi',
+//   deleteList: '',
+//   addList: '2ffc807db25b447a88d2d4544e6ddfe3 ' }
+
+
+// const playlistSchema = mongoose.Schema({
+// 	name: {type: String, require: true, unique: true}
+// 	ownerId: String,
+// 	datePosted: {type: Date, default: Date.now()},
+// 	lastEdited: {type: Date, default: Date.now()},
+// 	episodes: [String] // array of strings of episode IDs!!
+// });
+ 
+	const episodeOrder = [];
+
+	let ind = 0;
+	let convInd = ind.toString();
+
+	while (req.body[convInd]) {
+		episodeOrder.push(req.body[convInd]);
+		ind++;
+		convInd = ind.toString();
+	}
+
+	const cleanEpisodeOrder = episodeOrder.filter((episodeId)=>{
+		if (episodeId) {
+			return true;
+		} else {
+			return false;
+		}
+	})
+
+	let idsToRemove = [];
+
+	if (req.body.deleteList && req.body.deleteList !== "" && req.body.deleteList !== " ") {
+		idsToRemove = req.body.deleteList.split(" ");
+	} else {
+		idsToRemove = [];
+	}
+
+	const removeArray = idsToRemove.filter((episodeId)=>{
+		if (episodeId) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+
+	let idsToAdd = [];
+
+	if (req.body.addList && req.body.addList !== "" && req.body.addList !== " ") {
+		idsToAdd = req.body.addList.split(" ");
+	} else {
+		idsToAdd = [];
+	}
+
+	const addArray = idsToAdd.filter((episodeId)=>{
+		if (episodeId) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+
+
+	const filteredArray = cleanEpisodeOrder.filter( (episodeId) => {
+		if (removeArray.includes(episodeId)) {
+			return false;
+		} else {
+			return true;
+		}
+	})
+
+	const finalArray = filteredArray.concat(addArray);
+
+
+	console.log("Episode IDs in Order: ", cleanEpisodeOrder);
+	console.log("Episode IDs to Remove: ", removeArray);
+	console.log("Episode IDs to Add: ", addArray);
+	console.log("Final Episode IDs Array: ", finalArray);
+
+	const dateEdited = new Date();
+
+	const update = {
+		lastEdited: dateEdited,
+		episodes: finalArray
+	}
+
+	// WHEW -- now we just have to update the playlist in both places where it lives 
+	// in our database. Then redirect to the edit page (or elsewhere)
+
+	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist) => {
+		if (err) {
+			console.log(err.message);
+			res.rend(err)
+		} else {
+			User.findOne( {_id: reqData.userId}, (err, foundUser) => {
+				if (err) {
+					console.log(err.message);
+					res.send(err)
+				} else {
+					const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
+						if(playlist._id.toString() === reqData.playlistId) {
+							return true;
+						}
+					});
+
+					const deletedItem = foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist)
+
+					foundUser.save( (err, data)=>{
+						if (err) {
+							console.log(err.message);
+							res.send(err);
+						} else {
+							res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}`);
+						}
+					})
+				}
+			})
+		}
+	})
+})
+
 
 // Destroy Route 
 router.delete("/:userId/:playlistId", async (req, res)=>{
@@ -336,7 +509,7 @@ router.delete("/:userId/:playlistId", async (req, res)=>{
 
 // Show Route 
 router.get("/:userId/:playlistId", (req, res)=>{
-	console.log("Show Route Fired");
+
 	const reqData = {
 		userId: req.params.userId,
 		playlistId: req.params.playlistId
