@@ -16,23 +16,19 @@
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
 
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	
-	
-	<nav class="userNav">
-		<a href="">Profile</a>
-		<a href="/earfull/playlists/<%=user._id%>">Playlists</a>
-		<a href="">Friends</a>
-		<a href="">Search History</a>
-		<a href="">Comments</a>
-	</nav>
+	<main>
+		<h1><%=user.username%>'s Page </h3>
+		
+		
+		<nav class="userNav">
+			<a href="">Profile</a>
+			<a href="/earfull/playlists/<%=user._id%>">Playlists</a>
+			<a href="">Friends</a>
+			<a href="">Search History</a>
+			<a href="">Comments</a>
+		</nav>
 
-	<h3>Hello, <%=user.username%> </h3>
+	</main>
 
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>

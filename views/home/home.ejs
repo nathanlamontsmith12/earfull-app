@@ -20,15 +20,14 @@
 		<div class="link-row">
 			<a class="home-link" href="/earfull/episodes">Search Episodes</a>
 			<a class="home-link" href="/earfull/podcasts">Search Podcasts</a>
+		</div>
+		<div class="link-row">
 			<% if (loggedIn) { -%>
 				<a class="home-link" href="/earfull/playlists/<%=userId%>">Create Playlists</a>	
 			<% } else { -%>
 				<a class="home-link" href="/earfull/user/auth/login">Login to Create Playlists</a>
-			<% } %>
+			<% } %>	
 		</div>
-
-
-
 	</main>
 
 <!-- Partial for footer -->
