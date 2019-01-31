@@ -343,17 +343,88 @@ router.patch("/:userId/:playlistId", (req, res)=>{
 //   '4': '5ututi',
 //   deleteList: '',
 //   addList: '2ffc807db25b447a88d2d4544e6ddfe3 ' }
-// { userId: '5c50b5c1220edb3e08e3270f',
-//   playlistId: '5c523388d0baf653d7ae4ccc' }
-// { datePosted: 2019-01-30T23:30:16.419Z,
-//   lastEdited: 2019-01-30T23:31:22.881Z,
-//   episodes: [ '1asdf', '2ghjkl', '3jklp', '4rteryey', '5ututi' ],
-//   _id: 5c523388d0baf653d7ae4ccc,
-//   name: 'blueberry',
-//   ownerId: '5c50b5c1220edb3e08e3270f',
-//   __v: 0 }
 
-	
+
+// const playlistSchema = mongoose.Schema({
+// 	name: {type: String, require: true, unique: true}
+// 	ownerId: String,
+// 	datePosted: {type: Date, default: Date.now()},
+// 	lastEdited: {type: Date, default: Date.now()},
+// 	episodes: [String] // array of strings of episode IDs!!
+// });
+
+	const episodeOrder = [];
+
+	let ind = 0;
+	let convInd = ind.toString();
+
+	while (req.body[convInd]) {
+		episodeOrder.push(req.body[convInd]);
+		ind++;
+		convInd = ind.toString();
+	}
+
+	const cleanEpisodeOrder = episodeOrder.filter((episodeId)=>{
+		if (episodeId) {
+			return true;
+		} else {
+			return false;
+		}
+	})
+
+	let idsToRemove = [];
+
+	if (req.body.deleteList && req.body.deleteList !== "" && req.body.deleteList !== " ") {
+		idsToRemove = req.body.deleteList.split(" ");
+	} else {
+		idsToRemove = [];
+	}
+
+	const removeArray = idsToRemove.filter((episodeId)=>{
+		if (episodeId) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+
+	let idsToAdd = [];
+
+	if (req.body.addList && req.body.addList !== "" && req.body.addList !== " ") {
+		idsToAdd = req.body.addList.split(" ");
+	} else {
+		idsToAdd = [];
+	}
+
+	const addArray = idsToAdd.filter((episodeId)=>{
+		if (episodeId) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+
+
+	const filteredArray = cleanEpisodeOrder.filter( (episodeId) => {
+		if (removeArray.includes(episodeId)) {
+			return false;
+		} else {
+			return true;
+		}
+	})
+
+	const finalArray = filteredArray.concat(addArray);
+
+
+	console.log("Episode IDs in Order: ", cleanEpisodeOrder);
+	console.log("Episode IDs to Remove: ", removeArray);
+	console.log("Episode IDs to Add: ", addArray);
+	console.log("Final Episode IDs Array: ", finalArray);
+
+	const dateEdited = new Date();
+
+	// WHEW -- now we just have to update the playlist in both places where it lives 
+	// in our database. Then redirect to the edit page (or elsewhere)
 
 	res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}/edit`)
 })
