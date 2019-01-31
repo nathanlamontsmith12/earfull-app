@@ -11,20 +11,24 @@ const $addBtn = $(".addBtn");
 const $deleteBtns = $("#sortable div li button");
 const $deleteList = $("#deleteList");
 
+const $addToPlaylist = $("#add-to-playlist");
+const $addList = $("#addList");
 
-// ========== INITIAL EPISODE ORDER ==========
+
+// ========== EPISODE ARRAYS ==========
 const initialEpisodeArray = [];
 const deleteEpisodeArray = [];
 const addedEpisodeArray = [];
 
 
-// make initial arrangedEpisodes array 
+// make initial episode array 
 for (let i = 0; i < $episodes.length; i++) {
 	initialEpisodeArray.push( $(`#episode-name-${i}`)[0].innerText );
 }
 
 // console.log(initialEpisodeArray);
 // works!
+
 
 
 // ========== SORT-OF EVENT LISTENER USING JQUERY UI ========== 
@@ -59,12 +63,34 @@ function updateEpisodeArray () {
 		return initialEpisodeArray[newIndex];
 	})
 
-	const $formList = $("#hidden-episode-list li input");
+	const $formList = $("#hidden-episode-list input");
 
 	for (let m = 0; m < $formList.length; m++) {
-		const $input = $(`#hidden-episode-list li:nth-child(${m + 1}) input`);
+		const $input = $(`#hidden-episode-list input:nth-child(${m + 1})`);
 		$input.val(currentEpisodeArray[m]);
 	}
+}
+
+
+function addEpisode (data) {
+
+	// FORM of the "data" being passed in: 
+	
+	// const episodeData = {
+	// 	podcast: evt.currentTarget.dataset.podcast,
+	// 	title: evt.currentTarget.dataset.episode,
+	// 	imgURL: evt.currentTarget.dataset.img,
+	// 	id: evt.currentTarget.dataset.epid
+	// }
+
+	const newAddEpisodeEntry = 
+		$(`<li data-epid="data.id"><strong>${data.podcast}</strong><br />${data.title}</li>`);
+
+	$addToPlaylist.append(newAddEpisodeEntry);
+
+	addedEpisodeArray.push(data.id);
+
+	updateAddForm();
 }
 
 
@@ -96,9 +122,19 @@ function undeleteEntry (episode, origInd) {
 }
 
 
+function updateAddForm () {
+	
+	const newAddFormValue = addedEpisodeArray.reduce( (acc, episode) => {
+		return acc + episode + " "
+	}, "")
+
+	$addList.val(newAddFormValue);
+}
+
+
 function updateDeleteForm () {
 
-	const newDeleteFormValue = deleteEpisodeArray.reduce( (acc, episode)=>{
+	const newDeleteFormValue = deleteEpisodeArray.reduce( (acc, episode) => {
 		return acc + episode + " "
 	}, "")
 
@@ -159,45 +195,15 @@ for (let q = 0; q < $addBtn.length; q++) {
 	$(`#add-${q}`).on("click", (evt) => {
 
 		const episodeData = {
-			podcast: evt.currentTarget.value,
-			title: evt.currentTarget.name,
-			imgURL: evt.currentTarget.src,
-			id: evt.currentTarget.classList[0]
+			podcast: evt.currentTarget.dataset.podcast,
+			title: evt.currentTarget.dataset.episode,
+			imgURL: evt.currentTarget.dataset.img,
+			id: evt.currentTarget.dataset.epid
 		}
 
-		console.log(episodeData);
-		addedEpisodeArray.push(episodeData);
+		addEpisode(episodeData);
 
 		$(`#add-${q}`).css("opacity", "0.3");
 		$(`#add-${q}`).off();
 	})
 }
-
-
-// <button id="add-0" class="36e88bffa12c43d6935234a07c2eefe1 addBtn" value="Well This Sucks" name="Doughboys! with Mike Mitchell &amp; Nick Wiger" src="https://d3sv2eduhewoas.cloudfront.net/channel/image/6ae7187c29434f85846eb242fd42c7f4.jpeg">Add to faves</button>
-
-
-// for (let i = 0; i < $episodes.length; i++) {
-// 	$(`#${i}`).on("mousedown", (evt)=>{
-// 	})
-// }
-
-
-// $save.on("click", (evt)=>{
-// })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

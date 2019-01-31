@@ -94,7 +94,7 @@ const playlistSchema = mongoose.Schema({
 									<p class="search-desc"><%=shortDescription%></p>
 									<div class="listen-link-container">
 										<a class="listen-link" href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
-										<button id="add-<%=i%>" class="<%=results[i].id%> addBtn" value="<%=results[i].podcast_title_original%>" name="<%=results[i].title_original%>" src="<%=results[i].thumbnail%>">Add to <%=playlist.name%></button>
+										<button id="add-<%=i%>" class="addBtn" data-epid="<%=results[i].id%>" data-podcast="<%=results[i].podcast_title_original%>" data-episode="<%=results[i].title_original%>" data-img="<%=results[i].thumbnail%>">Add to <%=playlist.name%></button>
 									</div>
 								</div>
 								<% shortDescription = "" %>
@@ -130,16 +130,20 @@ const playlistSchema = mongoose.Schema({
 					</ul>
 					<br />
 					
+					<h4>Added to <%=playlist.name%>:</h4>
+					<ul id="add-to-playlist">
+					</ul>
 					
 					<!-- add hidden attribute to delete list, and OL, when done -->
 					<form>
 					<button id="save-btn">Save Changes</button> <br />	
-						<input hidden id="deleteList" name="deleteList" value=""> 
-						<ol hidden id="hidden-episode-list"> 
+						<input id="deleteList" name="deleteList" value=""> 
+						<input id="addList" name="addList" value="">
+						<div id="hidden-episode-list"> 
 							<% for (var i = 0; i < playlist.episodes.length; i++) { -%>
-								<li><input name="<%=i%>" value="<%=playlist.episodes[i]%>"></li>	
+								<input name="<%=i%>" value="<%=playlist.episodes[i]%>">	
 							<% } -%>
-						</ol>
+						</div>
 					</form>
 				</div>
 			</div>
