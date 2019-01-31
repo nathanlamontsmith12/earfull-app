@@ -236,7 +236,7 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 
 					let episodeArray = [];
 
-					if (rawEpisodeArray) {
+					if (rawEpisodeArray.length > 0) {
 						episodeArray = foundPlaylist.map( (episodeId) => {
 							for (let t = 0; t < rawEpisodeArray.length; t++) {
 								if (rawEpisodeArray[t]._id.toString() === episodeId) {
