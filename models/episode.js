@@ -9,6 +9,7 @@ const episodeSchema = mongoose.Schema({
 	podcast_title_original: String,
 	title_original: String,
 	podcast_id: String,
+	publisher_original: String,
 	id: {type: String, unique: true, required: true},
 	audio: String,
 	image: String,

@@ -96,7 +96,6 @@ router.get("/:id", async (req, res) => {
 		const podcastofEpisode = await Podcast.findOne({id: foundEpisode.podcast_id})
 		// if results are null 
 
-		// ==== Create Podcast in DB, if doesn't yet exist ====
 		if 	(!podcastofEpisode) {
 			res.render("episodes/show.ejs", {
 				podcastFound: false,
@@ -106,6 +105,9 @@ router.get("/:id", async (req, res) => {
 				title: foundEpisode.title_original,
 				header: foundEpisode.title_original
 			})
+
+			
+			// ==== Create Podcast in DB, if doesn't yet exist ==== NOT WORKING YET
 			// query = foundEpisode.podcast_title_original
 			// offset = 10
 			// // Query the API for podcast of podcast name
