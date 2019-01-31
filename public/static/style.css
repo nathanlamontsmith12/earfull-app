@@ -137,10 +137,26 @@ a {
 	margin-bottom: 0;
 }
 
+.episode-search-container {
+	width: 50%;
+}
+
+.playlist-container {
+	width: 30%;
+	position: fixed;
+}
+
+
 .listen-link-container {
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
+}
+
+.main-container-playlist {
+	display: flex;
+	justify-content: space-around;
+	flex-direction: row;
 }
 
 main {

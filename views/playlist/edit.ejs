@@ -47,48 +47,106 @@ const playlistSchema = mongoose.Schema({
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
 
+<!-- 	<br />
 	<br />
 	<br />
 	<br />
 	<br />
-	<br />
-	<br />
+	<br /> -->
+	<main>
+		<div class="main-container-playlist">
 
-	<h3><%=playlist.name%></h3>
-	<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=PUT" method="POST">
-		<input type="text" name="name" value="<%=playlist.name%>"><br />
-		<input type="text" name="episode" placeholder="Episode"><br />
-		<button>Update Playlist</button>
-	</form>
-	<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
-		<button>Delete Playlist</button>
-	</form>
-	<ul id="sortable" class="playlist episodeDisplay">
-		<% for (let i = 0; i < playlist.episodes.length; i++) { -%>
-			<div id="<%=i%>">
-				<li class="default"><button class="remove" id="<%=i%>-remove">x</button><span id="episode-name-<%=i%>">
-				<%=playlist.episodes[i]%></span>
-				</li>
+			<div class="episode-search-container">
+				<h1>Episodes</h1>
+				<form class="search-form" method="POST" action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>/search">
+					<input class="search-bar" type="text" placeholder="Search for an episode" name="query">
+			<!-- 		<select name="type">
+						<option value="episode">Episode</option>
+						<option value="podcast">Podcast</option>
+					</select> -->
+					<button class="search-button">Search</button>
+				</form>
+
+
+				<!-- <h1>Episode Search Results</h1> -->
+				<% if (results.length > 0) { -%>
+					<div class="results-box">
+						<% for (var i = 0; i < results.length; i++) { -%>
+							<div class="single-result">
+								<h2 class="search-pod-title"><%=results[i].podcast_title_original%></h2>
+								<h3 class="search-title"><%=results[i].title_original%></h3>
+								<% let shortDescription = ""%>
+								<% let stopCounter = 0 %>
+								<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
+									<% if (results[i].description_original[j] === ".") { -%>
+										<% stopCounter++ %>
+										<% if (stopCounter === 3) { -%>
+											<% shortDescription += "."%>
+											<% stopCounter = 0 %>
+											<% break %>								
+										<% } %>
+									<% } else { -%>
+										<%  shortDescription += results[i].description_original[j]%>
+									<% } -%>		
+								<% } -%>
+								<div class="desc-pic-container clearfix">
+									<img class="search-pic" src="<%=results[i].thumbnail%>">
+									<p class="search-desc"><%=shortDescription%></p>
+									<div class="listen-link-container">
+										<a class="listen-link" href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
+									</div>
+								</div>
+								<% shortDescription = "" %>
+								
+								<% if (i < results.length - 1) { %>
+									<hr>		
+								<% } %>
+							</div>
+						<% } -%>
+					</div>	
+				<% } -%>
 			</div>
-		<% } -%>
-	</ul>
-	<br />
-	
-	
-	<!-- add hidden attribute to delete list, and OL, when done -->
-	<form>
-	<button id="save-btn">Save Changes</button> <br />	
-		<input hidden id="deleteList" name="deleteList" value=""> 
-		<ol hidden id="hidden-episode-list"> 
-			<% for (var i = 0; i < playlist.episodes.length; i++) { -%>
-				<li><input name="<%=i%>" value="<%=playlist.episodes[i]%>"></li>	
-			<% } -%>
-		</ol>
-	</form>
-<!-- Partial for footer -->
-	<%- include("../partials/footer") %>
 
+			<div>
+				<div class="playlist-container">
+					<h3><%=playlist.name%></h3>
+					<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=PUT" method="POST">
+						<input type="text" name="name" value="<%=playlist.name%>"><br />
+						<input type="text" name="episode" placeholder="Episode"><br />
+						<button>Update Playlist</button>
+					</form>
+					<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
+						<button>Delete Playlist</button>
+					</form>
+					<ul id="sortable" class="playlist episodeDisplay">
+						<% for (let i = 0; i < playlist.episodes.length; i++) { -%>
+							<div id="<%=i%>">
+								<li class="default"><button class="remove" id="<%=i%>-remove">x</button><span id="episode-name-<%=i%>">
+								<%=playlist.episodes[i]%></span>
+								</li>
+							</div>
+						<% } -%>
+					</ul>
+					<br />
+					
+					
+					<!-- add hidden attribute to delete list, and OL, when done -->
+					<form>
+					<button id="save-btn">Save Changes</button> <br />	
+						<input hidden id="deleteList" name="deleteList" value=""> 
+						<ol hidden id="hidden-episode-list"> 
+							<% for (var i = 0; i < playlist.episodes.length; i++) { -%>
+								<li><input name="<%=i%>" value="<%=playlist.episodes[i]%>"></li>	
+							<% } -%>
+						</ol>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+	<!-- Partial for footer -->
+	<%- include("../partials/footer") %>
 <!-- Our script, stored in public/static  -->
-	<script type="text/javascript" src="/static/playlistDisplay.js"></script>
+<script type="text/javascript" src="/static/playlistDisplay.js"></script>
 </body>
 </html>

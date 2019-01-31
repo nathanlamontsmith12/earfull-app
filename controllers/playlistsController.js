@@ -1,11 +1,19 @@
 // ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
+const unirest = require("unirest")
 const User = require("../models/user");
 const Playlist = require("../models/playlist");
+const Episode = require("../models/episode")
 
 
- 
+ // ========== DATA OBJECT ==========
+const search = {
+	results: []
+}
+
+
+
 // ========== FUNCTIONS ==========
 // Authentication check -- kick user back to 
 // login if the current user's ID does not match 
@@ -28,6 +36,55 @@ function checkLogin (reqSession, userId, response) {
 		}
 	}
 }
+
+
+// ========== SEARCH POST THEN REDIRECT ==========
+
+router.post("/:userId/:playlistId/search", async (req, res) => {
+
+	const reqData = {
+		userId: req.params.userId,
+		playlistId: req.params.playlistId
+	}
+
+	try {
+		query = req.body.query
+		offset = 10
+		// Query the API
+		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query )
+		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+		.header("Accept", "application/json")
+		.end ((data) => {
+			// Add ids from Api query to array
+			const queryIdArray = data.body.results.map(episode => episode.id)
+			// Find Episodes that have the same Id as query id Array
+			Episode.find({id: {$in: queryIdArray}}, (err, extantEpisodeArray) => {
+				if (err) {
+					res.send(err)
+				} else {
+					//Find Ids of episodes not to create
+					const extantIdArray = extantEpisodeArray.map(episode => episode.id)
+					// Filter out episodes not to create
+					const epsToAdd = data.body.results.filter(result => !extantIdArray.includes(result.id))
+					// Create remaining episodes in query
+					Episode.create(epsToAdd, (err, createdEpisodes) => {
+						if (err) {
+							res.send(err)
+						} else {
+							search.results = data.body.results; 
+							res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}/edit`)
+						}
+					})
+				}
+			})
+		})
+	} catch (err) {
+		console.log(err);
+		res.send(err)
+	}
+})
+
+
 
 // ========== PLAYLIST ROUTES ==========
 
@@ -169,7 +226,8 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 				message: req.session.message,
 				title: "Edit Playlist",
 				header: `Edit Playlist`,
-				loggedIn: req.session.loggedIn
+				loggedIn: req.session.loggedIn,
+				results: search.results
 			})
 		}
 	})
