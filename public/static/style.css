@@ -131,6 +131,33 @@ p, a, div {
 	margin: 4vh 0;
 }
 
+/*==== PLAYLIST INDEX PAGE STYLING ====*/
+
+.playlist-index-link {
+	background-color: cadetblue;
+	padding: 4px;
+	border-radius: 5px;
+	border: 2px solid black;
+}
+
+.playlist-index-link-container {
+	width: 20vw;
+	display: flex;
+	justify-content: center;
+}
+
+.index-playlist-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.index-playlist-item {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
 /*==== PLAYLIST EDIT PAGE STYLING ====*/
 
 .input-form-playlist {

@@ -38,27 +38,25 @@ render: {
 	<main>
 		<h1><%=user.username%>'s Playlists</h1>
 
-		<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a> <br />
+		<a class="playlist-index-link" href="/earfull/playlists/<%=user._id%>/new">New Playlist</a> <br />
 
-		<ul>
+		<div class="index-playlists-container">
 		<% for (let m = 0; m < playlists.length; m++) { -%>
-			<li>
-				<div>
-					<div>
-					<h3><%=playlists[m].name%> &nbsp;</h3> <br /> 
-					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>">View</a> 
+			<div class="index-playlist-item">
+				<h3><%=playlists[m].name%> &nbsp;</h3>
+				<div class="playlist-index-link-container">
+					<a class="playlist-index-link" href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>">View</a> 
 					<br />
-					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Edit</a>
-<!-- 						<ol>
-							<% // for (let i = 0; i < playlists[m].episodes.length; i++) { -%>
-								<li><%=// playlists[m].episodes[i]%></li>
-							<%// } -%>
-						</ol> -->
-					</div>
+					<a class="playlist-index-link" href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Edit</a>
 				</div>
-			</li>
+<!-- 					<ol>
+					<% // for (let i = 0; i < playlists[m].episodes.length; i++) { -%>
+						<li><%=// playlists[m].episodes[i]%></li>
+					<%// } -%>
+				</ol> -->	
+			</div>
 		<% } -%>
-		</ul>
+		</div>
 	</main>
 
 <!-- Partial for footer -->
