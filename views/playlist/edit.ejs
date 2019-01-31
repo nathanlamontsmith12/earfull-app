@@ -122,10 +122,13 @@ const playlistSchema = mongoose.Schema({
 						<button>Delete Playlist</button>
 					</form>
 					<ul id="sortable" class="playlist episodeDisplay">
-						<% for (let i = 0; i < playlist.episodes.length; i++) { -%>
+						<% for (let i = 0; i < episodes.length; i++) { -%>
 							<div id="<%=i%>">
-								<li class="default"><button class="remove" id="<%=i%>-remove">x</button><span id="episode-name-<%=i%>">
-								<%=playlist.episodes[i]%></span>
+								<li class="default">
+									<button class="remove" id="<%=i%>-remove">x</button>
+									<span id="podcast-title-<%=i%>"><strong><%=episodes[i].podcast_title_original%></strong></span> <br />
+									<span id="episode-name-<%=i%>">
+								<%=episodes[i].title_original%></span>
 								</li>
 							</div>
 						<% } -%>
@@ -144,8 +147,8 @@ const playlistSchema = mongoose.Schema({
 <!-- 						<input hidden name="userId" value="">
 						<input hidden name="playlistId" value=""> -->
 						<div id="hidden-episode-list"> 
-							<% for (var i = 0; i < playlist.episodes.length; i++) { -%>
-								<input name="<%=i%>" value="<%=playlist.episodes[i]%>">	
+							<% for (var i = 0; i < episodes.length; i++) { -%>
+								<input name="<%=i%>" value="<%=episodes[i]._id%>">	
 							<% } -%>
 						</div>
 					</form>

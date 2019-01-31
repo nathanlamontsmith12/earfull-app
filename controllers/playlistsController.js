@@ -207,11 +207,12 @@ router.post("/:userId", (req, res)=>{
 
 // Edit Route 
 router.get("/:userId/:playlistId/edit", (req, res)=> {
+
 	const reqData = {
 		userId: req.params.userId,
 		playlistId: req.params.playlistId
 	}
-	console.log(reqData);
+
 	User.findOne({_id: reqData.userId}, (err, foundUser)=>{
 		if (err) {
 			res.send(err);
@@ -223,8 +224,6 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 				}
 			})
 
-			console.log(foundPlaylist);
-
 			Episode.find({ "_id": { $in: foundPlaylist }}, (err, rawEpisodeArray) => {
 				if (err) {
 					res.send(err)
@@ -235,22 +234,26 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 					// need to put the episode array in the CORRECT order! 
 					// THEN pass it on to the web page with res.render 
 
-// 					const episodeArray = foundPlaylist.map( (episodeId) => {
-// 						for (let t = 0; t < rawEpisodeArray.length; t++) {
-// 							if (rawEpisodeArray[t]._id.toString() === episodeId) {
-// 								return rawEpisodeArray[t];
-// 							} else {
-// 								console.log("ERROR -- episode not found in DB");
-// 								res.send("ERROR -- episode in playlist not found in DB")
-// // =============== NEED WAAAAAAY BETTER ERROR HANDLING HERE!!! ===============
-// 							}
-// 						}	
-// 					})
+					let episodeArray = [];
+
+					if (rawEpisodeArray) {
+						episodeArray = foundPlaylist.map( (episodeId) => {
+							for (let t = 0; t < rawEpisodeArray.length; t++) {
+								if (rawEpisodeArray[t]._id.toString() === episodeId) {
+									return rawEpisodeArray[t];
+								} else {
+									console.log("ERROR -- episode not found in DB");
+									res.send("ERROR -- episode in playlist not found in DB")
+	// =============== NEED WAAAAAAY BETTER ERROR HANDLING HERE!!! ===============
+								}
+							}	
+						})					
+					}
 
 					res.render("playlist/edit.ejs", {
 						user: foundUser,
 						playlist: foundPlaylist,
-						episodes: rawEpisodeArray,
+						episodes: episodeArray,
 						message: req.session.message,
 						title: "Edit Playlist",
 						header: `Edit Playlist`,
@@ -423,10 +426,44 @@ router.patch("/:userId/:playlistId", (req, res)=>{
 
 	const dateEdited = new Date();
 
+	const update = {
+		lastEdited: dateEdited,
+		episodes: finalArray
+	}
+
 	// WHEW -- now we just have to update the playlist in both places where it lives 
 	// in our database. Then redirect to the edit page (or elsewhere)
 
-	res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}/edit`)
+	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist) => {
+		if (err) {
+			console.log(err.message);
+			res.rend(err)
+		} else {
+			User.findOne( {_id: reqData.userId}, (err, foundUser) => {
+				if (err) {
+					console.log(err.message);
+					res.send(err)
+				} else {
+					const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
+						if(playlist._id.toString() === reqData.playlistId) {
+							return true;
+						}
+					});
+
+					const deletedItem = foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist)
+
+					foundUser.save( (err, data)=>{
+						if (err) {
+							console.log(err.message);
+							res.send(err);
+						} else {
+							res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}/edit`);
+						}
+					})
+				}
+			})
+		}
+	})
 })
 
 
