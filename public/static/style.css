@@ -1,4 +1,5 @@
 /*==== TAG SELECTORS ====*/
+
 html {
 	height: 100%;
 }
@@ -44,11 +45,19 @@ a {
 }
 
 /*==== CLEAR FIX ====*/
+
 .clearfix::after {
   content: "";
   clear: both;
   display: table;
 }
+
+/*==== Login Page Styling ====*/
+
+.input-field {
+	margin-top: 100px;
+}
+
 
 /*==== NAV STYLING ==== */
 
@@ -78,8 +87,8 @@ a {
 	align-items: center;
 }
 
-
 /*==== CONTAINERS ====*/
+
 .main-container {
 	width: 80vw;
 	display: flex;
@@ -105,8 +114,6 @@ a {
 	flex-direction: row;
 }
 
-
-
 .results-box {
 	padding: 2vh;
 	border: 2px solid black;
@@ -116,6 +123,7 @@ a {
 }
 
 /*==== SHOW PAGE STYLING ====*/
+
 .show-pic {
 	float: right;
 	margin-left: .5vw;
@@ -127,9 +135,8 @@ a {
 	margin: 0;
 }
 
-
-
 /*==== SEARCH BAR STYLING ====*/
+
 .search-form {
 	display:flex;
 	align-items: center;
@@ -146,9 +153,11 @@ a {
 .search-button {
 	height: 3vh;
 	font-size: 15px;
+	min-width: 200px;
 }
 
 /*==== SEARCH RESULTS STYLING ==== */
+
 .search-container {
 	width: 80vw;
 	display: flex;
