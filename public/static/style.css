@@ -79,9 +79,25 @@ p, a, div {
 
 /*==== Login Page Styling ====*/
 
-.input-field {
-	margin-top: 4vh;
+.input-form {
+	width: 30vw;
+	margin-top: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
+
+.input-box {
+	margin-top: 5px;
+	height: 20px;
+	width: 100%;
+}
+
+.input-button {
+	width: 40%;
+	height: 20px;
+}
+
 
 /*===== HOME PAGE STYLING ====*/
 
@@ -213,6 +229,13 @@ p, a, div {
 	vertical-align: top;
 	text-align: left;
 	margin: 0;
+}
+
+.show-link {
+	background-color: cadetblue;
+	padding: 4px;
+	border-radius: 5px;
+	border: 2px solid black;
 }
 
 /*==== SEARCH BAR STYLING ====*/

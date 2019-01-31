@@ -10,14 +10,15 @@
 			<h1><%=episode.podcast_title_original%></h1>
 			<h2><%=episode.title_original%></h2>
 
-      <% if (podcastFound) { -%>
-       <a href="/earfull/podcasts/<%=episode.podcast_id%>">Check out more <%=episode.podcast_title_original%></a>
-      <% } %>
 
-			<div class="desc-pic-container">
-				<img class="show-pic" src="<%=episode.image%>">
-				<p class="show-desc">&nbsp;&nbsp;&nbsp;&nbsp;<%=episode.description_original%></p>
-			</div>
+      <div class="desc-pic-container">
+        <img class="show-pic" src="<%=episode.image%>">
+        <p class="show-desc">&nbsp;&nbsp;&nbsp;&nbsp;<%=episode.description_original%></p>
+      </div>
+
+      <% if (podcastFound) { -%>
+       <a class="show-link" href="/earfull/podcasts/<%=episode.podcast_id%>">Check out more <%=episode.podcast_title_original%></a>
+      <% } %>
 
 			<figure>
 				<!-- <figcaption>Listen</figcaption> -->
