@@ -26,8 +26,13 @@
 			<div class="results-box">
 				<% for (var i = 0; i < results.length; i++) { -%>
 					<div class="single-result">
-						<h2 class="search-pod-title"><%=results[i].podcast_title_original%></h2>
-						<h3 class="search-title"><%=results[i].title_original%></h3>
+						<div class="episode-title-row">
+							<h3 class="search-title"><%=results[i].podcast_title_original%></h3>
+							<h4 class="search-title"><%=results[i].title_original%></h4>
+							<%let d = new Date(results[i].pub_date_ms)%>
+							<%let dateEnglish = d.toLocaleDateString()%>
+							<h4 class="search-title"><%=dateEnglish%></h4>
+						</div>
 						<% let shortDescription = ""%>
 						<% let stopCounter = 0 %>
 						<% for (var j = 0; j < results[i].description_original.length; j++) { -%>

@@ -38,6 +38,7 @@ const playlistSchema = mongoose.Schema({
 <html>
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" integrity="sha256-p6xU9YulB7E2Ic62/PX+h59ayb3PBJ0WFTEQxq0EjHw=" crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/css?family=Patua+One|Roboto" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/static/style.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
@@ -74,8 +75,13 @@ const playlistSchema = mongoose.Schema({
 						<div class="results-box">
 							<% for (var i = 0; i < results.length; i++) { -%>
 								<div class="single-result">
-									<h2 class="search-pod-title"><%=results[i].podcast_title_original%></h2>
-									<h3 class="search-title"><%=results[i].title_original%></h3>
+									<div class="episode-title-row">
+										<h5 class="search-title"><%=results[i].podcast_title_original%></h5>
+										<h5 class="search-title"><%=results[i].title_original%></h5>
+										<%let d = new Date(results[i].pub_date_ms)%>
+										<%let dateEnglish = d.toLocaleDateString()%>
+										<h5 class="search-title"><%=dateEnglish%></h5>
+									</div>
 									<% let shortDescription = ""%>
 									<% let stopCounter = 0 %>
 									<% for (var j = 0; j < results[i].description_original.length; j++) { -%>

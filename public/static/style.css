@@ -19,7 +19,6 @@ main {
 	padding-top: 4vh;
 	padding-bottom: 2vh;
 	min-height: calc(100% - 4vh);
-
 }
 
 header {
@@ -40,12 +39,11 @@ footer {
 	display: flex;
 	align-items: center;
 	justify-content: center
-
-
 }
 
 a {
 	margin: 0 .5vw;
+	text-decoration: none;
 }
 
 button {
@@ -55,6 +53,18 @@ button {
 	cursor: pointer;
 	outline: inherit;
 	background-color: lightgray;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: 'Patua One', monospace;
+}
+
+h1 {
+	font-size: 40px;
+}
+
+p, a, div {
+	font-family: "Roboto", sans-serif;
 }
 
 /*==== CLEAR FIX ====*/
@@ -74,11 +84,13 @@ button {
 /*===== HOME PAGE STYLING ====*/
 
 .main-title {
-	font-size: 50px;
+	font-size: 90px;
+	/*font-family: 'Patua One', cursive;*/
 }
 
 .home-link {
 	height: 4vh;
+	min-height: 10px;
 	font-size: 3vw;
 	background-color: cadetblue;
 	padding: 1vh;
@@ -125,12 +137,12 @@ button {
 }
 
 .logout-button {
-	font-size: 2vh;
-	height: 3vh;
+	font-size: 1.5vh;
+	background-color: lightblue;
 }
 
 .nav-link {
-	font-size: 3vh;
+	font-size: 2.5vh;
 }
 
 /*==== CONTAINERS ====*/
@@ -253,6 +265,8 @@ button {
 
 .search-title {
 	margin: 0;
+	width: 32%;
+	text-align: center;
 }
 
 .search-pod-title {
