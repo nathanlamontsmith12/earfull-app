@@ -1,3 +1,4 @@
+/*==== TAG SELECTORS ====*/
 html {
 	height: 100%;
 }
@@ -9,16 +10,47 @@ body {
 	border: 0;
 }
 
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding-top: 4vh;
+	padding-bottom: 2vh;
+	min-height: calc(100% - 4vh);
+}
+
 header {
 	background-color: lightblue;
 	display: flex;
 	flex-direction: column;
 }
 
-.inputField {
-	margin-top: 100px;
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: 2vh;
+	margin-top: -2vh;
+	clear: both;
+	background-color: olive;
+	display: flex;
+	align-items: center;
+	justify-content: center
 }
 
+a {
+	margin: 0 .5vw;
+}
+
+/*==== CLEAR FIX ====*/
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/*==== NAV STYLING ==== */
 
 .page-title {
 	text-align: center;
@@ -36,41 +68,6 @@ header {
 	width: 100%;
 }
 
-.main-container {
-	width: 80vw;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.search-container {
-	width: 80vw;
-	display: flex;
-	justify-content: space-around;
-}
-
-.search-form {
-	display:flex;
-	align-items: center;
-}
-
-.search-bar {
-	width: 40vw;
-	height: 3vh;
-	margin-right: 1vw;
-	line-height: 100%;
-	font-size: 20px;
-}
-
-.search-button {
-	height: 3vh;
-	font-size: 15px;
-}
-
-.results-box {
-	background-color: lightgray;
-}
-
 .nav-left .nav-right {
 	display: flex;
 }
@@ -81,64 +78,13 @@ header {
 	align-items: center;
 }
 
-.results-box {
-	padding: 2vh;
-	border: 2px solid black;
-	border-radius: 5px;
-	margin: 2vh 0;
-}
 
-a {
-	margin: 0 .5vw;
-}
-
-.show-pic {
-	float: right;
-	margin-left: .5vw;
-}
-
-.show-desc {
-	vertical-align: top;
-	text-align: left;
-	margin: 0;
-}
-
-.search-pic {
-	float: left;
-	clear: left;
-	margin-right: .5vw;
-	overflow: auto;
-
-}
-
-.search-desc {
-	vertical-align: top;
-	text-align: left;
-	height: 100%;
-}	
-
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.episode-title-row {
+/*==== CONTAINERS ====*/
+.main-container {
+	width: 80vw;
 	display: flex;
-	justify-content: space-between;
-	margin-bottom: 1vh;
-}
-
-.search-title {
-	margin: 0;
-}
-
-.search-pod-title {
-	margin-bottom: 0;
-}
-
-.episode-search-container {
-	width: 50%;
+	flex-direction: column;
+	align-items: center;
 }
 
 .playlist-container {
@@ -159,28 +105,90 @@ a {
 	flex-direction: row;
 }
 
-main {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	padding-top: 4vh;
-	padding-bottom: 2vh;
-	min-height: calc(100% - 4vh);
+
+
+.results-box {
+	padding: 2vh;
+	border: 2px solid black;
+	border-radius: 5px;
+	margin: 2vh 0;
+	background-color: lightgray;
 }
 
-footer {
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-	height: 2vh;
-	margin-top: -2vh;
-	clear: both;
-	background-color: olive;
-	display: flex;
-	align-items: center;
-	justify-content: center
+/*==== SHOW PAGE STYLING ====*/
+.show-pic {
+	float: right;
+	margin-left: .5vw;
 }
+
+.show-desc {
+	vertical-align: top;
+	text-align: left;
+	margin: 0;
+}
+
+
+
+/*==== SEARCH BAR STYLING ====*/
+.search-form {
+	display:flex;
+	align-items: center;
+}
+
+.search-bar {
+	width: 40vw;
+	height: 3vh;
+	margin-right: 1vw;
+	line-height: 100%;
+	font-size: 20px;
+}
+
+.search-button {
+	height: 3vh;
+	font-size: 15px;
+}
+
+/*==== SEARCH RESULTS STYLING ==== */
+.search-container {
+	width: 80vw;
+	display: flex;
+	justify-content: space-around;
+}
+
+.episode-title-row {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 1vh;
+}
+
+.search-pic {
+	float: left;
+	clear: left;
+	margin-right: .5vw;
+	overflow: auto;
+}
+
+.search-desc {
+	vertical-align: top;
+	text-align: left;
+	height: 100%;
+}	
+
+.search-title {
+	margin: 0;
+}
+
+.search-pod-title {
+	margin-bottom: 0;
+}
+
+.episode-search-container {
+	width: 50%;
+}
+
+
+
+
 
 
 /* =========== EDIT PLAYLIST INTERACTIVE DISPLAY =========== */
