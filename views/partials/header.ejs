@@ -2,21 +2,25 @@
 	<nav class="nav-bar">
 		<div class="nav-left">
 			<a href="/earfull">Home</a> 
-			<a href="/earfull/podcasts">Podcast Search</a>
-			<a href="/earfull/episodes">Episode Search</a>
+			<a href="/earfull/podcasts">Podcasts</a>
+			<a href="/earfull/episodes">Episodes</a>
+			<!-- <% //if (loggedIn) { -%>
+				<a href="/earfull/playlists/">Playlists</a>		
+			<% //} -%> -->
 		</div>
 		<div class="nav-right">
-			<a href="/earfull/user/auth/register">Create New Account</a>  
+
+			<p><%=message%> &nbsp;</p>
 			<% if (loggedIn) { -%>
-				<form action="/earfull/user/auth/logout" method="POST">
+				<form class="logout-button" action="/earfull/user/auth/logout" method="POST">
 					<button>Logout</button>
 				</form>
 			<% } else { -%>
-					<!-- <br /> -->
-					<a href="/earfull/user/auth/login">Log In</a>
+				<!-- <br /> -->
+				<a href="/earfull/user/auth/register">Create New Account</a>  
+				<a href="/earfull/user/auth/login">Log In</a>
 			<% } -%>
 
-			<p><%=message%> &nbsp;</p>
 		</div>
 	</nav>
 	<!-- <h1 class="page-title"><%=header%></h1> -->

@@ -58,6 +58,24 @@ a {
 	margin-top: 100px;
 }
 
+/*===== HOME PAGE STYLING ====*/
+
+.main-title {
+	font-size: 50px;
+}
+
+.home-link {
+	height: 4vh;
+	font-size: 3vw;
+	background-color: lightblue;
+	padding: 1vh;
+	border: 4px solid black;
+	border-radius: 8px;
+}
+
+.link-row {
+	margin: 4vh 0;
+}
 
 /*==== NAV STYLING ==== */
 
@@ -87,6 +105,10 @@ a {
 	align-items: center;
 }
 
+.logout-button {
+	margin-right: .5vw;
+}
+
 /*==== CONTAINERS ====*/
 
 .main-container {
@@ -96,9 +118,27 @@ a {
 	align-items: center;
 }
 
+.playlist-container-outer {
+	width: 30vw;
+}
+
 .playlist-container {
-	width: 30%;
+	width: 100%;
 	position: fixed;
+	padding-top: 2vh;
+	height: 94vh;
+	background-color: lightblue;
+	padding-left: 10px;
+}
+
+.playlist-search-container-outer {
+	display: flex;
+	justify-content: center;
+	width: 70vw;
+}
+
+.playlist-search-container {
+	width: 80%;
 }
 
 
@@ -110,8 +150,9 @@ a {
 
 .main-container-playlist {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	flex-direction: row;
+	width: 100vw;
 }
 
 .results-box {
@@ -144,16 +185,17 @@ a {
 
 .search-bar {
 	width: 40vw;
-	height: 3vh;
+	height: 25px;
 	margin-right: 1vw;
 	line-height: 100%;
 	font-size: 20px;
 }
 
 .search-button {
-	height: 3vh;
+	height: 25px;
 	font-size: 15px;
-	min-width: 200px;
+	text-align: center;
+	width: 70px;
 }
 
 /*==== SEARCH RESULTS STYLING ==== */
@@ -192,7 +234,7 @@ a {
 }
 
 .episode-search-container {
-	width: 50%;
+	/*width: 50%;*/
 }
 
 

@@ -9,16 +9,27 @@
 <body>
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
+	<main>
+		<h1 class="main-title">EARFULL</h1>
 
-	<% if (loggedIn) { -%>
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<a href="/earfull/user/<%=userId%>">Your Page</a>
-	<% } -%>
+		<div class="link-row">
+			<% if (loggedIn) { -%>
+				<a class="home-link" href="/earfull/user/<%=userId%>">Your Page</a>
+			<% } -%>
+		</div>
+		<div class="link-row">
+			<a class="home-link" href="/earfull/episodes">Search Episodes</a>
+			<a class="home-link" href="/earfull/podcasts">Search Podcasts</a>
+			<% if (loggedIn) { -%>
+				<a class="home-link" href="/earfull/playlists/<%=userId%>">Create Playlists</a>	
+			<% } else { -%>
+				<a class="home-link" href="/earfull/user/auth/login">Login to Create Playlists</a>
+			<% } %>
+		</div>
+
+
+
+	</main>
 
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>
