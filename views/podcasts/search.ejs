@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include("../partials/head", {title: title}) %>
+</head>
+<body>
+	<%- include("../partials/header", {header: header}) %>
+	<main>
+		
+		<h1>Podcasts</h1>
+
+		<form class="search-form" method="POST" action="/earfull/podcasts">
+			<input type="text" name="query" class="search-bar" placeholder="Search for a Podcast">
+			<!-- <select name="type">
+				<option value="episode">Episode</option>
+				<option value="podcast">Podcast</option>
+			</select> -->
+			<button class="search-button">Search</button>
+		</form>
+
+	</main>
+	<%- include("../partials/footer") %>
+</body>
+</html>

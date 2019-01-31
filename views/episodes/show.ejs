@@ -10,6 +10,10 @@
 			<h1><%=episode.podcast_title_original%></h1>
 			<h2><%=episode.title_original%></h2>
 
+      <% if (podcastFound) { -%>
+       <a href="/earfull/podcasts/<%=episode.podcast_id%>">Check out more <%=episode.podcast_title_original%></a>
+      <% } %>
+
 			<div class="desc-pic-container">
 				<img class="show-pic" src="<%=episode.image%>">
 				<p class="show-desc">&nbsp;&nbsp;&nbsp;&nbsp;<%=episode.description_original%></p>
@@ -33,6 +37,36 @@
 	<%- include("../partials/footer") %>
 </body>
 </html>
+
+<!-- const episodeSchema = mongoose.Schema({
+  podcast_title_original: String,
+  title_original: String,
+  podcast_id: String,
+  id: {type: String, unique: true, required: true},
+  audio: String,
+  image: String,
+  thumbnail: String,
+  description_original: String,
+  genres: [Number],
+  pub_date_ms: Number,
+  number: Number,
+  comments: [Comment.schema]
+}); -->
+
+<!-- const podcastSchema = mongoose.Schema({
+  title_original: String,
+  image: String,
+  thumbnail: String,
+  description_original: String,
+  publisher_original: String,
+  listennotes_url: String,
+  lastest_pub_date_ms: Number,
+  genres: [Number],
+  followers: [],
+  id: String,
+  episodes: [Episode.schema],
+  comments: [Comment.schema]
+}); -->
 
 <!-- Example of results from Star Wars query
 

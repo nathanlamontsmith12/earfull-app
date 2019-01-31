@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const unirest = require('unirest');
 const Episode = require('../models/episode')
+const Podcast = require('../models/podcast')
 
 let query = "";
 let type = "";
@@ -46,10 +47,9 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
 	try {
 		query = req.body.query
-		type = req.body.type
 		offset = 10
 		// Query the API
-		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query  )
+		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query )
 		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
 		.header("Accept", "application/json")
 		.end ((data) => {
@@ -89,14 +89,117 @@ router.post("/", async (req, res) => {
 
 // Show page for episodes in Database
 router.get("/:id", async (req, res) => {
-	const foundEpisode = await Episode.findOne({id: req.params.id})
-	res.render("episodes/show.ejs", {
-		loggedIn: req.session.loggedIn,
-		episode: foundEpisode,
-		message: req.session.message,
-		title: foundEpisode.title_original,
-		header: foundEpisode.title_original
-	})
+	try {
+		const foundEpisode = await Episode.findOne({id: req.params.id})
+		// If podcast doesn't exist yet, create it
+		// check Databse for podcast id 
+		const podcastofEpisode = await Podcast.findOne({id: foundEpisode.podcast_id})
+		// if results are null 
+
+		if 	(!podcastofEpisode) {
+			res.render("episodes/show.ejs", {
+				podcastFound: false,
+				loggedIn: req.session.loggedIn,
+				episode: foundEpisode,
+				message: req.session.message,
+				title: foundEpisode.title_original,
+				header: foundEpisode.title_original
+			})
+
+			
+			// ==== Create Podcast in DB, if doesn't yet exist ==== NOT WORKING YET
+			// query = foundEpisode.podcast_title_original
+			// offset = 10
+			// // Query the API for podcast of podcast name
+			// const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=podcast") //&only_in=author" )
+			// .header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+			// .header("Accept", "application/json")
+			// .end ((data) => {
+			// // create podcast
+			// 	if (data.body){
+			// 		// check if podcast ids match
+			// 		// Add ids from Api query to array
+			// 		const queryIdArray = data.body.results.map(podcast => podcast.id)
+			// 		// Find Podcasts that have the same Id as query id Array
+			// 		Podcast.find({id: {$in: queryIdArray}}, (err, extantPodcastArray) => {
+			// 			if (err) {
+			// 				res.send(err)
+			// 			} else {
+			// 				//Find Ids of episodes not to create
+			// 				const extantIdArray = extantPodcastArray.map(podcast => podcast.id)
+			// 				// Filter out episodes not to create
+			// 				const podsToAdd = data.body.results.filter(result => !extantIdArray.includes(result.id))
+			// 				// Create remaining episodes in query
+			// 				Podcast.create(podsToAdd, (err, createdPodcast) => {
+			// 					if (err) {
+			// 						res.send(err)
+			// 					} else { 
+			// 						if (createdPodcast) {
+			// 							console.log(createdPodcast);
+			// 							console.log('Api query worked, podcast created');
+			// 							//render show page
+			// 							res.render("episodes/show.ejs", {
+			// 								podcastFound: true,
+			// 								loggedIn: req.session.loggedIn,
+			// 								episode: foundEpisode,
+			// 								message: req.session.message,
+			// 								title: foundEpisode.title_original,
+			// 								header: foundEpisode.title_original
+			// 							})			
+			// 						} else {
+			// 							console.log('Api query yielded results, but none were correct, no podcast created');
+			// 							res.render("episodes/show.ejs", {
+			// 								podcastFound: false,
+			// 								loggedIn: req.session.loggedIn,
+			// 								episode: foundEpisode,
+			// 								message: req.session.message,
+			// 								title: foundEpisode.title_original,
+			// 								header: foundEpisode.title_original
+			// 							})	
+			// 						}
+			// 					}
+			// 				})
+			// 			}
+			// 		})
+			// 	} else {
+			// 		console.log('Api query yielded no results, no podcast created');
+			// 		res.render("episodes/show.ejs", {
+			// 			podcastFound: false,
+			// 			loggedIn: req.session.loggedIn,
+			// 			episode: foundEpisode,
+			// 			message: req.session.message,
+			// 			title: foundEpisode.title_original,
+			// 			header: foundEpisode.title_original
+			// 		})	
+			// 	}
+			// })
+			
+		} else {
+			console.log('Podcast already exists');
+			//render show page 
+			res.render("episodes/show.ejs", {
+				podcastFound: true,
+				loggedIn: req.session.loggedIn,
+				episode: foundEpisode,
+				message: req.session.message,
+				title: foundEpisode.title_original,
+				header: foundEpisode.title_original
+			})
+		}
+
+	// ==== Render that works just in case
+	// res.render("episodes/show.ejs", { 
+	// 	podcastFound: true,
+	// 	loggedIn: req.session.loggedIn,
+	// 	episode: foundEpisode,
+	// 	message: req.session.message,
+	// 	title: foundEpisode.title_original,
+	// 	header: foundEpisode.title_original
+	// })	
+		
+	} catch (err) {
+		res.send(err)
+	}
 })
 
 // Example of results from Star Wars query
