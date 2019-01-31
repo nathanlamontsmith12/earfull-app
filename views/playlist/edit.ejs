@@ -16,14 +16,16 @@ earfull/playlists/:userId/:playlistId
 Show Route -- GET 
 earfull/playlists/:userId 
 
-render: {
+res.render("playlist/edit.ejs", {
 	user: foundUser,
 	playlist: foundPlaylist,
+	episodes: episodeArray,
 	message: req.session.message,
 	title: "Edit Playlist",
-	header: `Edit Playlist ${foundPlaylist.name}`,
-	loggedIn: req.session.loggedIn
-}
+	header: `Edit Playlist`,
+	loggedIn: req.session.loggedIn,
+	results: search.results
+})
 
 const playlistSchema = mongoose.Schema({
 	name: {type: String, require: true, unique: true}
@@ -134,11 +136,13 @@ const playlistSchema = mongoose.Schema({
 					<ul id="add-to-playlist">
 					</ul>
 					
-					<!-- add hidden attribute to delete list, and OL, when done -->
-					<form>
+					<!-- add hidden attribute to HIDE all but Save Changes button -->
+					<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=PATCH" method="POST">
 					<button id="save-btn">Save Changes</button> <br />	
 						<input id="deleteList" name="deleteList" value=""> 
 						<input id="addList" name="addList" value="">
+<!-- 						<input hidden name="userId" value="">
+						<input hidden name="playlistId" value=""> -->
 						<div id="hidden-episode-list"> 
 							<% for (var i = 0; i < playlist.episodes.length; i++) { -%>
 								<input name="<%=i%>" value="<%=playlist.episodes[i]%>">	

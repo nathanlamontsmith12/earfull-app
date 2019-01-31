@@ -148,6 +148,7 @@ router.get("/:userId/new", (req, res)=>{
 	})
 });
   
+
 // Create Route 
 router.post("/:userId", (req, res)=>{
 
@@ -215,26 +216,56 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 		if (err) {
 			res.send(err);
 		} else {
+
 			const foundPlaylist = foundUser.playlists.find((playlist)=>{
 				if (playlist._id.toString() === reqData.playlistId) {
 					return true;
 				}
 			})
-			res.render("playlist/edit.ejs", {
-				user: foundUser,
-				playlist: foundPlaylist,
-				message: req.session.message,
-				title: "Edit Playlist",
-				header: `Edit Playlist`,
-				loggedIn: req.session.loggedIn,
-				results: search.results
+
+			console.log(foundPlaylist);
+
+			Episode.find({ "_id": { $in: foundPlaylist }}, (err, rawEpisodeArray) => {
+				if (err) {
+					res.send(err)
+				} else {
+
+					console.log(rawEpisodeArray);
+
+					// need to put the episode array in the CORRECT order! 
+					// THEN pass it on to the web page with res.render 
+
+// 					const episodeArray = foundPlaylist.map( (episodeId) => {
+// 						for (let t = 0; t < rawEpisodeArray.length; t++) {
+// 							if (rawEpisodeArray[t]._id.toString() === episodeId) {
+// 								return rawEpisodeArray[t];
+// 							} else {
+// 								console.log("ERROR -- episode not found in DB");
+// 								res.send("ERROR -- episode in playlist not found in DB")
+// // =============== NEED WAAAAAAY BETTER ERROR HANDLING HERE!!! ===============
+// 							}
+// 						}	
+// 					})
+
+					res.render("playlist/edit.ejs", {
+						user: foundUser,
+						playlist: foundPlaylist,
+						episodes: rawEpisodeArray,
+						message: req.session.message,
+						title: "Edit Playlist",
+						header: `Edit Playlist`,
+						loggedIn: req.session.loggedIn,
+						results: search.results
+					})
+				}
 			})
+
 		}
 	})
 });
 
 
-// Update Route 
+// Update Route PART 1
 router.put("/:userId/:playlistId", (req, res)=>{
 
 	// params data from request 
@@ -291,7 +322,42 @@ router.put("/:userId/:playlistId", (req, res)=>{
 		}
 	})
 });
+
  
+// Update Route PART 2 
+router.patch("/:userId/:playlistId", (req, res)=>{ 
+
+	const reqData = {
+		userId: req.params.userId,
+		playlistId: req.params.playlistId
+	}
+
+	console.log("playlist update route PART 2 fired---");
+	console.log(req.body);
+
+// FORM of req.body: 
+// 	{ '0': '1asdf',
+//   '1': '2ghjkl',
+//   '2': '3jklp',
+//   '3': '4rteryey',
+//   '4': '5ututi',
+//   deleteList: '',
+//   addList: '2ffc807db25b447a88d2d4544e6ddfe3 ' }
+// { userId: '5c50b5c1220edb3e08e3270f',
+//   playlistId: '5c523388d0baf653d7ae4ccc' }
+// { datePosted: 2019-01-30T23:30:16.419Z,
+//   lastEdited: 2019-01-30T23:31:22.881Z,
+//   episodes: [ '1asdf', '2ghjkl', '3jklp', '4rteryey', '5ututi' ],
+//   _id: 5c523388d0baf653d7ae4ccc,
+//   name: 'blueberry',
+//   ownerId: '5c50b5c1220edb3e08e3270f',
+//   __v: 0 }
+
+	
+
+	res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}/edit`)
+})
+
 
 // Destroy Route 
 router.delete("/:userId/:playlistId", async (req, res)=>{
