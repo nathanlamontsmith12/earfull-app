@@ -23,7 +23,7 @@
 	<h4>Episodes: </h4>
 	<ol>
 	<% for (let m = 0; m < playlist.episodes.length; m++) { -%>
-		<li>playlist.episodes[m].title</li>
+		<li id="<%=playlist.episodes%>"><%=playlist.episodes%></li>
 	<% } -%>
 	</ol>
 
@@ -34,17 +34,6 @@
 <!-- JavaScript for Playlist Display  -->
 
 <!-- Trying to "import" playlist data into all following javascript -->
-	<script> 
-		const pagePlaylist = {
-			datePosted: <%=playlist.datePosted.toString()%>,
-			lastEdited: <%=playlist.lastEdited.toString()%>,
-			episodes: [],
-			_id: <%=playlist._id.toString()%>,
-			name: <%=playlist._id.toString()%>,
-			ownderId: <%=playlist._id.toString()%>
-		}
-		<%=playlist.episodes.forEach((episodeId)=>{pagePlaylist.episodes.push(episodeId.toString())})%>
-	</script>
 <!-- jquery and jqueryUI -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>

@@ -90,7 +90,7 @@ router.get("/:userId/new", (req, res)=>{
 		}
 	})
 });
-
+  
 // Create Route 
 router.post("/:userId", (req, res)=>{
 
@@ -191,11 +191,10 @@ router.put("/:userId/:playlistId", (req, res)=>{
 	const update = {
 		name: req.body.name,
 		lastEdited: dateEdited,
-		episodes: [],
 	}
 
 	// find the playlist in its database, update it   
-	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist)=> {
+	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, {name: req.body.name, lastEdited: dateEdited, $push: {episodes: req.body.episode}}, {new: true}, (err, updatedPlaylist)=> {
 		console.log(updatedPlaylist);
 		if (err) {
 			console.log(err.message);
@@ -275,9 +274,9 @@ router.delete("/:userId/:playlistId", async (req, res)=>{
 	}
 
 });
+ 
 
-
-// Show Route  
+// Show Route 
 router.get("/:userId/:playlistId", (req, res)=>{
 	console.log("Show Route Fired");
 	const reqData = {

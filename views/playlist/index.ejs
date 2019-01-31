@@ -42,7 +42,7 @@ render: {
 	<br />
 	<br />
 
-	<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a>
+	<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a> <br />
 
 	<ul>
 	<% for (let m = 0; m < playlists.length; m++) { -%>
@@ -53,7 +53,7 @@ render: {
 				<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Edit</a>
 					<ol>
 						<% for (let i = 0; i < playlists[m].episodes.length; i++) { -%>
-							<li>playlists[m].episodes[i].title</li>
+							<li><%=playlists[m].episodes[i]%></li>
 						<% } -%>
 					</ol>
 				</div>

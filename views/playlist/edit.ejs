@@ -36,10 +36,13 @@ const playlistSchema = mongoose.Schema({
 -->
 <!DOCTYPE html>
 <html>
-
-<!-- Partial for head, requires variable "title" -->
-	<%- include("../partials/head", {title: title}) %>
-
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" integrity="sha256-p6xU9YulB7E2Ic62/PX+h59ayb3PBJ0WFTEQxq0EjHw=" crossorigin="anonymous" />
+	<link rel="stylesheet" type="text/css" href="/static/style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+	<title><%=title%></title>
+</head>
 <body>
 <!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
 	<%- include("../partials/header", {header: header}) %>
@@ -60,12 +63,32 @@ const playlistSchema = mongoose.Schema({
 	<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
 		<button>Delete Playlist</button>
 	</form>
-	<ol class="playlist episodeDisplay">
+	<ul id="sortable" class="playlist episodeDisplay">
 		<% for (let i = 0; i < playlist.episodes.length; i++) { -%>
-			<li>playlist.episodes[i].title</li>
+			<div id="<%=i%>">
+				<li class="default"><button class="remove" id="<%=i%>-remove">x</button><span id="episode-name-<%=i%>">
+				<%=playlist.episodes[i]%></span>
+				</li>
+			</div>
 		<% } -%>
-	</ol>
+	</ul>
+	<br />
+	
+	
+	<!-- add hidden attribute to delete list, and OL, when done -->
+	<form>
+	<button id="save-btn">Save Changes</button> <br />	
+		<input hidden id="deleteList" name="deleteList" value=""> 
+		<ol hidden id="hidden-episode-list"> 
+			<% for (var i = 0; i < playlist.episodes.length; i++) { -%>
+				<li><input name="<%=i%>" value="<%=playlist.episodes[i]%>"></li>	
+			<% } -%>
+		</ol>
+	</form>
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>
+
+<!-- Our script, stored in public/static  -->
+	<script type="text/javascript" src="/static/playlistDisplay.js"></script>
 </body>
 </html>
