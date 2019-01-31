@@ -62,30 +62,45 @@ function updateEpisodeArray () {
 		const $input = $(`#hidden-episode-list li:nth-child(${m + 1}) input`);
 		$input.val(currentEpisodeArray[m]);
 	}
-
-	console.log($("#hidden-episode-list li input"));
 }
 
 
-function deleteEntry () {
+function deleteEntry (episode, origInd) {
 
+	// code to change the visual display
+	$(`#episode-name-${origInd}`).css("opacity", "0.3");
+	$(`#${origInd}-remove`).text("+");
+
+	// manipulate the deleted episodes array 
+	deleteEpisodeArray.push(episode);
 }
 
 
-function undeleteEntry () {
+function undeleteEntry (episode, origInd) {
 
+	// code to change the visual display 
+	$(`#episode-name-${origInd}`).css("opacity", "1");
+	$(`#${origInd}-remove`).text("x");
+
+	// manipulate the deleted episodes array 
+	const episodeIndex = deleteEpisodeArray.findIndex((maybeEpisode)=>{
+		if (maybeEpisode === episode) {
+			return true;
+		}
+	});
+
+	deleteEpisodeArray.splice(episodeIndex, 1);
 }
 
 
 function updateDeleteForm () {
 
-	let newDeleteFormValue = "";
+	const newDeleteFormValue = deleteEpisodeArray.reduce( (acc, episode)=>{
+		return acc + episode + " "
+	}, "")
 
-	deleteEpisodeArray.forEach((episode)=>{
+ 	$deleteList.val(newDeleteFormValue);
 
-	})
-
-//	$deleteList.val(newDeleteFormValue);
 }
 
 
@@ -108,8 +123,17 @@ function toggleDeleteEntry (fullId) {
 	// if already there, remove it from that array, and do the "undelete" display change 
 	// then, regardless, update the deleteForm ! 
 
-	console.log(episode);
 
+	if (deleteEpisodeArray.includes(episode)) {
+		undeleteEntry(episode, idNum);
+	} else {
+		deleteEntry(episode, idNum);
+	}
+
+
+	updateDeleteForm();
+
+	console.log($deleteList.val());
 
 // 	console.log(idNum); // --> WORKS
 
