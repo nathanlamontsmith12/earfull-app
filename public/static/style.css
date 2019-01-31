@@ -5,7 +5,7 @@ html {
 }
 
 body {
-	background: lightyellow;
+	background: lightblue;
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -19,6 +19,7 @@ main {
 	padding-top: 4vh;
 	padding-bottom: 2vh;
 	min-height: calc(100% - 4vh);
+
 }
 
 header {
@@ -34,14 +35,26 @@ footer {
 	height: 2vh;
 	margin-top: -2vh;
 	clear: both;
-	background-color: olive;
+	background-color: black;
+	color: lightgray;
 	display: flex;
 	align-items: center;
 	justify-content: center
+
+
 }
 
 a {
 	margin: 0 .5vw;
+}
+
+button {
+	text-align: center;
+	border: 1px solid black;
+	padding: 3px;
+	cursor: pointer;
+	outline: inherit;
+	background-color: lightgray;
 }
 
 /*==== CLEAR FIX ====*/
@@ -67,9 +80,9 @@ a {
 .home-link {
 	height: 4vh;
 	font-size: 3vw;
-	background-color: lightblue;
+	background-color: cadetblue;
 	padding: 1vh;
-	border: 4px solid black;
+	border: 3px solid black;
 	border-radius: 8px;
 	margin: 0 2vh;
 }
@@ -88,12 +101,13 @@ a {
 	display: flex;
 	justify-content: space-between;
 	flex-direction: row;
-	background-color: olive;
+	background-color: cadetblue;
 	align-items: center;
 	height: 4vh;
 	margin: 0;
 	position: fixed;
 	width: 100%;
+	border-bottom: 2px solid black;
 }
 
 .nav-left .nav-right {
@@ -106,8 +120,17 @@ a {
 	align-items: center;
 }
 
-.logout-button {
+.logout-button-form {
 	margin-right: .5vw;
+}
+
+.logout-button {
+	font-size: 2vh;
+	height: 3vh;
+}
+
+.nav-link {
+	font-size: 3vh;
 }
 
 /*==== CONTAINERS ====*/
@@ -127,9 +150,11 @@ a {
 	width: 100%;
 	position: fixed;
 	padding-top: 2vh;
-	height: 94vh;
-	background-color: lightblue;
+	height: calc(92vh - 2px);
+	background-color: cadetblue;
 	padding-left: 10px;
+	border-top: 2px solid black;
+	border-left: 2px solid black;
 }
 
 .playlist-search-container-outer {
@@ -161,7 +186,7 @@ a {
 	border: 2px solid black;
 	border-radius: 5px;
 	margin: 2vh 0;
-	background-color: lightgray;
+	background-color: cadetblue;
 }
 
 /*==== SHOW PAGE STYLING ====*/
