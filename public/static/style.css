@@ -35,7 +35,7 @@ footer {
 	margin-top: -2vh;
 	clear: both;
 	background-color: black;
-	color: lightgray;
+	color: linen;
 	display: flex;
 	align-items: center;
 	justify-content: center
@@ -67,6 +67,10 @@ h1 {
 
 p, a, div {
 	font-family: "Roboto", sans-serif;
+}
+
+hr {
+	background-color: linen;
 }
 
 /*==== CLEAR FIX ====*/
@@ -103,6 +107,7 @@ p, a, div {
 
 .main-title {
 	font-size: 90px;
+	color: black;
 	/*font-family: 'Patua One', cursive;*/
 }
 
