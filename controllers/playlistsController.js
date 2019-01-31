@@ -36,7 +36,7 @@ function checkLogin (reqSession, userId, response) {
 		}
 	}
 }
-
+ 
 
 // ========== SEARCH POST THEN REDIRECT ==========
 

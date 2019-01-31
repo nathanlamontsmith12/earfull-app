@@ -6,6 +6,7 @@ console.log("Connected!");
 // ========== CACHED ELEMENTS ==========
 let $episodes = $("#sortable div");
 const $save = $("#save-btn");
+const $addBtn = $(".addBtn");
 
 const $deleteBtns = $("#sortable div li button");
 const $deleteList = $("#deleteList");
@@ -14,6 +15,8 @@ const $deleteList = $("#deleteList");
 // ========== INITIAL EPISODE ORDER ==========
 const initialEpisodeArray = [];
 const deleteEpisodeArray = [];
+const addedEpisodeArray = [];
+
 
 // make initial arrangedEpisodes array 
 for (let i = 0; i < $episodes.length; i++) {
@@ -150,6 +153,28 @@ for (let i = 0; i < $deleteBtns.length; i++) {
 		toggleDeleteEntry(evt.currentTarget.id.toString());
 	})
 }
+
+
+for (let q = 0; q < $addBtn.length; q++) {
+	$(`#add-${q}`).on("click", (evt) => {
+
+		const episodeData = {
+			podcast: evt.currentTarget.value,
+			title: evt.currentTarget.name,
+			imgURL: evt.currentTarget.src,
+			id: evt.currentTarget.classList[0]
+		}
+
+		console.log(episodeData);
+		addedEpisodeArray.push(episodeData);
+
+		$(`#add-${q}`).css("opacity", "0.3");
+		$(`#add-${q}`).off();
+	})
+}
+
+
+// <button id="add-0" class="36e88bffa12c43d6935234a07c2eefe1 addBtn" value="Well This Sucks" name="Doughboys! with Mike Mitchell &amp; Nick Wiger" src="https://d3sv2eduhewoas.cloudfront.net/channel/image/6ae7187c29434f85846eb242fd42c7f4.jpeg">Add to faves</button>
 
 
 // for (let i = 0; i < $episodes.length; i++) {
