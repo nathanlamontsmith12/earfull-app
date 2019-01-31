@@ -1,12 +1,25 @@
+/*==== TAG SELECTORS ====*/
+
 html {
 	height: 100%;
 }
 
 body {
-	background: lightyellow;
+	background: lightblue;
 	margin: 0;
 	padding: 0;
 	border: 0;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding-top: 4vh;
+	padding-bottom: 2vh;
+	min-height: calc(100% - 4vh);
+
 }
 
 header {
@@ -15,10 +28,70 @@ header {
 	flex-direction: column;
 }
 
-.inputField {
-	margin-top: 100px;
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: 2vh;
+	margin-top: -2vh;
+	clear: both;
+	background-color: black;
+	color: lightgray;
+	display: flex;
+	align-items: center;
+	justify-content: center
+
+
 }
 
+a {
+	margin: 0 .5vw;
+}
+
+button {
+	text-align: center;
+	border: 1px solid black;
+	padding: 3px;
+	cursor: pointer;
+	outline: inherit;
+	background-color: lightgray;
+}
+
+/*==== CLEAR FIX ====*/
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/*==== Login Page Styling ====*/
+
+.input-field {
+	margin-top: 4vh;
+}
+
+/*===== HOME PAGE STYLING ====*/
+
+.main-title {
+	font-size: 50px;
+}
+
+.home-link {
+	height: 4vh;
+	font-size: 3vw;
+	background-color: cadetblue;
+	padding: 1vh;
+	border: 3px solid black;
+	border-radius: 8px;
+	margin: 0 2vh;
+}
+
+.link-row {
+	margin: 4vh 0;
+}
+
+/*==== NAV STYLING ==== */
 
 .page-title {
 	text-align: center;
@@ -28,47 +101,13 @@ header {
 	display: flex;
 	justify-content: space-between;
 	flex-direction: row;
-	background-color: olive;
+	background-color: cadetblue;
 	align-items: center;
 	height: 4vh;
 	margin: 0;
 	position: fixed;
 	width: 100%;
-}
-
-.main-container {
-	width: 80vw;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.search-container {
-	width: 80vw;
-	display: flex;
-	justify-content: space-around;
-}
-
-.search-form {
-	display:flex;
-	align-items: center;
-}
-
-.search-bar {
-	width: 40vw;
-	height: 3vh;
-	margin-right: 1vw;
-	line-height: 100%;
-	font-size: 20px;
-}
-
-.search-button {
-	height: 3vh;
-	font-size: 15px;
-}
-
-.results-box {
-	background-color: lightgray;
+	border-bottom: 2px solid black;
 }
 
 .nav-left .nav-right {
@@ -81,16 +120,76 @@ header {
 	align-items: center;
 }
 
+.logout-button-form {
+	margin-right: .5vw;
+}
+
+.logout-button {
+	font-size: 2vh;
+	height: 3vh;
+}
+
+.nav-link {
+	font-size: 3vh;
+}
+
+/*==== CONTAINERS ====*/
+
+.main-container {
+	width: 80vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.playlist-container-outer {
+	width: 30vw;
+}
+
+.playlist-container {
+	width: 100%;
+	position: fixed;
+	padding-top: 2vh;
+	height: calc(92vh - 2px);
+	background-color: cadetblue;
+	padding-left: 10px;
+	border-top: 2px solid black;
+	border-left: 2px solid black;
+}
+
+.playlist-search-container-outer {
+	display: flex;
+	justify-content: center;
+	width: 70vw;
+}
+
+.playlist-search-container {
+	width: 80%;
+}
+
+
+.listen-link-container {
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+}
+
+.main-container-playlist {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	width: 100vw;
+}
+
 .results-box {
 	padding: 2vh;
 	border: 2px solid black;
 	border-radius: 5px;
 	margin: 2vh 0;
+	background-color: cadetblue;
 }
 
-a {
-	margin: 0 .5vw;
-}
+/*==== SHOW PAGE STYLING ====*/
 
 .show-pic {
 	float: right;
@@ -103,24 +202,34 @@ a {
 	margin: 0;
 }
 
-.search-pic {
-	float: left;
-	clear: left;
-	margin-right: .5vw;
-	overflow: auto;
+/*==== SEARCH BAR STYLING ====*/
 
+.search-form {
+	display:flex;
+	align-items: center;
 }
 
-.search-desc {
-	vertical-align: top;
-	text-align: left;
-	height: 100%;
-}	
+.search-bar {
+	width: 40vw;
+	height: 25px;
+	margin-right: 1vw;
+	line-height: 100%;
+	font-size: 20px;
+}
 
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
+.search-button {
+	height: 25px;
+	font-size: 15px;
+	text-align: center;
+	width: 70px;
+}
+
+/*==== SEARCH RESULTS STYLING ==== */
+
+.search-container {
+	width: 80vw;
+	display: flex;
+	justify-content: space-around;
 }
 
 .episode-title-row {
@@ -128,6 +237,19 @@ a {
 	justify-content: space-between;
 	margin-bottom: 1vh;
 }
+
+.search-pic {
+	float: left;
+	clear: left;
+	margin-right: .5vw;
+	overflow: auto;
+}
+
+.search-desc {
+	vertical-align: top;
+	text-align: left;
+	height: 100%;
+}	
 
 .search-title {
 	margin: 0;
@@ -138,49 +260,12 @@ a {
 }
 
 .episode-search-container {
-	width: 50%;
-}
-
-.playlist-container {
-	width: 30%;
-	position: fixed;
+	/*width: 50%;*/
 }
 
 
-.listen-link-container {
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
-}
 
-.main-container-playlist {
-	display: flex;
-	justify-content: space-around;
-	flex-direction: row;
-}
 
-main {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	padding-top: 4vh;
-	padding-bottom: 2vh;
-	min-height: calc(100% - 4vh);
-}
-
-footer {
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-	height: 2vh;
-	margin-top: -2vh;
-	clear: both;
-	background-color: olive;
-	display: flex;
-	align-items: center;
-	justify-content: center
-}
 
 
 /* =========== EDIT PLAYLIST INTERACTIVE DISPLAY =========== */
