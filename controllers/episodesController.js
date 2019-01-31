@@ -173,6 +173,7 @@ router.get("/:id", async (req, res) => {
 			// 		})	
 			// 	}
 			// })
+			
 		} else {
 			console.log('Podcast already exists');
 			//render show page 

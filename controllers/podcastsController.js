@@ -32,9 +32,9 @@ router.post("/", async (req, res) => {
 				if (err) {
 					res.send(err)
 				} else {
-					//Find Ids of episodes not to create
+					//Find Ids of podcasts not to create
 					const extantIdArray = extantPodcastArray.map(podcast => podcast.id)
-					// Filter out episodes not to create
+					// Filter out podcasts not to create
 					const podsToAdd = data.body.results.filter(result => !extantIdArray.includes(result.id))
 					// Create remaining episodes in query
 					Podcast.create(podsToAdd, (err, createdPodcasts) => {
