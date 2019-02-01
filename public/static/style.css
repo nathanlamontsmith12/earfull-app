@@ -361,3 +361,8 @@ p, a, div {
 
 /* =========== EDIT PLAYLIST INTERACTIVE DISPLAY =========== */
 
+.centerButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

@@ -16,8 +16,12 @@
 		<div class="link-row">
 			<a href="/earfull/playlists/<%=user._id%>">Your Playlists</a>
 			<a href="/earfull/playlists/<%=user._id%>/new">New Playlist</a>
-			<a href="/earfull/playlists/<%=user._id%>/<%=playlist._id%>/edit">Edit</a>
+			<a href="/earfull/playlists/<%=user._id%>/<%=playlist._id%>/edit">Add Episodes</a>
 		</div>
+
+		<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
+			<button class="input-button-playlist">Delete Playlist</button>
+		</form>
 
 		<h3><%=playlist.name%> &nbsp;</h3>
 		<h4>Episodes: </h4>
@@ -36,9 +40,9 @@
 
 <!-- Trying to "import" playlist data into all following javascript -->
 <!-- jquery and jqueryUI -->
-<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-	<script type="text/javascript" src="/static/playlistDisplay.js"></script> -->
+	<script type="text/javascript" src="/static/sortEpisodes.js"></script>
 </body>
 
 </html>

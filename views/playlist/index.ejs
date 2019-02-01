@@ -45,15 +45,20 @@ render: {
 			<li>
 				<div>
 					<div>
-					<h3><%=playlists[m].name%> &nbsp;</h3> <br /> 
-					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>">View</a> 
-					<br />
-					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Edit</a>
-<!-- 						<ol>
-							<% // for (let i = 0; i < playlists[m].episodes.length; i++) { -%>
-								<li><%=// playlists[m].episodes[i]%></li>
-							<%// } -%>
-						</ol> -->
+						<h3><%=playlists[m].name%> &nbsp;</h3> <br /> 
+						<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>">View</a> 
+						<br />
+						<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Add</a>
+						<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
+							<button class="input-button-playlist">Delete Playlist</button>
+						</form>
+						<button>RENAME</button>
+						<div class="update-delete-playlist-form-container">
+							<form class="input-form-playlist" action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=PUT" method="POST">
+								<input class="input-box" type="text" name="name" value="<%=playlist.name%>">
+								<button class="input-button-playlist">RENAME</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</li>
@@ -63,5 +68,6 @@ render: {
 
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>
+	<script type="text/javascript" src="/static/indexPlaylists.js"></script>
 </body>
 </html>

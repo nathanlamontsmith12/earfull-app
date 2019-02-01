@@ -114,53 +114,25 @@ const playlistSchema = mongoose.Schema({
 			<div class="playlist-container-outer">
 				<div class="playlist-container">
 					<h2><%=playlist.name%></h2>
-					<div class="update-delete-playlist-form-container">
-						<form class="input-form-playlist" action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=PUT" method="POST">
-							<input class="input-box" type="text" name="name" value="<%=playlist.name%>">
-							<button class="input-button-playlist">Update Playlist</button>
-						</form>
-						<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
-							<button class="input-button-playlist">Delete Playlist</button>
-						</form>
-					</div>
-
-					<ul id="sortable" class="playlist episodeDisplay">
-						<% for (let i = 0; i < episodes.length; i++) { -%>
-							<div id="<%=i%>">
-								<li class="default">
-									<button class="remove" id="<%=i%>-remove">x</button>
-									<span id="podcast-title-<%=i%>"><strong><%=episodes[i].podcast_title_original%></strong></span> <br />
-									<span id="episode-name-<%=i%>">
-								<%=episodes[i].title_original%></span>
-								</li>
-							</div>
-						<% } -%>
-					</ul>
-					<br />
 					
 					<h4>Added to <%=playlist.name%>:</h4>
+					
 					<ul id="add-to-playlist">
 					</ul>
 					
-					<!-- add hidden attribute to HIDE all but Save Changes button -->
 					<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=PATCH" method="POST">
-					<button id="save-btn">Save Changes</button> <br />
-						<input hidden id="initialEpisodes" name="initialEpisodes" value="">	
-						<input hidden id="deleteList" name="deleteList" value=""> 
-						<input hidden id="addList" name="addList" value="">
-						<div hidden id="hidden-episode-list"> 
-							<% for (let i = 0; i < episodes.length; i++) { -%>
-								<input data-index="<%=i%>" id="<%=i%>-hidden" name="<%=i%>" value="<%=episodes[i].id%>">	
-							<% } -%>
+						<div class="centerButton">
+							<button id="save-btn">Add Episodes</button> <br />
 						</div>
+						<input hidden id="addList" name="addList" value=""> 
 					</form>
-				</div>
+				</div>	
 			</div>
 		</div>
 	</main>
 	<!-- Partial for footer -->
 	<%- include("../partials/footer") %>
 <!-- Our script, stored in public/static  -->
-<script type="text/javascript" src="/static/playlistDisplay.js"></script>
+<script type="text/javascript" src="/static/addEpisodes.js"></script>
 </body>
 </html>

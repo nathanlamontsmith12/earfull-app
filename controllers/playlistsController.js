@@ -197,7 +197,7 @@ router.post("/:userId", (req, res)=>{
 							res.send(err);
 						} else {
 							// redirect to the new playlist show page 
-							res.redirect(`/earfull/playlists/${req.params.userId}/${playlistId}`);
+							res.redirect(`/earfull/playlists/${req.params.userId}/${playlistId}/edit`);
 						}
 					})
 				}
