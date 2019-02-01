@@ -96,9 +96,15 @@ ol {
 	text-align: center;
 }
 
+.flex-column-center {  
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 /*==== Login Page Styling ====*/
 
-.input-form {
+.input-form { 
 	width: 30vw;
 	margin-top: 5px;
 	display: flex;
@@ -420,6 +426,16 @@ ol {
 
 .search-pod-title {
 	margin-bottom: 0;
+}
+
+.listen-link {
+	background-color: linen;
+	color: black;
+	padding: 4px;
+	border-radius: 5px;
+	border: 2px solid black;
+	margin-top: 10px;
+	max-width: 50%;
 }
 
 
