@@ -48,13 +48,13 @@ render: {
 					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>">View</a> 
 					<br />
 					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Add</a>
-					<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
+					<form action="/earfull/playlists/<%=user._id%>/<%=playlists[m]._id%>?_method=DELETE" method="POST">
 						<button class="input-button-playlist">Delete Playlist</button>
 					</form>
 					<button>RENAME</button>
 					<div class="update-delete-playlist-form-container">
-						<form class="input-form-playlist" action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=PUT" method="POST">
-							<input class="input-box" type="text" name="name" value="<%=playlist.name%>">
+						<form class="input-form-playlist" action="/earfull/playlists/<%=user._id%>/<%=playlists[m]._id%>?_method=PUT" method="POST">
+							<input class="input-box" type="text" name="name" value="<%=playlists[m].name%>">
 							<button class="input-button-playlist">RENAME</button>
 						</form>
 					</div>

@@ -19,22 +19,29 @@
 			<a href="/earfull/playlists/<%=user._id%>/<%=playlist._id%>/edit">Add Episodes</a>
 		</div>
 
-		<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
-			<button class="input-button-playlist">Delete Playlist</button>
-		</form>
-		<!-- DIV below might need to include above form ??? -->
 		<div class="playlist-container-show">
 			<h2 class="show-headers"><%=playlist.name%> </h3>
 			<h3 class="show-headers">Episodes: </h4>
-			<ol class="playlist-show-link-container">
+			<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>/sort?_method=PATCH" method="POST">
+				<button id="sort-save-btn">SAVE CHANGES</button>
+				<input id="current-order" type="text" name="episodeArray" val="">
+			</form>
+
+			
+			<ol id="sortable" class="playlist-show-link-container">
 			<% for (let m = 0; m < episodes.length; m++) { -%>
-				<li class="playlist-index-link center" > 			
+				<li id="<%=m%>" title="<%=episodes[m].id%>" class="playlist-index-link center" > 			
 					<a href="/earfull/episodes/<%=episodes[m].id%>"><%=episodes[m].podcast_title_original%> -<br /><%=episodes[m].title_original%></a>
+					<button id="<%=m%>-remove" title="<%=episodes[m].id%>">x</button>
 				</li>
 			<% } -%>
 			</ol>
-		</div>
+			
 
+			<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>?_method=DELETE" method="POST">
+				<button class="input-button-playlist">Delete Playlist</button>
+			</form>
+		</div>
 	</main>
 <!-- Partial for footer -->
 	<%- include("../partials/footer") %>

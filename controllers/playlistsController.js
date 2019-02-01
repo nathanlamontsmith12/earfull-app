@@ -85,7 +85,7 @@ router.post("/:userId/:playlistId/search", async (req, res) => {
 	}
 })
 
-
+  
 
 // ========== PLAYLIST ROUTES ==========
 
@@ -112,7 +112,7 @@ router.get("//", (req, res)=>{
 	res.redirect("/earfull")
 })
 
-
+  
 // Index Route 
 router.get("/:userId", (req, res)=>{
 	User.findOne({_id: req.params.userId}, (err, foundUser)=>{
@@ -448,6 +448,7 @@ router.patch("/:userId/:playlistId", (req, res)=>{
 	});
 
 
+
 	Playlist.findOne( {_id: reqData.playlistId}, (err, foundPlaylist) => {
 		if (err) {
 			console.log(err.message);
@@ -455,7 +456,7 @@ router.patch("/:userId/:playlistId", (req, res)=>{
 		} else {
 
 			// grab old playlist, concat w/ added episodes: 
-			const finalArray = foundPlaylist.episodes.concat(addedEpisodes);
+			const finalArray = foundPlaylist.episodes.concat(addArray);
 
 			// generate new date for "lastEdited" data  
 			const dateEdited = new Date();
@@ -481,7 +482,7 @@ router.patch("/:userId/:playlistId", (req, res)=>{
 								}
 							});
 
-							const deletedItem = foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist)
+							foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist)
 
 							foundUser.save( (err, data)=>{
 								if (err) {
