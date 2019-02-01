@@ -521,54 +521,49 @@ router.patch("/:userId/:playlistId/sort", (req, res) => {
 		lastEdited: dateEdited,
 		episodes: []
 	}
+ 
+	const rawEpisodeArray = req.body.episodeArray.split(" ");
 
-	if (req.body.episodeArray) {
-		const rawEpisodeArray = req.body.episodeArray.split(" ");
+	const cleanEpisodeArray = rawEpisodeArray.filter( (episodeId)=>{
+		if (episodeId && episodeId !== " " && episodeId !== "" && episodeId.length === 32) {
+			return true;
+		} else {
+			return false;
+		}
+	})
 
-		const cleanEpisodeArray = rawEpisodeArray.filter( (episodeId)=>{
-			if (episodeId && episodeId !== " " && episodeId !== "" && episodeId.length === 32) {
-				return true;
-			} else {
-				return false;
-			}
-		})
+	update.episodes = cleanEpisodeArray;
 
-		update.episodes = cleanEpisodeArray;
+	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist) => {
+		if (err) {
+			console.log(err.message);
+			res.rend(err)
+		} else {
+			User.findOne( {_id: reqData.userId}, (err, foundUser) => {
+				if (err) {
+					console.log(err.message);
+					res.send(err)
+				} else {
+					const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
+						if(playlist._id.toString() === reqData.playlistId) {
+							return true;
+						}
+					});
 
-		Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist) => {
-			if (err) {
-				console.log(err.message);
-				res.rend(err)
-			} else {
-				User.findOne( {_id: reqData.userId}, (err, foundUser) => {
-					if (err) {
-						console.log(err.message);
-						res.send(err)
-					} else {
-						const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
-							if(playlist._id.toString() === reqData.playlistId) {
-								return true;
-							}
-						});
+					foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist)
 
-						foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist)
-
-						foundUser.save( (err, data)=>{
-							if (err) {
-								console.log(err.message);
-								res.send(err);
-							} else {
-								res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}`);
-							}
-						})
-					}
-				})
-			}
-		})
-	} else {
-		console.log("ERROR -- did not update playlist");
-		res.redirect(`/earfull/playlists/${reqData.userId}`)
-	}
+					foundUser.save( (err, data)=>{
+						if (err) {
+							console.log(err.message);
+							res.send(err);
+						} else {
+							res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}`);
+						}
+					})
+				}
+			})
+		}
+	})
 })
 
 

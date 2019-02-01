@@ -108,7 +108,7 @@ for (let q = 0; q < $addBtn.length; q++) {
 
 		addEpisode(episodeData);
 
-		// $(`#add-${q}`).css("opacity", "0.3");
-		// $(`#add-${q}`).off();
+		$(`#add-${q}`).css("opacity", "0.3");
+		$(`#add-${q}`).off();
 	})
 }
