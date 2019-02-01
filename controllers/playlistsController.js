@@ -206,6 +206,12 @@ router.post("/:userId", (req, res)=>{
 	})
 });
 
+// VIEW Route: 
+router.get("/:userId/:playlistId/view", (req, res)=>{
+	// WE WANT TO ADD THIS IN!! Then set many of the redirects to this page, I think 
+})
+
+
 // Edit Route 
 router.get("/:userId/:playlistId/edit", (req, res)=> {
 
@@ -266,8 +272,7 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 });
 
 
-
-// Show Route 
+// EDIT -- input SORTING -- Route 
 router.get("/:userId/:playlistId", (req, res)=>{
 
 	const reqData = {
@@ -410,7 +415,6 @@ router.put("/:userId/:playlistId", (req, res)=>{
 							console.log(err.message);
 							res.send(err);
 						} else {
-							console.log(data);
 							res.redirect(`/earfull/playlists/${reqData.userId}/`);
 						}
 					})
@@ -421,7 +425,7 @@ router.put("/:userId/:playlistId", (req, res)=>{
 });
 
 
- 
+
 // Update Route PART 2 -- add episodes 
 router.patch("/:userId/:playlistId", (req, res)=>{ 
 
@@ -505,81 +509,66 @@ router.patch("/:userId/:playlistId", (req, res)=>{
 
 // update route part 3 -- SORT 
 router.patch("/:userId/:playlistId/sort", (req, res) => {
-// FORM of req.body: 
-// 	{ 
-//   addList: '2ffc807db25b447a88d2d4544e6ddfe3 ' }
 
+	const reqData = {
+		userId: req.params.userId,
+		playlistId: req.params.playlistId
+	}
 
-// const playlistSchema = mongoose.Schema({
-// 	name: {type: String, require: true, unique: true}
-// 	ownerId: String,
-// 	datePosted: {type: Date, default: Date.now()},
-// 	lastEdited: {type: Date, default: Date.now()},
-// 	episodes: [String] // array of strings of episode IDs!!
-// });
- 
-	// const episodeOrder = [];
+	const dateEdited = new Date();
 
-	// let ind = 0;
-	// let convInd = ind.toString();
+	const update = {
+		lastEdited: dateEdited,
+		episodes: []
+	}
 
-	// while (req.body[convInd]) {
-	// 	episodeOrder.push(req.body[convInd]);
-	// 	ind++;
-	// 	convInd = ind.toString();
-	// }
+	if (req.body.episodeArray) {
+		const rawEpisodeArray = req.body.episodeArray.split(" ");
 
-	// const cleanEpisodeOrder = episodeOrder.filter((episodeId)=>{
-	// 	if (episodeId) {
-	// 		return true;
-	// 	} else {
-	// 		return false;
-	// 	}
-	// })
+		const cleanEpisodeArray = rawEpisodeArray.filter( (episodeId)=>{
+			if (episodeId && episodeId !== " " && episodeId !== "" && episodeId.length === 32) {
+				return true;
+			} else {
+				return false;
+			}
+		})
 
-	// let idsToRemove = [];
+		update.episodes = cleanEpisodeArray;
 
-	// if (req.body.deleteList && req.body.deleteList !== "" && req.body.deleteList !== " ") {
-	// 	idsToRemove = req.body.deleteList.split(" ");
-	// } else {
-	// 	idsToRemove = [];
-	// }
+		Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist) => {
+			if (err) {
+				console.log(err.message);
+				res.rend(err)
+			} else {
+				User.findOne( {_id: reqData.userId}, (err, foundUser) => {
+					if (err) {
+						console.log(err.message);
+						res.send(err)
+					} else {
+						const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
+							if(playlist._id.toString() === reqData.playlistId) {
+								return true;
+							}
+						});
 
-	// const removeArray = idsToRemove.filter((episodeId)=>{
-	// 	if (episodeId) {
-	// 		return true;
-	// 	} else {
-	// 		return false;
-	// 	}
-	// });
+						foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist)
 
-	// let idsToAdd = [];
-
-	// if (req.body.addList && req.body.addList !== "" && req.body.addList !== " ") {
-	// 	idsToAdd = req.body.addList.split(" ");
-	// } else {
-	// 	idsToAdd = [];
-	// }
-
-	// const addArray = idsToAdd.filter((episodeId)=>{
-	// 	if (episodeId) {
-	// 		return true;
-	// 	} else {
-	// 		return false;
-	// 	}
-	// });
-
-
-	// const filteredArray = cleanEpisodeOrder.filter( (episodeId) => {
-	// 	if (removeArray.includes(episodeId)) {
-	// 		return false;
-	// 	} else {
-	// 		return true;
-	// 	}
-	// })
-
-	// const finalArray = filteredArray.concat(addArray);
-
+						foundUser.save( (err, data)=>{
+							if (err) {
+								console.log(err.message);
+								res.send(err);
+							} else {
+								res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}`);
+							}
+						})
+					}
+				})
+			}
+		})
+	} else {
+		console.log("ERROR -- did not update playlist");
+		res.redirect(`/earfull/playlists/${reqData.userId}`)
+	}
 })
 
 

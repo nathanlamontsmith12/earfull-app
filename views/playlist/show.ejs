@@ -24,7 +24,7 @@
 			<h3 class="show-headers">Episodes: </h4>
 			<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>/sort?_method=PATCH" method="POST">
 				<button id="sort-save-btn">SAVE CHANGES</button>
-				<input id="current-order" type="text" name="episodeArray" val="">
+				<input hidden id="current-order" name="episodeArray" val="">
 			</form>
 
 			

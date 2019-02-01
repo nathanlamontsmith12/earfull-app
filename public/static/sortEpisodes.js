@@ -23,7 +23,8 @@ for (let i = 0; i < $episodes.length; i++) {
 	currentEpisodeArray.push( $(`#${i}`)[0].title );
 }
 
-console.log(currentEpisodeArray);
+// set initial form value: 
+updateEpisodeForm();
 
 
 // ========== SORT-OF EVENT LISTENER USING JQUERY UI ========== 
@@ -67,12 +68,8 @@ function deleteEpisodes () {
 
 	currentEpisodeArray = newEpisodeArray;
 
-	console.log(currentEpisodeArray);
-
 }
 
-// update hidden form that contains data for what the updated episode array 
-// will be 
 
 function updateEpisodeArray () {
 
@@ -86,116 +83,35 @@ function updateEpisodeArray () {
 
 	currentEpisodeArray = newEpisodeArray;
 
-
 	deleteEpisodes();
 }
 
 
-function addEpisode (data) {
 
-	// FORM of the "data" being passed in: 
-	
-	// const episodeData = {
-	// 	podcast: evt.currentTarget.dataset.podcast,
-	// 	title: evt.currentTarget.dataset.episode,
-	// 	imgURL: evt.currentTarget.dataset.img,
-	// 	id: evt.currentTarget.dataset.epid
-	// }
+function deleteEntry (item, button, targetEpisodeId) {
 
-	const newAddEpisodeEntry = 
-		$(`<li data-epid="data.id"><strong>${data.podcast}</strong><br />${data.title}</li>`);
+	deleteEpisodeArray.push(targetEpisodeId);
 
-	$addToPlaylist.append(newAddEpisodeEntry);
-
-	addedEpisodeArray.push(data.id);
-
-	updateAddForm();
+	item.css("opacity", "0.3");
+	button.innerText = "+";
 }
 
 
-function deleteEntry (episode, origInd) {
+function undeleteEntry (item, button, targetEpisodeId) {
 
-	// code to change the visual display
-	$(`#episode-name-${origInd}`).css("opacity", "0.3");
-	$(`#${origInd}-remove`).text("+");
-
-	// manipulate the deleted episodes array 
-	deleteEpisodeArray.push(episode);
-}
-
-
-function undeleteEntry (episode, origInd) {
-
-	// code to change the visual display 
-	$(`#episode-name-${origInd}`).css("opacity", "1");
-	$(`#${origInd}-remove`).text("x");
-
-	// manipulate the deleted episodes array 
-	const episodeIndex = deleteEpisodeArray.findIndex((maybeEpisode)=>{
-		if (maybeEpisode === episode) {
+	const targetIndex = deleteEpisodeArray.findIndex( (episodeId)=>{
+		if (targetEpisodeId === episodeId) {
 			return true;
 		}
-	});
+	})
 
-	deleteEpisodeArray.splice(episodeIndex, 1);
-}
+	deleteEpisodeArray.splice(targetIndex, 1);
 
-
-function updateAddForm () {
-	
-	const newAddFormValue = addedEpisodeArray.reduce( (acc, episode) => {
-		return acc + episode + " "
-	}, "")
-
-	$addList.val(newAddFormValue);
-}
-
-
-function updateDeleteForm () {
-
-	const newDeleteFormValue = deleteEpisodeArray.reduce( (acc, episode) => {
-		return acc + episode + " "
-	}, "")
-
- 	$deleteList.val(newDeleteFormValue);
+	item.css("opacity", "1");
+	button.innerText = "x"; 
 
 }
 
-
-function toggleDeleteEntry (fullId) {
-
-	let idNum = "";
-
-	for (let m = 0; m < fullId.length; m++) {
-		if (fullId[m] === "-") {
-			break;
-		} else {
-			idNum += fullId[m]
-		}
-	}
-
-	const episode = initialEpisodeArray[parseInt(idNum)];
-
-	// figure out if episode is already in the deleteEpisodeArray 
-	// if not, add it to deleteEpisodeArray, and do the "delete" display change 
-	// if already there, remove it from that array, and do the "undelete" display change 
-	// then, regardless, update the deleteForm ! 
-
-
-	if (deleteEpisodeArray.includes(episode)) {
-		undeleteEntry(episode, idNum);
-	} else {
-		deleteEntry(episode, idNum);
-	}
-
-
-	updateDeleteForm();
-
-	console.log($deleteList.val());
-
-// 	console.log(idNum); // --> WORKS
-
-}
 
 
 // ========== ADD EVENT LISTENERS ========== 
@@ -205,44 +121,26 @@ function toggleDeleteEntry (fullId) {
 for (let i = 0; i < $deleteBtns.length; i++) {
 	$(`#${i}-remove`).on("click", (evt)=>{
 
-		const $thisBtn = $(`#${i}-remove`)[0];
 		const $thisItem = $(`#${i}`);
-
+		const $thisBtn = $(`#${i}-remove`)[0];
+		const targetEpisodeId = evt.currentTarget.title;
 
 		if ($thisBtn.innerText.toString() === "x") {
 			// delete
-			deleteEpisodeArray.push(evt.currentTarget.title);
+			deleteEntry($thisItem, $thisBtn, targetEpisodeId);
 
-			console.log(deleteEpisodeArray);
-
-			$thisItem.css("opacity", "0.3");
-			$thisBtn.innerText = "+";
-
+			// update Episode Array and Form: 
 			updateEpisodeArray();
 			updateEpisodeForm();
 
 		} else {
 			// undelete
+			undeleteEntry($thisItem, $thisBtn, targetEpisodeId);
 
-			const indexOfEpisodeIdToUndelete = deleteEpisodeArray.findIndex((episodeId)=>{
-				if (evt.currentTarget.title === episodeId) {
-					return true;
-				}
-			})
-
-			deleteEpisodeArray.splice(indexOfEpisodeIdToUndelete, 1);
-
-			$thisItem.css("opacity", "1");
-			$thisBtn.innerText = "x"; 
-
-			console.log(deleteEpisodeArray);
-
+			// update Episode Array and Form: 
 			updateEpisodeArray();
 			updateEpisodeForm();
 			
 		}
-
-
-
 	})
 }
