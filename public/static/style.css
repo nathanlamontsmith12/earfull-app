@@ -182,10 +182,15 @@ ol {
 /*==== PLAYLIST SHOW PAGE STYLING ====*/
 
 .playlist-container-show {
+	width: 50%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 10px;
+	margin: 10px 0 ;
+	padding: 10px 0;
+	background-color: linen;
+	border: 2px solid black;
+	border-radius: 5px;
 }
 
 .playlist-show-link-container {
@@ -193,10 +198,22 @@ ol {
 	flex-direction: column;
 	align-items: center;
 	margin: 0;
+	width: 70vw;
+	padding: auto;
+}
+
+.playlist-show-link {
+	background-color: cadetblue;
+	padding: 4px;
+	border-radius: 5px;
+	border: 2px solid black;
+	margin-top: 10px;
+	max-width: 50%;
 }
 
 .show-headers {
 	margin: 0;
+	text-align: center
 }
 
 
@@ -436,6 +453,8 @@ ol {
 	border: 2px solid black;
 	margin-top: 10px;
 	max-width: 50%;
+	font-family: "Roboto", sans-serif;
+	font-size: 15px;
 }
 
 
