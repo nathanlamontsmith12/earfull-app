@@ -47,6 +47,10 @@ a {
 	color: linen;
 }
 
+a:hover {
+	text-decoration: underline;
+}
+
 img {
 	border-radius: 5px;
 }
