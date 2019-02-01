@@ -1,6 +1,6 @@
-console.log("Connected!");
-
 // DOM MANIPULATION script for playlist edit page -- ADDING episodes 
+
+console.log("Connected!");
 
 
 // ========== CACHED ELEMENTS ==========
@@ -23,15 +23,6 @@ const addedEpisodeArray = [];
 // ========== FUNCTIONS ==========
 
 function addEpisode (data) {
-
-	// FORM of the "data" being passed in: 
-	
-	// const episodeData = {
-	// 	podcast: evt.currentTarget.dataset.podcast,
-	// 	title: evt.currentTarget.dataset.episode,
-	// 	imgURL: evt.currentTarget.dataset.img,
-	// 	id: evt.currentTarget.dataset.epid
-	// }
 
 	const $newAddEpisodeEntry = 
 		$(`<li id="${data.id}"><button id="${data.id}-remove">X</button><strong>${data.podcast}</strong><br />${data.title}</li>`);

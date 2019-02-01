@@ -98,6 +98,11 @@ app.get("/earfull", (req, res)=>{
 	});
 })
 
+// redirect to home 
+app.get("/", (req, res) => {
+	res.redirect("/earfull");
+})
+
 
 // ========== RUN SERVER ========== 
 app.listen(PORT, ()=>{

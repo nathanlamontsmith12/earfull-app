@@ -1,3 +1,39 @@
+<!-- New Route -- GET
+earfull/playlists/:userId/new
+
+Create Route -- POST 
+earfull/playlists/:userId
+
+Edit Route -- GET 
+earfull/playlists/:userId/:playlistId/edit 
+
+Update Route -- PUT 
+earfull/playlists/:userId/:playlistId
+
+Destroy Route -- DELETE 
+earfull/playlists/:userId/:playlistId
+
+Show Route -- GET 
+earfull/playlists/:userId 
+
+res.render("playlist/show.ejs", {
+	user: foundUser,
+	header: `${foundUser.username}'s Playlists`,
+	title: "EarFull Playlists",
+	message: req.session.message,
+	loggedIn: req.session.loggedIn,
+	playlist: foundPlaylist,
+	episodes: episodeArray
+})
+
+const playlistSchema = mongoose.Schema({
+	name: {type: String, require: true, unique: true}
+	ownerId: String,
+	datePosted: {type: Date, default: Date.now()},
+	lastEdited: {type: Date, default: Date.now()},
+	episodes: [String] // array of strings of episode IDs!!
+});
+-->
 <!DOCTYPE html>
 <html>
 <head>

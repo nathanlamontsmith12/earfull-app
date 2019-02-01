@@ -1,4 +1,10 @@
-// DOM MANIPULATION script for playlist show page 
+// Ended up breaking this static js file into two 
+// seaprate files for two different pages. 
+// Keeping all the code here though, for reference. 
+// At the moment, no pages link to here. 
+
+
+
 
 console.log("Connected!");
 

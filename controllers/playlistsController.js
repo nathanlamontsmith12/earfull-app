@@ -21,6 +21,10 @@ const search = {
 // session info userId and/or 
 // if session is logged out 
 
+
+// NOTE: code is written, but this is currently not used anywhere -- need to implement this 
+// code in various places 
+
 function checkLogin (reqSession, userId, response) {
 	if (reqSession.loggedIn && reqSession.userId === userId) {
 		return;
@@ -41,6 +45,7 @@ function checkLogin (reqSession, userId, response) {
 
 // ========== SEARCH POST THEN REDIRECT ==========
 
+// run our search route, update the search results above, and then just redirect it to edit page
 router.post("/:userId/:playlistId/search", async (req, res) => {
 
 	const reqData = {
@@ -206,10 +211,13 @@ router.post("/:userId", (req, res)=>{
 	})
 });
 
-// VIEW Route: 
-router.get("/:userId/:playlistId/view", (req, res)=>{
-	// WE WANT TO ADD THIS IN!! Then set many of the redirects to this page, I think 
-})
+
+// // VIEW Route: 
+// router.get("/:userId/:playlistId/view", (req, res)=>{
+// 	// We may want to add this in, as a separate page where they cannot edit, but just view their playlist? 
+// right now we are using the edit route essentially to connect user to the view page for 
+// a specific playlists, and the index route to connect them to a view page for all playlists 
+// })
 
 
 // Edit Route 
@@ -241,6 +249,7 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 
 					let episodeArray = [];
 
+					// put it in the correct order: 
 					if (rawEpisodeArray.length > 0) {
 						episodeArray = foundPlaylist.episodes.map( (episodeId) => {
 							for (let t = 0; t < rawEpisodeArray.length; t++) {
@@ -248,12 +257,13 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 									return rawEpisodeArray[t];
 								} else {
 									// res.send("ERROR -- episode in playlist not found in DB")
-	// =============== NEED WAAAAAAY BETTER ERROR HANDLING HERE!!! ===============
+	// =============== NEED WAAAAAAY BETTER ERROR HANDLING ===============
 								}
 							}	
 						})					
 					}
 
+					// render it 
 					res.render("playlist/edit.ejs", {
 						user: foundUser,
 						playlist: foundPlaylist,
@@ -370,7 +380,7 @@ router.delete("/:userId/:playlistId", async (req, res)=>{
  
 
 
-// Update Route PART 1 -- rename 
+// Update Route PART 1 -- rename (from the playlist index page)
 router.put("/:userId/:playlistId", (req, res)=>{
 
 	// params data from request 

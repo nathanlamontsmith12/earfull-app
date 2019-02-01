@@ -1,4 +1,5 @@
-// DOM MANIPULATION script for playlist show page 
+// DOM MANIPULATION script for playlist show page -- 
+// SORTING the playlist
 
 console.log("Connected!");
 
@@ -116,7 +117,7 @@ function undeleteEntry (item, button, targetEpisodeId) {
 
 // ========== ADD EVENT LISTENERS ========== 
 // add delete function to every "delete" button, keyed 
-// to the correct ORIGINAL episode index!
+// to the correct original episode index
 
 for (let i = 0; i < $deleteBtns.length; i++) {
 	$(`#${i}-remove`).on("click", (evt)=>{
