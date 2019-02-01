@@ -5,11 +5,11 @@
 ### Earfull is powered by ListenNotes API 
 
 ### User Story
-The home page contains a nav bar with links to episode search pages on the left-hand side, and registration links on the right-hand side. The main area of the home page has large buttons that direct the user to the Log In page or to the search page. The search page allows the user to query the ListenNotes database for episodes. Users can search and browse the episode database even if they are not logged in. 
+The home page contains a nav bar with links to episode search pages on the left-hand side, and registration links on the right-hand side. The main area of the home page has large buttons that direct the user to the Log In page or to the search pages. The user may search by podcast or by episode in order to query the ListenNotes database. This functionality is available to the user if they are not logged in. 
 
-Searching will take the user to a page populated with the episode search results. Clicking on any of the results will bring up a show page with more information about the selected episode, as well as an embedded audio player so the user can listen to it immediately. 
+Searching will take the user to a page populated with the episode or podcast search results. Clicking on any of the results will bring up a show page with more information about the selected episode or podcast. If an episode was chosen, the page will render with an embedded audio player so the user can listen to the podcast episode immediately. 
 
-Upon logging in, the user will have access enabling them to create, view, and edit playlists of their podcast episodes. On the playlist view page, the UI allows the user to remove episodes or sort them dynamically, then save changes when they like. They can also click a link, "Add Episodes", which brings them to a page that lets the user search for episodes and add them to their playlist, which is displayed on the right-hand side of the page. 
+Upon logging in, the user will have access to creating, viewing, and editing playlists of podcast episodes. On the playlist view page, the UI allows the user to remove episodes or sort them dynamically, then save changes when they like. They can also click a link, "Add Episodes", which brings them to a page that lets the user search for episodes and add them to their playlist, which is displayed on the right-hand side of the page. 
 
 
 ### Models
