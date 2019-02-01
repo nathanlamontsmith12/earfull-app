@@ -72,6 +72,11 @@ p, a, div {
 	font-family: "Roboto", sans-serif;
 }
 
+ol {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
 /*hr {
 	background-color: green;
 }*/
@@ -83,6 +88,12 @@ p, a, div {
   content: "";
   clear: both;
   display: table;
+}
+
+/*==== Repeatable Styling ====*/
+
+.center {
+	text-align: center;
 }
 
 /*==== Login Page Styling ====*/
@@ -138,6 +149,8 @@ p, a, div {
 	padding: 4px;
 	border-radius: 5px;
 	border: 2px solid black;
+	margin-top: 10px;
+	max-width: 50%;
 }
 
 .playlist-index-link-container {
@@ -149,6 +162,7 @@ p, a, div {
 .index-playlist-container {
 	display: flex;
 	flex-direction: column;
+	margin-top: 10px;
 }
 
 .index-playlist-item {
@@ -156,7 +170,29 @@ p, a, div {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 25px;
 }
+
+/*==== PLAYLIST SHOW PAGE STYLING ====*/
+
+.playlist-container-show {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.playlist-show-link-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 0;
+}
+
+.show-headers {
+	margin: 0;
+}
+
 
 /*==== PLAYLIST EDIT PAGE STYLING ====*/
 
@@ -178,6 +214,48 @@ p, a, div {
 	margin-top: 5px;
 	width: 110px;
 	height: 20px;
+}
+
+.playlist-container-outer {
+	width: 30vw;
+}
+
+.playlist-container {
+	width: 30vw;
+	position: fixed;
+	padding-top: 2vh;
+	height: calc(92vh - 2px);
+	background-color: cadetblue;
+	/*padding-left: 10px;*/
+	border-top: 2px solid black;
+	border-left: 2px solid black;
+	display: flex;
+	flex-direction: column;
+	align-items: center
+}
+
+.playlist-search-container-outer {
+	display: flex;
+	justify-content: center;
+	width: 70vw;
+}
+
+.playlist-search-container {
+	width: 80%;
+}
+
+.update-delete-playlist-form-container {
+	display: flex;
+	flex-direction:column;
+	justify-content: center;
+	align-items: center;
+}
+
+.main-container-playlist {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	width: 100vw;
 }
 
 
@@ -232,6 +310,15 @@ p, a, div {
 	font-size: 2.5vh;
 }
 
+.sub-nav {
+	background-color: cadetblue;
+	padding: 4px;
+	border-radius: 5px;
+	border: 2px solid black;
+}
+
+
+
 /*==== CONTAINERS ====*/
 
 .main-container {
@@ -241,54 +328,12 @@ p, a, div {
 	align-items: center;
 }
 
-.playlist-container-outer {
-	width: 30vw;
-}
-
-.playlist-container {
-	width: 30vw;
-	position: fixed;
-	padding-top: 2vh;
-	height: calc(92vh - 2px);
-	background-color: cadetblue;
-	/*padding-left: 10px;*/
-	border-top: 2px solid black;
-	border-left: 2px solid black;
-	display: flex;
-	flex-direction: column;
-	align-items: center
-}
-
-.playlist-search-container-outer {
-	display: flex;
-	justify-content: center;
-	width: 70vw;
-}
-
-.playlist-search-container {
-	width: 80%;
-}
-
-.update-delete-playlist-form-container {
-	display: flex;
-	flex-direction:column;
-	justify-content: center;
-	align-items: center;
-}
-
-
 .listen-link-container {
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
 }
 
-.main-container-playlist {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: row;
-	width: 100vw;
-}
 
 .results-box {
 	padding: 2vh;
@@ -298,7 +343,7 @@ p, a, div {
 	background-color: cadetblue;
 }
 
-/*==== SHOW PAGE STYLING ====*/
+/*==== EPISODE/PODCAST SHOW PAGE STYLING ====*/
 
 .show-pic {
 	float: right;
@@ -377,9 +422,6 @@ p, a, div {
 	margin-bottom: 0;
 }
 
-.episode-search-container {
-	/*width: 50%;*/
-}
 
 
 
