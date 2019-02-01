@@ -41,26 +41,27 @@ render: {
 		<a class="playlist-index-link" href="/earfull/playlists/<%=user._id%>/new">New Playlist</a> <br />
 
 		<div class="index-playlists-container">
-		<% for (let m = 0; m < playlists.length; m++) { -%>		
-			<div class="index-playlist-item">
-				<div class="playlist-index-link-container">
-					<h2 class="show-headers"><%=playlists[m].name%> &nbsp;</h2> <br /> 
-					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>">View</a> 
-					<br />
-					<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Add</a>
-					<form action="/earfull/playlists/<%=user._id%>/<%=playlists[m]._id%>?_method=DELETE" method="POST">
-						<button class="input-button-playlist">Delete Playlist</button>
-					</form>
-					<button>RENAME</button>
-					<div class="update-delete-playlist-form-container">
-						<form class="input-form-playlist" action="/earfull/playlists/<%=user._id%>/<%=playlists[m]._id%>?_method=PUT" method="POST">
-							<input class="input-box" type="text" name="name" value="<%=playlists[m].name%>">
-							<button class="input-button-playlist">RENAME</button>
-						</form>
+			<% for (let m = 0; m < playlists.length; m++) { -%>		
+				<div class="index-playlist-item">
+					<div class="playlist-index-link-container">
+						<h2 class="show-headers"><%=playlists[m].name%> &nbsp;</h2> <br /> 
+						<div class="row">
+							<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>">View</a> 
+							<a href="/earfull/playlists/<%=user._id%>/<%=user.playlists[m]._id%>/edit">Add</a>
+						</div>
+						<!-- <button>RENAME</button> -->
+						<div class="update-delete-playlist-form-container">
+							<form class="input-form-playlist" action="/earfull/playlists/<%=user._id%>/<%=playlists[m]._id%>?_method=PUT" method="POST">
+								<input class="input-box" type="text" name="name" value="<%=playlists[m].name%>">
+								<button class="input-button-playlist">Rename</button>
+							</form>
+							<form action="/earfull/playlists/<%=user._id%>/<%=playlists[m]._id%>?_method=DELETE" method="POST">
+								<button class="input-button-playlist">Delete Playlist</button>
+							</form>
+						</div>
 					</div>
 				</div>
-			</div>
-		<% } -%>
+			<% } -%>
 		</div>
 	</main>
 

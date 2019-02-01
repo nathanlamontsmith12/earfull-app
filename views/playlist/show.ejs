@@ -20,17 +20,17 @@
 		</div>
 
 		<div class="playlist-container-show">
-			<h2 class="show-headers"><%=playlist.name%> </h3>
-			<h3 class="show-headers">Episodes: </h4>
+			<h2 class="show-headers"><%=playlist.name%> </h2>
+			<h3 class="show-headers">Drag and drop to re-order episodes<br>Click Save when finished</h3><br>
 			<form action="/earfull/playlists/<%=user._id%>/<%=playlist._id%>/sort?_method=PATCH" method="POST">
-				<button id="sort-save-btn">SAVE CHANGES</button>
+				<button id="sort-save-btn">Save Changes</button>
 				<input hidden id="current-order" name="episodeArray" val="">
 			</form>
 
 			
 			<ol id="sortable" class="playlist-show-link-container">
 			<% for (let m = 0; m < episodes.length; m++) { -%>
-				<li id="<%=m%>" title="<%=episodes[m].id%>" class="playlist-index-link center" > 			
+				<li id="<%=m%>" title="<%=episodes[m].id%>" class="playlist-show-link center" > 			
 					<a href="/earfull/episodes/<%=episodes[m].id%>"><%=episodes[m].podcast_title_original%> -<br /><%=episodes[m].title_original%></a>
 					<button id="<%=m%>-remove" title="<%=episodes[m].id%>">x</button>
 				</li>

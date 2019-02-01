@@ -96,7 +96,7 @@ const playlistSchema = mongoose.Schema({
 										<p class="search-desc"><%=shortDescription%></p>
 										<div class="listen-link-container">
 											<a class="listen-link" href="/earfull/episodes/<%=results[i].id%>">Listen to episode</a>
-											<button id="add-<%=i%>" class="addBtn" data-epid="<%=results[i].id%>" data-podcast="<%=results[i].podcast_title_original%>" data-episode="<%=results[i].title_original%>" data-img="<%=results[i].thumbnail%>">Add to <%=playlist.name%></button>
+											<button id="add-<%=i%>" class="addBtn listen-link" data-epid="<%=results[i].id%>" data-podcast="<%=results[i].podcast_title_original%>" data-episode="<%=results[i].title_original%>" data-img="<%=results[i].thumbnail%>">Add to <%=playlist.name%></button>
 										</div>
 									</div>
 									<% shortDescription = "" %>
