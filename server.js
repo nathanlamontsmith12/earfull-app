@@ -13,7 +13,7 @@ const app = express();
 
 
 // ========== SET PORT ==========
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 
 // ========== SET UP SESSION ==========
