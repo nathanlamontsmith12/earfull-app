@@ -266,231 +266,6 @@ router.get("/:userId/:playlistId/edit", (req, res)=> {
 });
 
 
-// Update Route PART 1
-router.put("/:userId/:playlistId", (req, res)=>{
-
-	// params data from request 
-	const reqData = {
-		userId: req.params.userId,
-		playlistId: req.params.playlistId
-	}
-
-	// timestamp for the edits 
-	const dateEdited = new Date();
-
-	const update = {
-		name: req.body.name,
-		lastEdited: dateEdited,
-	}
-
-	// find the playlist in its database, update it   
-	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, {name: req.body.name, lastEdited: dateEdited, $push: {episodes: req.body.episode}}, {new: true}, (err, updatedPlaylist)=> {
-		if (err) {
-			console.log(err.message);
-			res.send(err);
-		} else {
-			User.findOne( {_id: reqData.userId}, (err, foundUser)=> {
-				if (err) {
-					console.log(err.message);
-					res.send(err);
-				} 
-				else {
-
-					const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
-						if(playlist._id.toString() === reqData.playlistId) {
-							return true;
-						}
-					});
-
-					const deletedItem = foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist);
-
-					foundUser.save( (err, data)=>{
-						if (err) {
-							console.log(err.message);
-							res.send(err);
-						} else {
-							console.log(data);
-							res.redirect(`/earfull/playlists/${reqData.userId}/`);
-						}
-					})
-				}
-			});
-		}
-	})
-});
-
- 
-// Update Route PART 2 
-router.patch("/:userId/:playlistId", (req, res)=>{ 
-
-	const reqData = {
-		userId: req.params.userId,
-		playlistId: req.params.playlistId
-	}
-
-// FORM of req.body: 
-// 	{ '0': '1asdf',
-//   '1': '2ghjkl',
-//   '2': '3jklp',
-//   '3': '4rteryey',
-//   '4': '5ututi',
-//   deleteList: '',
-//   addList: '2ffc807db25b447a88d2d4544e6ddfe3 ' }
-
-
-// const playlistSchema = mongoose.Schema({
-// 	name: {type: String, require: true, unique: true}
-// 	ownerId: String,
-// 	datePosted: {type: Date, default: Date.now()},
-// 	lastEdited: {type: Date, default: Date.now()},
-// 	episodes: [String] // array of strings of episode IDs!!
-// });
- 
-	const episodeOrder = [];
-
-	let ind = 0;
-	let convInd = ind.toString();
-
-	while (req.body[convInd]) {
-		episodeOrder.push(req.body[convInd]);
-		ind++;
-		convInd = ind.toString();
-	}
-
-	const cleanEpisodeOrder = episodeOrder.filter((episodeId)=>{
-		if (episodeId) {
-			return true;
-		} else {
-			return false;
-		}
-	})
-
-	let idsToRemove = [];
-
-	if (req.body.deleteList && req.body.deleteList !== "" && req.body.deleteList !== " ") {
-		idsToRemove = req.body.deleteList.split(" ");
-	} else {
-		idsToRemove = [];
-	}
-
-	const removeArray = idsToRemove.filter((episodeId)=>{
-		if (episodeId) {
-			return true;
-		} else {
-			return false;
-		}
-	});
-
-	let idsToAdd = [];
-
-	if (req.body.addList && req.body.addList !== "" && req.body.addList !== " ") {
-		idsToAdd = req.body.addList.split(" ");
-	} else {
-		idsToAdd = [];
-	}
-
-	const addArray = idsToAdd.filter((episodeId)=>{
-		if (episodeId) {
-			return true;
-		} else {
-			return false;
-		}
-	});
-
-
-	const filteredArray = cleanEpisodeOrder.filter( (episodeId) => {
-		if (removeArray.includes(episodeId)) {
-			return false;
-		} else {
-			return true;
-		}
-	})
-
-	const finalArray = filteredArray.concat(addArray);
-
-	const dateEdited = new Date();
-
-	const update = {
-		lastEdited: dateEdited,
-		episodes: finalArray
-	}
-
-	// WHEW -- now we just have to update the playlist in both places where it lives 
-	// in our database. Then redirect to the edit page (or elsewhere)
-
-	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist) => {
-		if (err) {
-			console.log(err.message);
-			res.rend(err)
-		} else {
-			User.findOne( {_id: reqData.userId}, (err, foundUser) => {
-				if (err) {
-					console.log(err.message);
-					res.send(err)
-				} else {
-					const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
-						if(playlist._id.toString() === reqData.playlistId) {
-							return true;
-						}
-					});
-
-					const deletedItem = foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist)
-
-					foundUser.save( (err, data)=>{
-						if (err) {
-							console.log(err.message);
-							res.send(err);
-						} else {
-							res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}`);
-						}
-					})
-				}
-			})
-		}
-	})
-})
-
-
-// Destroy Route 
-router.delete("/:userId/:playlistId", async (req, res)=>{
-
-	const reqData = {
-		userId: req.params.userId,
-		playlistId: req.params.playlistId
-	} 
-
-	try {
-
-
-	 	// find user, and delete playlist -- might take a moment...
-		const foundUser = await User.findOne({_id: reqData.userId});
-		const deletedPlaylist = await Playlist.deleteOne({_id: reqData.playlistId});
-
-		await Promise.all([foundUser, deletedPlaylist]);
-
-		const playlistIndex = foundUser.playlists.findIndex( (playlist)=>{
-			if (playlist._id.toString() === reqData.playlistId) {
-				return true;
-			}
-		})
-
-		foundUser.playlists.splice(playlistIndex, 1);
-
-		foundUser.save((err, data)=>{
-			if (err) {
-				console.log(err.message);
-				res.send(err);
-			} else {
-				res.redirect(`/earfull/playlists/${reqData.userId}`);
-			}
-		})
-	} catch (err) {
-		console.log(err.message);
-		res.send(err);
-	}
-
-});
- 
 
 // Show Route 
 router.get("/:userId/:playlistId", (req, res)=>{
@@ -545,6 +320,268 @@ router.get("/:userId/:playlistId", (req, res)=>{
 		}
 	})
 });
+
+
+
+// Destroy Route 
+router.delete("/:userId/:playlistId", async (req, res)=>{
+
+	const reqData = {
+		userId: req.params.userId,
+		playlistId: req.params.playlistId
+	} 
+
+	try {
+
+
+	 	// find user, and delete playlist -- might take a moment...
+		const foundUser = await User.findOne({_id: reqData.userId});
+		const deletedPlaylist = await Playlist.deleteOne({_id: reqData.playlistId});
+
+		await Promise.all([foundUser, deletedPlaylist]);
+
+		const playlistIndex = foundUser.playlists.findIndex( (playlist)=>{
+			if (playlist._id.toString() === reqData.playlistId) {
+				return true;
+			}
+		})
+
+		foundUser.playlists.splice(playlistIndex, 1);
+
+		foundUser.save((err, data)=>{
+			if (err) {
+				console.log(err.message);
+				res.send(err);
+			} else {
+				res.redirect(`/earfull/playlists/${reqData.userId}`);
+			}
+		})
+	} catch (err) {
+		console.log(err.message);
+		res.send(err);
+	}
+
+});
+ 
+
+
+// Update Route PART 1 -- rename 
+router.put("/:userId/:playlistId", (req, res)=>{
+
+	// params data from request 
+	const reqData = {
+		userId: req.params.userId,
+		playlistId: req.params.playlistId
+	}
+
+	// timestamp for the edits 
+	const dateEdited = new Date();
+
+	const update = {
+		name: req.body.name,
+		lastEdited: dateEdited,
+	}
+
+	// NEED to change this below!! 
+
+	// find the playlist in its database, update it   
+	Playlist.findOneAndUpdate( {_id: reqData.playlistId}, {name: req.body.name, lastEdited: dateEdited, $push: {episodes: req.body.episode}}, {new: true}, (err, updatedPlaylist)=> {
+		if (err) {
+			console.log(err.message);
+			res.send(err);
+		} else {
+			User.findOne( {_id: reqData.userId}, (err, foundUser)=> {
+				if (err) {
+					console.log(err.message);
+					res.send(err);
+				} 
+				else {
+
+					const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
+						if(playlist._id.toString() === reqData.playlistId) {
+							return true;
+						}
+					});
+
+					const deletedItem = foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist);
+
+					foundUser.save( (err, data)=>{
+						if (err) {
+							console.log(err.message);
+							res.send(err);
+						} else {
+							console.log(data);
+							res.redirect(`/earfull/playlists/${reqData.userId}/`);
+						}
+					})
+				}
+			});
+		}
+	})
+});
+
+
+ 
+// Update Route PART 2 -- add episodes 
+router.patch("/:userId/:playlistId", (req, res)=>{ 
+
+	const reqData = {
+		userId: req.params.userId,
+		playlistId: req.params.playlistId
+	}
+
+
+	let idsToAdd = [];
+
+	if (req.body.addList && req.body.addList !== "" && req.body.addList !== " ") {
+		idsToAdd = req.body.addList.split(" ");
+	} else {
+		idsToAdd = [];
+	}
+
+	const addArray = idsToAdd.filter( (episodeId) => {
+		if (episodeId) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+
+
+	Playlist.findOne( {_id: reqData.playlistId}, (err, foundPlaylist) => {
+		if (err) {
+			console.log(err.message);
+			res.send(err)
+		} else {
+
+			// grab old playlist, concat w/ added episodes: 
+			const finalArray = foundPlaylist.episodes.concat(addedEpisodes);
+
+			// generate new date for "lastEdited" data  
+			const dateEdited = new Date();
+
+			const update = {
+				lastEdited: dateEdited,
+				episodes: finalArray
+			}
+
+			Playlist.findOneAndUpdate( {_id: reqData.playlistId}, update, {new: true}, (err, updatedPlaylist) => {
+				if (err) {
+					console.log(err.message);
+					res.rend(err)
+				} else {
+					User.findOne( {_id: reqData.userId}, (err, foundUser) => {
+						if (err) {
+							console.log(err.message);
+							res.send(err)
+						} else {
+							const playlistIndex = foundUser.playlists.findIndex((playlist)=> {
+								if(playlist._id.toString() === reqData.playlistId) {
+									return true;
+								}
+							});
+
+							const deletedItem = foundUser.playlists.splice(playlistIndex, 1, updatedPlaylist)
+
+							foundUser.save( (err, data)=>{
+								if (err) {
+									console.log(err.message);
+									res.send(err);
+								} else {
+									res.redirect(`/earfull/playlists/${reqData.userId}/${reqData.playlistId}`);
+								}
+							})
+						}
+					})
+				}
+			})
+		}
+	})
+})
+
+
+
+
+// update route part 3 -- SORT 
+router.patch("/:userId/:playlistId/sort", (req, res) => {
+// FORM of req.body: 
+// 	{ 
+//   addList: '2ffc807db25b447a88d2d4544e6ddfe3 ' }
+
+
+// const playlistSchema = mongoose.Schema({
+// 	name: {type: String, require: true, unique: true}
+// 	ownerId: String,
+// 	datePosted: {type: Date, default: Date.now()},
+// 	lastEdited: {type: Date, default: Date.now()},
+// 	episodes: [String] // array of strings of episode IDs!!
+// });
+ 
+	// const episodeOrder = [];
+
+	// let ind = 0;
+	// let convInd = ind.toString();
+
+	// while (req.body[convInd]) {
+	// 	episodeOrder.push(req.body[convInd]);
+	// 	ind++;
+	// 	convInd = ind.toString();
+	// }
+
+	// const cleanEpisodeOrder = episodeOrder.filter((episodeId)=>{
+	// 	if (episodeId) {
+	// 		return true;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// })
+
+	// let idsToRemove = [];
+
+	// if (req.body.deleteList && req.body.deleteList !== "" && req.body.deleteList !== " ") {
+	// 	idsToRemove = req.body.deleteList.split(" ");
+	// } else {
+	// 	idsToRemove = [];
+	// }
+
+	// const removeArray = idsToRemove.filter((episodeId)=>{
+	// 	if (episodeId) {
+	// 		return true;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// });
+
+	// let idsToAdd = [];
+
+	// if (req.body.addList && req.body.addList !== "" && req.body.addList !== " ") {
+	// 	idsToAdd = req.body.addList.split(" ");
+	// } else {
+	// 	idsToAdd = [];
+	// }
+
+	// const addArray = idsToAdd.filter((episodeId)=>{
+	// 	if (episodeId) {
+	// 		return true;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// });
+
+
+	// const filteredArray = cleanEpisodeOrder.filter( (episodeId) => {
+	// 	if (removeArray.includes(episodeId)) {
+	// 		return false;
+	// 	} else {
+	// 		return true;
+	// 	}
+	// })
+
+	// const finalArray = filteredArray.concat(addArray);
+
+})
+
+
 
 
 // ========== EXPORT ROUTER ==========
