@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
 		offset = 10
 		// Query the API
 		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=podcast") //&only_in=author" )
-		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+		.header("X-Mashape-Key", process.env.API_KEY)
 		.header("Accept", "application/json")
 		.end ((data) => {
 			// Add ids from Api query to array
@@ -74,7 +74,7 @@ router.get("/:id", async (req, res) => {
 		offset = 10
 		// console.log(query, "query\n");
 		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=episode" )
-			.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+			.header("X-Mashape-Key", process.env.API_KEY)
 			.header("Accept", "application/json")
 			.end ((data) => {
 				console.log(data.body);

@@ -58,7 +58,7 @@ router.post("/:userId/:playlistId/search", async (req, res) => {
 		offset = 10
 		// Query the API
 		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query )
-		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+		.header("X-Mashape-Key", process.env.API_KEY)
 		.header("Accept", "application/json")
 		.end ((data) => {
 			// Add ids from Api query to array

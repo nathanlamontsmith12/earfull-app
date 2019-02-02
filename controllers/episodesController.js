@@ -9,17 +9,9 @@ let query = "";
 let type = "";
 let offset;
 
-// WORKING QUERY
-
-// unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=10&q=serial&type=episode")
-// .header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
-// .header("Accept", "application/json")
-// .end(function (result) {
-//   console.log(result.status, result.headers, result.body);
-// });
-
+// Genre Query
 const genres = unirest.get("https://listennotes.p.mashape.com/api/v1/genres")
-	.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+	.header("X-Mashape-Key", process.env.API_KEY)
 	.header("Accept", "application/json")
 
 // Print All Genres
@@ -50,7 +42,7 @@ router.post("/", async (req, res) => {
 		offset = 10
 		// Query the API
 		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query )
-		.header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+		.header("X-Mashape-Key", process.env.API_KEY)
 		.header("Accept", "application/json")
 		.end ((data) => {
 			// Add ids from Api query to array
@@ -112,7 +104,7 @@ router.get("/:id", async (req, res) => {
 			// offset = 10
 			// // Query the API for podcast of podcast name
 			// const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=podcast") //&only_in=author" )
-			// .header("X-Mashape-Key", "gymECYoyFxmshFoLe3A70dofgPSep1UuWJajsnNNQ5Ajsnnypv")
+			// .header("X-Mashape-Key", process.env.API_KEY)
 			// .header("Accept", "application/json")
 			// .end ((data) => {
 			// // create podcast

@@ -1,3 +1,6 @@
+// ========== APP SECURITY ===============
+require("dotenv").config()
+
 // ========== RUN DATABASE FILE ==========
 require("./db/db");
 
@@ -13,13 +16,13 @@ const app = express();
 
 
 // ========== SET PORT ==========
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 
 // ========== SET UP SESSION ==========
-const sessionSecret = require("./sessionSecret.js");
+// const sessionSecret = require("./sessionSecret.js");
 app.use(session({
-	secret: sessionSecret,
+	secret: process.env.SESSION_SECRET,
 	resave: false,
 	saveUninitialized: false
 }))
