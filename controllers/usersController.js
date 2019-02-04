@@ -180,7 +180,6 @@ router.get("/:id", async (req, res, next) => {
 			res.redirect("/earfull/user/auth/login");
 		} else {
 			console.log(req.params.id);
-			console.log();
 			const currentUser = await User.findOne({_id: req.params.id});
 			res.render("user/show.ejs", {
 				user: currentUser,
