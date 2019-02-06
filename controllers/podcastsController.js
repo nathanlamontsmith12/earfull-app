@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
 	try {
 		query = req.body.query
-		// type = req.body.type
+		type = req.body.type
 		offset = 10
 		// Query the API
 		const request = await unirest.get("https://listennotes.p.mashape.com/api/v1/search?offset=" + offset.toString() + "&q=" + query + "&type=podcast") //&only_in=author" )

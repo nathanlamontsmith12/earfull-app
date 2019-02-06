@@ -20,10 +20,8 @@ const PORT = process.env.PORT;
 
 
 // ========== SET UP SESSION ==========
-const sessionSecret = require("./sessionSecret.js");
 app.use(session({
-	// secret: process.env.SESSION_SECRET,
-	secret: sessionSecret,
+	secret: process.env.SESSION_SECRET,
 	resave: false,
 	saveUninitialized: false
 }))
