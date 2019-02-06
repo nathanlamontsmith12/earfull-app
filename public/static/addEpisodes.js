@@ -34,6 +34,22 @@ function addEpisode (data) {
 	// item from display AND removes it from the addedEpisodeArray; 
 	$(`#${data.id}-remove`).on("click", (evt)=>{
 		deleteAddedEpisode(evt);
+
+		// Reactivate the add button in the episode list by changing opacity 
+		// and adding the onClick event again, in case the user wants to re-add...
+		$(`*[data-epid="${data.id}"]`).css("opacity", "1");
+
+		$(`*[data-epid="${data.id}"]`).on("click", (evt) => {
+			const episodeData = {
+				podcast: evt.currentTarget.dataset.podcast,
+				title: evt.currentTarget.dataset.episode,
+				imgURL: evt.currentTarget.dataset.img,
+				id: evt.currentTarget.dataset.epid
+			}
+			addEpisode(episodeData);
+			$(`#add-${q}`).css("opacity", "0.3");
+			$(`#add-${q}`).off();
+		})
 	})
 
 	addedEpisodeArray.push(data.id);

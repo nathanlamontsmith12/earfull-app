@@ -1,6 +1,7 @@
 // MONGOOSE 
 const mongoose = require("mongoose");
-const connectionString = process.env.MONGODB_URI;
+// const connectionString = process.env.MONGODB_URI;
+const connectionString = 'mongodb://localhost/earfull';
 
 mongoose.connect(connectionString, {
   useNewUrlParser: true,
