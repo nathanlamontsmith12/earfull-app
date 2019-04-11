@@ -18,7 +18,7 @@ const podcastSchema = mongoose.Schema({
 	genres: [Number],
 	followers: [],
 	id: String,
-	episodes: [{type: String, unique: true}],
+	episodes: [{type: String}],
 	comments: [Comment.schema]
 });
 
