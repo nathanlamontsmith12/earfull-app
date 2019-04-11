@@ -66,6 +66,43 @@ function deleteAddedEpisode (evt) {
 
 	$(`#${id}`).remove();
 
+	// find the button associated with the un-added episode 
+	// first, grab all "add" buttons... 
+	const $addBtns = $('.addBtn');
+
+	// console.log($addBtns)
+
+	// loop over and find the one with episode ID matching the un-added episode: 
+	for (let i = 0; i < $addBtns.length; i++) {
+		
+		if ($addBtns[i].dataset.epid === id) {
+			// if episode matches, we change opacity and turn it back on (event listener matches original functionality): 
+			
+			// console.log("loop found this button: ", $addBtns[i]);
+
+			$foundButton = $(`#${$addBtns[i].id}`)
+
+			// console.log("jQuery foundButton: ", $foundButton)
+
+			$foundButton.css("opacity", "1"); 
+			
+			$foundButton.on("click", (evt) => {
+
+				const episodeData = {
+					podcast: evt.currentTarget.dataset.podcast,
+					title: evt.currentTarget.dataset.episode,
+					imgURL: evt.currentTarget.dataset.img,
+					id: evt.currentTarget.dataset.epid
+				}
+
+				addEpisode(episodeData);
+
+				$(`#add-${i}`).css("opacity", "0.3");
+				$(`#add-${i}`).off();
+			})
+		}
+	}
+
 	updateAddForm();
 }
 
