@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
 			console.log("API response data: ", data)
 
 			if (data.error || !data.body) {
-				throw new Error
+				throw new Error("You have an error")
 			}
 
 			// Add ids from Api query to array
@@ -63,7 +63,9 @@ router.post("/", async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.render("errors/errors.ejs", {
-			errorMessage: ""
+			errorMessage: "Error retrieving data. Check your internet connection and try again.",
+			title: "Error",
+			header: "Error"
 		})
 	}
 })

@@ -1,8 +1,18 @@
 <!DOCTYPE html>
 <html>
+
+<!-- Partial for head, requires variable "title" -->
+	<%- include("../partials/head", {title: title}) %>
+
 <body>
-	<h1>You've reached the error page</h1>
+<!-- Partial for header, requires variables "header" (string) and "loggedIn" (boolean) -->
+	<%- include("../partials/header", {header: header}) %>
 
+	<main>
+		<p> <%= errorMessage %> </p>
+	</main>
 
+<!-- Partial for footer -->
+	<%- include("../partials/footer") %>
 </body>
 </html>
