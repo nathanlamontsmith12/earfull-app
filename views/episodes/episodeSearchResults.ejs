@@ -24,6 +24,9 @@
 			<!-- <h1>Episode Search Results</h1> -->
 
 			<div class="results-box">
+			<% if (results.toString() === '') { %>
+				<h2>Your search returned no results.</h2>
+			<% } else { %>
 				<% for (var i = 0; i < results.length; i++) { -%>
 					<div class="single-result">
 						<div class="episode-title-row">
@@ -62,6 +65,7 @@
 						<% } %>
 					</div>
 				<% } -%>
+			<% } %>
 			</div>
 		</div>
 	</main>

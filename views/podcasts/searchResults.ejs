@@ -24,39 +24,43 @@
 			<!-- <h1>Episode Search Results</h1> -->
 
 			<div class="results-box">
-				<% for (var i = 0; i < results.length; i++) { -%>
-					<div class="single-result">
-						<h2 class="search-pod-title"><%=results[i].title_original%></h2>
-						<!-- <h3 class="search-title"><%=//results[i].title_original%></h3> -->
-						<% let shortDescription = ""%>
-						<% let stopCounter = 0 %>
-						<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
-							<% if (results[i].description_original[j] === ".") { -%>
-								<% stopCounter++ %>
-								<% if (stopCounter === 3) { -%>
-									<% shortDescription += "."%>
-									<% stopCounter = 0 %>
-									<% break %>								
-								<% } %>
-							<% } else { -%>
-								<%  shortDescription += results[i].description_original[j]%>
-							<% } -%>		
-						<% } -%>
-						<div class="desc-pic-container clearfix">
-							<img class="search-pic" src="<%=results[i].thumbnail%>">
-							<p class="search-desc"><%=shortDescription%></p>
-							<div class="listen-link-container">
-								<a class="listen-link" href="/earfull/podcasts/<%=results[i].id%>"><%=results[i].title_original%>'s Page</a>
+				<% if (results.toString() === '') { %>
+					<h2>Your search returned no results.</h2>
+				<% } else { %>
+					<% for (var i = 0; i < results.length; i++) { -%>
+						<div class="single-result">
+							<h2 class="search-pod-title"><%=results[i].title_original%></h2>
+							<!-- <h3 class="search-title"><%=//results[i].title_original%></h3> -->
+							<% let shortDescription = ""%>
+							<% let stopCounter = 0 %>
+							<% for (var j = 0; j < results[i].description_original.length; j++) { -%>
+								<% if (results[i].description_original[j] === ".") { -%>
+									<% stopCounter++ %>
+									<% if (stopCounter === 3) { -%>
+										<% shortDescription += "."%>
+										<% stopCounter = 0 %>
+										<% break %>								
+									<% } %>
+								<% } else { -%>
+									<%  shortDescription += results[i].description_original[j]%>
+								<% } -%>		
+							<% } -%>
+							<div class="desc-pic-container clearfix">
+								<img class="search-pic" src="<%=results[i].thumbnail%>">
+								<p class="search-desc"><%=shortDescription%></p>
+								<div class="listen-link-container">
+									<a class="listen-link" href="/earfull/podcasts/<%=results[i].id%>"><%=results[i].title_original%>'s Page</a>
+								</div>
 							</div>
-						</div>
-						<% shortDescription = "" %>
-						
-						<% if (i < results.length - 1) { %>
-							<hr>
+							<% shortDescription = "" %>
 							
-						<% } %>
-					</div>
-				<% } -%>
+							<% if (i < results.length - 1) { %>
+								<hr>
+								
+							<% } %>
+						</div>
+					<% } -%>
+				<% } %>
 			</div>
 		</div>
 	</main>
