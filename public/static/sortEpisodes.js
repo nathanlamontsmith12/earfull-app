@@ -59,15 +59,31 @@ function updateEpisodeForm() {
 
 function deleteEpisodes () {
 
-	const newEpisodeArray = currentEpisodeArray.filter((episodeId)=>{
-		if (deleteEpisodeArray.includes(episodeId)) {
-			return false;
-		} else {
-			return true;
+	// const newEpisodeArray = [];
+
+
+	deleteEpisodeArray.forEach( (episodeID) => {
+		if (currentEpisodeArray.includes(episodeID)) {
+			const index = currentEpisodeArray.findIndex( (id) => {
+				if (id === episodeID) {
+					return true
+				} else {
+					return false 
+				}
+			});
+			currentEpisodeArray.splice(index, 1)
 		}
 	})
 
-	currentEpisodeArray = newEpisodeArray;
+	// currentEpisodeArray.filter((episodeId)=>{
+	// 	if (deleteEpisodeArray.includes(episodeId)) {
+	// 		return false;
+	// 	} else {
+	// 		return true;
+	// 	}
+	// })
+
+	// currentEpisodeArray = newEpisodeArray;
 
 }
 
