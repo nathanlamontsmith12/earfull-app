@@ -25,6 +25,13 @@ router.post("/", async (req, res) => {
 		.header("X-Mashape-Key", process.env.API_KEY)
 		.header("Accept", "application/json")
 		.end ((data) => {
+
+			console.log("API response data: ", data)
+
+			if (data.error || !data.body) {
+				throw new Error
+			}
+
 			// Add ids from Api query to array
 			const queryIdArray = data.body.results.map(podcast => podcast.id)
 			// Find Podcasts that have the same Id as query id Array
@@ -55,7 +62,7 @@ router.post("/", async (req, res) => {
 		})
 	} catch (err) {
 		console.log(err);
-		res.send(err)
+		res.send(err);
 	}
 })
 
